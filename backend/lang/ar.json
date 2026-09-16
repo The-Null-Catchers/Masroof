@@ -1,0 +1,13 @@
+{
+    "(and :count more error)": "(و:count خطأ آخر)",
+    "(and :count more errors)": "(و:count أخطاء أخرى)",
+    "Too Many Attempts.": "محاولات كثيرة جدًا.",
+    "Unauthenticated.": "غير مصرح. يرجى تسجيل الدخول.",
+    "This action is unauthorized.": "غير مسموح بتنفيذ هذا الإجراء.",
+    "Not Found": "غير موجود",
+    "Reset Password Notification": "إعادة تعيين كلمة المرور",
+    "You are receiving this email because we received a password reset request for your account.": "وصلتك هذه الرسالة لأننا تلقينا طلبًا لإعادة تعيين كلمة مرور حسابك.",
+    "Reset Password": "إعادة تعيين كلمة المرور",
+    "This password reset link will expire in :count minutes.": "تنتهي صلاحية رابط إعادة التعيين خلال :count دقيقة.",
+    "If you did not request a password reset, no further action is required.": "إذا لم تطلب إعادة تعيين كلمة المرور، فلا حاجة لأي إجراء."
+}

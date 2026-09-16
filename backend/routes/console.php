@@ -1,0 +1,8 @@
+<?php
+
+use Illuminate\Support\Facades\Schedule;
+
+Schedule::command('masroof:verify-balances')->dailyAt('03:00')->withoutOverlapping()->onOneServer();
+Schedule::command('sanctum:prune-expired --hours=24')->daily();
+Schedule::command('auth:clear-resets')->everyFifteenMinutes();
+Schedule::command('queue:prune-failed --hours=168')->daily();
