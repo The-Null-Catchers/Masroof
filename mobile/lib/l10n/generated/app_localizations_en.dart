@@ -666,4 +666,273 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get categoryOtherIncome => 'Other';
+
+  @override
+  String get navPlan => 'Plan';
+
+  @override
+  String get navAnalytics => 'Analytics';
+
+  @override
+  String get navMore => 'More';
+
+  @override
+  String get offlineData => 'Showing saved data — connect to refresh';
+
+  @override
+  String get requiresConnection => 'This action needs an internet connection.';
+
+  @override
+  String get budgets => 'Budgets';
+
+  @override
+  String get addBudget => 'Create budget';
+
+  @override
+  String get editBudget => 'Edit budget';
+
+  @override
+  String get budgetName => 'Budget name';
+
+  @override
+  String get period => 'Period';
+
+  @override
+  String get periodMonthly => 'Monthly';
+
+  @override
+  String get periodWeekly => 'Weekly';
+
+  @override
+  String get periodCustom => 'Custom period';
+
+  @override
+  String get budgetAmount => 'Budget amount';
+
+  @override
+  String get startsOn => 'Starts on';
+
+  @override
+  String get endsOn => 'Ends on';
+
+  @override
+  String get allCategories => 'All expense categories';
+
+  @override
+  String get alertThresholds => 'Alert me at (%)';
+
+  @override
+  String get alertThresholdsHint => 'Percentages separated by commas, e.g. 50, 75, 90, 100';
+
+  @override
+  String get spent => 'Spent';
+
+  @override
+  String get remaining => 'Remaining';
+
+  @override
+  String get periodEnded => 'Period ended';
+
+  @override
+  String get statusOnTrack => 'On track';
+
+  @override
+  String get statusWarning => 'Watch it';
+
+  @override
+  String get statusExceeded => 'Over budget';
+
+  @override
+  String get safeToSpend => 'Safe to spend';
+
+  @override
+  String get emptyBudgetsTitle => 'No budgets yet';
+
+  @override
+  String get emptyBudgetsBody => 'Set a spending limit for the month, the week or a custom period.';
+
+  @override
+  String get goals => 'Savings goals';
+
+  @override
+  String get addGoal => 'New goal';
+
+  @override
+  String get editGoal => 'Edit goal';
+
+  @override
+  String get goalName => 'Goal name';
+
+  @override
+  String get goalKind => 'Type';
+
+  @override
+  String get goalKindEmergencyFund => 'Emergency fund';
+
+  @override
+  String get goalKindLaptop => 'Laptop';
+
+  @override
+  String get goalKindCar => 'Car';
+
+  @override
+  String get goalKindTravel => 'Travel';
+
+  @override
+  String get goalKindWedding => 'Wedding';
+
+  @override
+  String get goalKindHome => 'Home';
+
+  @override
+  String get goalKindCustom => 'Custom';
+
+  @override
+  String get targetAmount => 'Target amount';
+
+  @override
+  String get targetDate => 'Target date';
+
+  @override
+  String get linkedAccount => 'Linked account';
+
+  @override
+  String get noPace => 'Add contributions to see a projection';
+
+  @override
+  String get achieved => 'Achieved';
+
+  @override
+  String get addMoney => 'Add money';
+
+  @override
+  String get withdraw => 'Withdraw';
+
+  @override
+  String get contribution => 'Contribution';
+
+  @override
+  String get withdrawal => 'Withdrawal';
+
+  @override
+  String get history => 'History';
+
+  @override
+  String get noEntries => 'No contributions yet.';
+
+  @override
+  String get emptyGoalsTitle => 'No goals yet';
+
+  @override
+  String get emptyGoalsBody => 'Save for an emergency fund, a laptop or a trip.';
+
+  @override
+  String get analytics => 'Analytics';
+
+  @override
+  String get thisMonth2 => 'This month';
+
+  @override
+  String get previousMonth => 'Previous month';
+
+  @override
+  String get savings => 'Savings';
+
+  @override
+  String get savingsRate => 'Savings rate';
+
+  @override
+  String get avgDailySpending => 'Avg. daily spending';
+
+  @override
+  String get incomeVsExpenses => 'Income vs expenses';
+
+  @override
+  String get spendingTrend => 'Spending trend';
+
+  @override
+  String get balanceTrend => 'Balance trend';
+
+  @override
+  String get categoryComparison => 'Category comparison';
+
+  @override
+  String get fixedVsVariable => 'Fixed vs variable';
+
+  @override
+  String get fixed => 'Fixed';
+
+  @override
+  String get variable => 'Variable';
+
+  @override
+  String get largestExpenses => 'Largest expenses';
+
+  @override
+  String get topMerchants => 'Most frequent merchants';
+
+  @override
+  String get insights => 'Insights';
+
+  @override
+  String get noInsights => 'No insights yet — keep tracking and they will appear here.';
+
+  @override
+  String get noData => 'No data for this period.';
+
+  @override
+  String get remainingBudget => 'Remaining budget';
+
+  @override
+  String get seeAnalytics => 'See analytics';
+
+  @override
+  String overBy(String amount) {
+    return 'Over by $amount';
+  }
+
+  @override
+  String perDay(String amount) {
+    return '$amount / day';
+  }
+
+  @override
+  String daysLeft(int days) {
+    String _temp0 = intl.Intl.pluralLogic(days, locale: localeName, other: '$days days left', one: '1 day left');
+    return '$_temp0';
+  }
+
+  @override
+  String projectedAtPace(String amount) {
+    return 'Projected $amount at this pace';
+  }
+
+  @override
+  String goalOf(String amount) {
+    return 'of $amount';
+  }
+
+  @override
+  String monthlyNeeded(String amount) {
+    return '$amount / month needed';
+  }
+
+  @override
+  String expectedBy(String date) {
+    return 'Expected by $date';
+  }
+
+  @override
+  String monthsAgo(int count) {
+    return '$count months ago';
+  }
+
+  @override
+  String timesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count times', one: 'once');
+    return '$_temp0';
+  }
+
+  @override
+  String get navActivity => 'Activity';
 }

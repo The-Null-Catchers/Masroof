@@ -260,5 +260,151 @@
   "categoryInvestments": "Investments",
   "categoryGiftsIncome": "Gifts",
   "categoryRefunds": "Refunds",
-  "categoryOtherIncome": "Other"
+  "categoryOtherIncome": "Other",
+  "navPlan": "Plan",
+  "navAnalytics": "Analytics",
+  "navMore": "More",
+  "offlineData": "Showing saved data — connect to refresh",
+  "requiresConnection": "This action needs an internet connection.",
+  "budgets": "Budgets",
+  "addBudget": "Create budget",
+  "editBudget": "Edit budget",
+  "budgetName": "Budget name",
+  "period": "Period",
+  "periodMonthly": "Monthly",
+  "periodWeekly": "Weekly",
+  "periodCustom": "Custom period",
+  "budgetAmount": "Budget amount",
+  "startsOn": "Starts on",
+  "endsOn": "Ends on",
+  "allCategories": "All expense categories",
+  "alertThresholds": "Alert me at (%)",
+  "alertThresholdsHint": "Percentages separated by commas, e.g. 50, 75, 90, 100",
+  "spent": "Spent",
+  "remaining": "Remaining",
+  "periodEnded": "Period ended",
+  "statusOnTrack": "On track",
+  "statusWarning": "Watch it",
+  "statusExceeded": "Over budget",
+  "safeToSpend": "Safe to spend",
+  "emptyBudgetsTitle": "No budgets yet",
+  "emptyBudgetsBody": "Set a spending limit for the month, the week or a custom period.",
+  "goals": "Savings goals",
+  "addGoal": "New goal",
+  "editGoal": "Edit goal",
+  "goalName": "Goal name",
+  "goalKind": "Type",
+  "goalKindEmergencyFund": "Emergency fund",
+  "goalKindLaptop": "Laptop",
+  "goalKindCar": "Car",
+  "goalKindTravel": "Travel",
+  "goalKindWedding": "Wedding",
+  "goalKindHome": "Home",
+  "goalKindCustom": "Custom",
+  "targetAmount": "Target amount",
+  "targetDate": "Target date",
+  "linkedAccount": "Linked account",
+  "noPace": "Add contributions to see a projection",
+  "achieved": "Achieved",
+  "addMoney": "Add money",
+  "withdraw": "Withdraw",
+  "contribution": "Contribution",
+  "withdrawal": "Withdrawal",
+  "history": "History",
+  "noEntries": "No contributions yet.",
+  "emptyGoalsTitle": "No goals yet",
+  "emptyGoalsBody": "Save for an emergency fund, a laptop or a trip.",
+  "analytics": "Analytics",
+  "thisMonth2": "This month",
+  "previousMonth": "Previous month",
+  "savings": "Savings",
+  "savingsRate": "Savings rate",
+  "avgDailySpending": "Avg. daily spending",
+  "incomeVsExpenses": "Income vs expenses",
+  "spendingTrend": "Spending trend",
+  "balanceTrend": "Balance trend",
+  "categoryComparison": "Category comparison",
+  "fixedVsVariable": "Fixed vs variable",
+  "fixed": "Fixed",
+  "variable": "Variable",
+  "largestExpenses": "Largest expenses",
+  "topMerchants": "Most frequent merchants",
+  "insights": "Insights",
+  "noInsights": "No insights yet — keep tracking and they will appear here.",
+  "noData": "No data for this period.",
+  "remainingBudget": "Remaining budget",
+  "seeAnalytics": "See analytics",
+  "overBy": "Over by {amount}",
+  "@overBy": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "perDay": "{amount} / day",
+  "@perDay": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "daysLeft": "{days, plural, =1{1 day left} other{{days} days left}}",
+  "@daysLeft": {
+    "placeholders": {
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "projectedAtPace": "Projected {amount} at this pace",
+  "@projectedAtPace": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "goalOf": "of {amount}",
+  "@goalOf": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "monthlyNeeded": "{amount} / month needed",
+  "@monthlyNeeded": {
+    "placeholders": {
+      "amount": {
+        "type": "String"
+      }
+    }
+  },
+  "expectedBy": "Expected by {date}",
+  "@expectedBy": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "monthsAgo": "{count} months ago",
+  "@monthsAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timesCount": "{count, plural, =1{once} other{{count} times}}",
+  "@timesCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "navActivity": "Activity"
 }

@@ -126,7 +126,10 @@ class _AccountFormScreenState extends ConsumerState<AccountFormScreen> {
     if (confirmed != true) return;
     await ref.read(accountsRepositoryProvider).delete(widget.accountId!);
     unawaited(ref.read(syncEngineProvider).sync());
-    if (mounted) context.go('/accounts');
+    if (!mounted) return;
+    // Leave the deleted account's detail screen behind.
+    context.go('/settings');
+    unawaited(context.push('/accounts'));
   }
 
   @override

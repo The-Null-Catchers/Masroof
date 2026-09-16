@@ -10,6 +10,10 @@ import '../../../core/widgets/amount_text.dart';
 import '../../../core/widgets/category_avatar.dart';
 import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/icon_catalog.dart';
+import '../../../core/widgets/insight_tile.dart';
+import '../../../core/widgets/progress_bar.dart';
+import '../../goals/presentation/goal_card.dart';
+import '../../planning/application/planning_providers.dart';
 import '../../accounts/application/account_providers.dart';
 import '../../auth/application/auth_controller.dart';
 import '../../transactions/application/transaction_providers.dart';
@@ -135,6 +139,8 @@ class DashboardScreen extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
+                  const _PlanPreview(),
+                  const SizedBox(height: 16),
                   _TopSpending(period: month),
                   const SizedBox(height: 16),
                   const _RecentTransactions(),
@@ -156,6 +162,12 @@ class _BalanceCard extends ConsumerWidget {
     final l10n = context.l10n;
     final theme = Theme.of(context);
     final totals = ref.watch(netWorthProvider).value ?? const {};
+    final auth = ref.watch(authControllerProvider);
+    // The user's default currency leads; other currencies are listed smaller.
+    final primary = auth is Authenticated && totals.containsKey(auth.user.currency)
+        ? auth.user.currency
+        : (totals.keys.isEmpty ? 'ILS' : totals.keys.first);
+    final others = totals.entries.where((e) => e.key != primary).toList();
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -174,13 +186,28 @@ class _BalanceCard extends ConsumerWidget {
           const SizedBox(height: 8),
           if (totals.isEmpty)
             Text('—', style: theme.textTheme.headlineMedium?.copyWith(color: Colors.white))
-          else
-            for (final entry in totals.entries)
-              AmountText(
-                entry.value,
-                entry.key,
-                style: theme.textTheme.headlineMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w700),
+          else ...[
+            AmountText(
+              totals[primary] ?? 0,
+              primary,
+              style: theme.textTheme.headlineMedium?.copyWith(color: Colors.white, fontWeight: FontWeight.w700),
+            ),
+            if (others.isNotEmpty) ...[
+              const SizedBox(height: 8),
+              Wrap(
+                spacing: 16,
+                runSpacing: 4,
+                children: [
+                  for (final entry in others)
+                    AmountText(
+                      entry.value,
+                      entry.key,
+                      style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white70),
+                    ),
+                ],
               ),
+            ],
+          ],
         ],
       ),
     );
@@ -383,6 +410,90 @@ class _RecentTransactions extends ConsumerWidget {
           const SizedBox(height: 8),
         ],
       ),
+    );
+  }
+}
+
+/// Server-computed insights, budgets and goals (cached for offline use).
+class _PlanPreview extends ConsumerWidget {
+  const _PlanPreview();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = context.l10n;
+    final theme = Theme.of(context);
+    final insights = ref.watch(insightsProvider).value ?? const [];
+    final budgets = ref.watch(budgetsProvider).value?.budgets ?? const [];
+    final goals = ref.watch(goalsProvider).value?.goals.where((g) => !g.achieved).take(2).toList() ?? const [];
+
+    Widget header(String title, VoidCallback onTap) => Row(
+      children: [
+        Expanded(
+          child: Text(title, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+        ),
+        TextButton(onPressed: onTap, child: Text(l10n.seeAll)),
+      ],
+    );
+
+    return Column(
+      children: [
+        if (insights.isNotEmpty)
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 4, 16, 12),
+              child: Column(
+                children: [
+                  header(l10n.insights, () => context.go('/analytics')),
+                  for (final insight in insights.take(3)) InsightTile(insight: insight),
+                ],
+              ),
+            ),
+          ),
+        if (budgets.isNotEmpty) ...[
+          const SizedBox(height: 16),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  header(l10n.budgets, () => context.go('/plan')),
+                  for (final budget
+                      in (budgets.toList()..sort((a, b) => b.progress.percent.compareTo(a.progress.percent))).take(3))
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(child: Text(budget.name, overflow: TextOverflow.ellipsis)),
+                              Text('${budget.progress.percent.round()}%', style: theme.textTheme.bodySmall),
+                            ],
+                          ),
+                          const SizedBox(height: 6),
+                          MoneyProgressBar(
+                            percent: budget.progress.percent,
+                            tone: toneForStatus(budget.progress.status),
+                            label: budget.name,
+                          ),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ],
+        if (goals.isNotEmpty) ...[
+          const SizedBox(height: 16),
+          header(l10n.goals, () => context.go('/plan')),
+          for (final goal in goals)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: GoalCard(goal: goal, compact: true),
+            ),
+        ],
+      ],
     );
   }
 }

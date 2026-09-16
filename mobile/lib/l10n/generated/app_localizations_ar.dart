@@ -667,4 +667,288 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get categoryOtherIncome => 'أخرى';
+
+  @override
+  String get navPlan => 'التخطيط';
+
+  @override
+  String get navAnalytics => 'التحليلات';
+
+  @override
+  String get navMore => 'المزيد';
+
+  @override
+  String get offlineData => 'تُعرض بيانات محفوظة — اتصل بالإنترنت للتحديث';
+
+  @override
+  String get requiresConnection => 'يتطلب هذا الإجراء اتصالًا بالإنترنت.';
+
+  @override
+  String get budgets => 'الميزانيات';
+
+  @override
+  String get addBudget => 'إنشاء ميزانية';
+
+  @override
+  String get editBudget => 'تعديل الميزانية';
+
+  @override
+  String get budgetName => 'اسم الميزانية';
+
+  @override
+  String get period => 'الفترة';
+
+  @override
+  String get periodMonthly => 'شهرية';
+
+  @override
+  String get periodWeekly => 'أسبوعية';
+
+  @override
+  String get periodCustom => 'فترة مخصصة';
+
+  @override
+  String get budgetAmount => 'مبلغ الميزانية';
+
+  @override
+  String get startsOn => 'تبدأ في';
+
+  @override
+  String get endsOn => 'تنتهي في';
+
+  @override
+  String get allCategories => 'جميع فئات المصروفات';
+
+  @override
+  String get alertThresholds => 'نبّهني عند (%)';
+
+  @override
+  String get alertThresholdsHint => 'نسب مئوية مفصولة بفواصل، مثل 50، 75، 90، 100';
+
+  @override
+  String get spent => 'المُنفق';
+
+  @override
+  String get remaining => 'المتبقي';
+
+  @override
+  String get periodEnded => 'انتهت الفترة';
+
+  @override
+  String get statusOnTrack => 'ضمن الخطة';
+
+  @override
+  String get statusWarning => 'انتبه';
+
+  @override
+  String get statusExceeded => 'تجاوزت الميزانية';
+
+  @override
+  String get safeToSpend => 'آمن للإنفاق';
+
+  @override
+  String get emptyBudgetsTitle => 'لا توجد ميزانيات بعد';
+
+  @override
+  String get emptyBudgetsBody => 'حدّد سقفًا للإنفاق لهذا الشهر أو الأسبوع أو لفترة مخصصة.';
+
+  @override
+  String get goals => 'أهداف الادخار';
+
+  @override
+  String get addGoal => 'هدف جديد';
+
+  @override
+  String get editGoal => 'تعديل الهدف';
+
+  @override
+  String get goalName => 'اسم الهدف';
+
+  @override
+  String get goalKind => 'النوع';
+
+  @override
+  String get goalKindEmergencyFund => 'صندوق طوارئ';
+
+  @override
+  String get goalKindLaptop => 'حاسوب محمول';
+
+  @override
+  String get goalKindCar => 'سيارة';
+
+  @override
+  String get goalKindTravel => 'سفر';
+
+  @override
+  String get goalKindWedding => 'زفاف';
+
+  @override
+  String get goalKindHome => 'منزل';
+
+  @override
+  String get goalKindCustom => 'مخصص';
+
+  @override
+  String get targetAmount => 'المبلغ المستهدف';
+
+  @override
+  String get targetDate => 'التاريخ المستهدف';
+
+  @override
+  String get linkedAccount => 'الحساب المرتبط';
+
+  @override
+  String get noPace => 'أضف مساهمات لرؤية التوقع';
+
+  @override
+  String get achieved => 'تحقق';
+
+  @override
+  String get addMoney => 'إضافة مبلغ';
+
+  @override
+  String get withdraw => 'سحب';
+
+  @override
+  String get contribution => 'مساهمة';
+
+  @override
+  String get withdrawal => 'سحب';
+
+  @override
+  String get history => 'السجل';
+
+  @override
+  String get noEntries => 'لا توجد مساهمات بعد.';
+
+  @override
+  String get emptyGoalsTitle => 'لا توجد أهداف بعد';
+
+  @override
+  String get emptyGoalsBody => 'ادّخر لصندوق طوارئ أو حاسوب أو رحلة.';
+
+  @override
+  String get analytics => 'التحليلات';
+
+  @override
+  String get thisMonth2 => 'هذا الشهر';
+
+  @override
+  String get previousMonth => 'الشهر السابق';
+
+  @override
+  String get savings => 'الادخار';
+
+  @override
+  String get savingsRate => 'نسبة الادخار';
+
+  @override
+  String get avgDailySpending => 'متوسط الإنفاق اليومي';
+
+  @override
+  String get incomeVsExpenses => 'الدخل مقابل المصروفات';
+
+  @override
+  String get spendingTrend => 'اتجاه الإنفاق';
+
+  @override
+  String get balanceTrend => 'اتجاه الرصيد';
+
+  @override
+  String get categoryComparison => 'مقارنة الفئات';
+
+  @override
+  String get fixedVsVariable => 'الثابتة مقابل المتغيرة';
+
+  @override
+  String get fixed => 'ثابتة';
+
+  @override
+  String get variable => 'متغيرة';
+
+  @override
+  String get largestExpenses => 'أكبر المصروفات';
+
+  @override
+  String get topMerchants => 'الجهات الأكثر تكرارًا';
+
+  @override
+  String get insights => 'رؤى';
+
+  @override
+  String get noInsights => 'لا توجد رؤى بعد — استمر في التسجيل وستظهر هنا.';
+
+  @override
+  String get noData => 'لا توجد بيانات لهذه الفترة.';
+
+  @override
+  String get remainingBudget => 'الميزانية المتبقية';
+
+  @override
+  String get seeAnalytics => 'عرض التحليلات';
+
+  @override
+  String overBy(String amount) {
+    return 'تجاوز بمقدار $amount';
+  }
+
+  @override
+  String perDay(String amount) {
+    return '$amount / يوم';
+  }
+
+  @override
+  String daysLeft(int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days يومًا متبقيًا',
+      few: '$days أيام متبقية',
+      two: 'يومان متبقيان',
+      one: 'يوم واحد متبقٍ',
+      zero: 'لا أيام متبقية',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String projectedAtPace(String amount) {
+    return 'المتوقع $amount بهذا المعدل';
+  }
+
+  @override
+  String goalOf(String amount) {
+    return 'من $amount';
+  }
+
+  @override
+  String monthlyNeeded(String amount) {
+    return 'تحتاج $amount شهريًا';
+  }
+
+  @override
+  String expectedBy(String date) {
+    return 'متوقع بحلول $date';
+  }
+
+  @override
+  String monthsAgo(int count) {
+    return 'قبل $count أشهر';
+  }
+
+  @override
+  String timesCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count مرة',
+      few: '$count مرات',
+      two: 'مرتان',
+      one: 'مرة واحدة',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get navActivity => 'المعاملات';
 }

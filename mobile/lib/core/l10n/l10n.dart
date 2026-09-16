@@ -75,4 +75,26 @@ extension DomainLabels on AppLocalizations {
     'invest' => goalInvest,
     _ => goalOther,
   };
+
+  String goalKindLabel(String kind) => switch (kind) {
+    'emergency_fund' => goalKindEmergencyFund,
+    'laptop' => goalKindLaptop,
+    'car' => goalKindCar,
+    'travel' => goalKindTravel,
+    'wedding' => goalKindWedding,
+    'home' => goalKindHome,
+    _ => goalKindCustom,
+  };
+
+  String budgetPeriodLabel(String period) => switch (period) {
+    'weekly' => periodWeekly,
+    'custom' => periodCustom,
+    _ => periodMonthly,
+  };
+
+  String budgetStatusLabel(String status) => switch (status) {
+    'exceeded' => statusExceeded,
+    'warning' => statusWarning,
+    _ => statusOnTrack,
+  };
 }

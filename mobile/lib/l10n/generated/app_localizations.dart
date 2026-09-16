@@ -1363,6 +1363,504 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Other'**
   String get categoryOtherIncome;
+
+  /// No description provided for @navPlan.
+  ///
+  /// In en, this message translates to:
+  /// **'Plan'**
+  String get navPlan;
+
+  /// No description provided for @navAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics'**
+  String get navAnalytics;
+
+  /// No description provided for @navMore.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get navMore;
+
+  /// No description provided for @offlineData.
+  ///
+  /// In en, this message translates to:
+  /// **'Showing saved data — connect to refresh'**
+  String get offlineData;
+
+  /// No description provided for @requiresConnection.
+  ///
+  /// In en, this message translates to:
+  /// **'This action needs an internet connection.'**
+  String get requiresConnection;
+
+  /// No description provided for @budgets.
+  ///
+  /// In en, this message translates to:
+  /// **'Budgets'**
+  String get budgets;
+
+  /// No description provided for @addBudget.
+  ///
+  /// In en, this message translates to:
+  /// **'Create budget'**
+  String get addBudget;
+
+  /// No description provided for @editBudget.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit budget'**
+  String get editBudget;
+
+  /// No description provided for @budgetName.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget name'**
+  String get budgetName;
+
+  /// No description provided for @period.
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get period;
+
+  /// No description provided for @periodMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get periodMonthly;
+
+  /// No description provided for @periodWeekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get periodWeekly;
+
+  /// No description provided for @periodCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom period'**
+  String get periodCustom;
+
+  /// No description provided for @budgetAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget amount'**
+  String get budgetAmount;
+
+  /// No description provided for @startsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Starts on'**
+  String get startsOn;
+
+  /// No description provided for @endsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Ends on'**
+  String get endsOn;
+
+  /// No description provided for @allCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'All expense categories'**
+  String get allCategories;
+
+  /// No description provided for @alertThresholds.
+  ///
+  /// In en, this message translates to:
+  /// **'Alert me at (%)'**
+  String get alertThresholds;
+
+  /// No description provided for @alertThresholdsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Percentages separated by commas, e.g. 50, 75, 90, 100'**
+  String get alertThresholdsHint;
+
+  /// No description provided for @spent.
+  ///
+  /// In en, this message translates to:
+  /// **'Spent'**
+  String get spent;
+
+  /// No description provided for @remaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining'**
+  String get remaining;
+
+  /// No description provided for @periodEnded.
+  ///
+  /// In en, this message translates to:
+  /// **'Period ended'**
+  String get periodEnded;
+
+  /// No description provided for @statusOnTrack.
+  ///
+  /// In en, this message translates to:
+  /// **'On track'**
+  String get statusOnTrack;
+
+  /// No description provided for @statusWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'Watch it'**
+  String get statusWarning;
+
+  /// No description provided for @statusExceeded.
+  ///
+  /// In en, this message translates to:
+  /// **'Over budget'**
+  String get statusExceeded;
+
+  /// No description provided for @safeToSpend.
+  ///
+  /// In en, this message translates to:
+  /// **'Safe to spend'**
+  String get safeToSpend;
+
+  /// No description provided for @emptyBudgetsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No budgets yet'**
+  String get emptyBudgetsTitle;
+
+  /// No description provided for @emptyBudgetsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Set a spending limit for the month, the week or a custom period.'**
+  String get emptyBudgetsBody;
+
+  /// No description provided for @goals.
+  ///
+  /// In en, this message translates to:
+  /// **'Savings goals'**
+  String get goals;
+
+  /// No description provided for @addGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'New goal'**
+  String get addGoal;
+
+  /// No description provided for @editGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit goal'**
+  String get editGoal;
+
+  /// No description provided for @goalName.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal name'**
+  String get goalName;
+
+  /// No description provided for @goalKind.
+  ///
+  /// In en, this message translates to:
+  /// **'Type'**
+  String get goalKind;
+
+  /// No description provided for @goalKindEmergencyFund.
+  ///
+  /// In en, this message translates to:
+  /// **'Emergency fund'**
+  String get goalKindEmergencyFund;
+
+  /// No description provided for @goalKindLaptop.
+  ///
+  /// In en, this message translates to:
+  /// **'Laptop'**
+  String get goalKindLaptop;
+
+  /// No description provided for @goalKindCar.
+  ///
+  /// In en, this message translates to:
+  /// **'Car'**
+  String get goalKindCar;
+
+  /// No description provided for @goalKindTravel.
+  ///
+  /// In en, this message translates to:
+  /// **'Travel'**
+  String get goalKindTravel;
+
+  /// No description provided for @goalKindWedding.
+  ///
+  /// In en, this message translates to:
+  /// **'Wedding'**
+  String get goalKindWedding;
+
+  /// No description provided for @goalKindHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get goalKindHome;
+
+  /// No description provided for @goalKindCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get goalKindCustom;
+
+  /// No description provided for @targetAmount.
+  ///
+  /// In en, this message translates to:
+  /// **'Target amount'**
+  String get targetAmount;
+
+  /// No description provided for @targetDate.
+  ///
+  /// In en, this message translates to:
+  /// **'Target date'**
+  String get targetDate;
+
+  /// No description provided for @linkedAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Linked account'**
+  String get linkedAccount;
+
+  /// No description provided for @noPace.
+  ///
+  /// In en, this message translates to:
+  /// **'Add contributions to see a projection'**
+  String get noPace;
+
+  /// No description provided for @achieved.
+  ///
+  /// In en, this message translates to:
+  /// **'Achieved'**
+  String get achieved;
+
+  /// No description provided for @addMoney.
+  ///
+  /// In en, this message translates to:
+  /// **'Add money'**
+  String get addMoney;
+
+  /// No description provided for @withdraw.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdraw'**
+  String get withdraw;
+
+  /// No description provided for @contribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Contribution'**
+  String get contribution;
+
+  /// No description provided for @withdrawal.
+  ///
+  /// In en, this message translates to:
+  /// **'Withdrawal'**
+  String get withdrawal;
+
+  /// No description provided for @history.
+  ///
+  /// In en, this message translates to:
+  /// **'History'**
+  String get history;
+
+  /// No description provided for @noEntries.
+  ///
+  /// In en, this message translates to:
+  /// **'No contributions yet.'**
+  String get noEntries;
+
+  /// No description provided for @emptyGoalsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No goals yet'**
+  String get emptyGoalsTitle;
+
+  /// No description provided for @emptyGoalsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Save for an emergency fund, a laptop or a trip.'**
+  String get emptyGoalsBody;
+
+  /// No description provided for @analytics.
+  ///
+  /// In en, this message translates to:
+  /// **'Analytics'**
+  String get analytics;
+
+  /// No description provided for @thisMonth2.
+  ///
+  /// In en, this message translates to:
+  /// **'This month'**
+  String get thisMonth2;
+
+  /// No description provided for @previousMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous month'**
+  String get previousMonth;
+
+  /// No description provided for @savings.
+  ///
+  /// In en, this message translates to:
+  /// **'Savings'**
+  String get savings;
+
+  /// No description provided for @savingsRate.
+  ///
+  /// In en, this message translates to:
+  /// **'Savings rate'**
+  String get savingsRate;
+
+  /// No description provided for @avgDailySpending.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg. daily spending'**
+  String get avgDailySpending;
+
+  /// No description provided for @incomeVsExpenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Income vs expenses'**
+  String get incomeVsExpenses;
+
+  /// No description provided for @spendingTrend.
+  ///
+  /// In en, this message translates to:
+  /// **'Spending trend'**
+  String get spendingTrend;
+
+  /// No description provided for @balanceTrend.
+  ///
+  /// In en, this message translates to:
+  /// **'Balance trend'**
+  String get balanceTrend;
+
+  /// No description provided for @categoryComparison.
+  ///
+  /// In en, this message translates to:
+  /// **'Category comparison'**
+  String get categoryComparison;
+
+  /// No description provided for @fixedVsVariable.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed vs variable'**
+  String get fixedVsVariable;
+
+  /// No description provided for @fixed.
+  ///
+  /// In en, this message translates to:
+  /// **'Fixed'**
+  String get fixed;
+
+  /// No description provided for @variable.
+  ///
+  /// In en, this message translates to:
+  /// **'Variable'**
+  String get variable;
+
+  /// No description provided for @largestExpenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Largest expenses'**
+  String get largestExpenses;
+
+  /// No description provided for @topMerchants.
+  ///
+  /// In en, this message translates to:
+  /// **'Most frequent merchants'**
+  String get topMerchants;
+
+  /// No description provided for @insights.
+  ///
+  /// In en, this message translates to:
+  /// **'Insights'**
+  String get insights;
+
+  /// No description provided for @noInsights.
+  ///
+  /// In en, this message translates to:
+  /// **'No insights yet — keep tracking and they will appear here.'**
+  String get noInsights;
+
+  /// No description provided for @noData.
+  ///
+  /// In en, this message translates to:
+  /// **'No data for this period.'**
+  String get noData;
+
+  /// No description provided for @remainingBudget.
+  ///
+  /// In en, this message translates to:
+  /// **'Remaining budget'**
+  String get remainingBudget;
+
+  /// No description provided for @seeAnalytics.
+  ///
+  /// In en, this message translates to:
+  /// **'See analytics'**
+  String get seeAnalytics;
+
+  /// No description provided for @overBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Over by {amount}'**
+  String overBy(String amount);
+
+  /// No description provided for @perDay.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} / day'**
+  String perDay(String amount);
+
+  /// No description provided for @daysLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =1{1 day left} other{{days} days left}}'**
+  String daysLeft(int days);
+
+  /// No description provided for @projectedAtPace.
+  ///
+  /// In en, this message translates to:
+  /// **'Projected {amount} at this pace'**
+  String projectedAtPace(String amount);
+
+  /// No description provided for @goalOf.
+  ///
+  /// In en, this message translates to:
+  /// **'of {amount}'**
+  String goalOf(String amount);
+
+  /// No description provided for @monthlyNeeded.
+  ///
+  /// In en, this message translates to:
+  /// **'{amount} / month needed'**
+  String monthlyNeeded(String amount);
+
+  /// No description provided for @expectedBy.
+  ///
+  /// In en, this message translates to:
+  /// **'Expected by {date}'**
+  String expectedBy(String date);
+
+  /// No description provided for @monthsAgo.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} months ago'**
+  String monthsAgo(int count);
+
+  /// No description provided for @timesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{once} other{{count} times}}'**
+  String timesCount(int count);
+
+  /// No description provided for @navActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get navActivity;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

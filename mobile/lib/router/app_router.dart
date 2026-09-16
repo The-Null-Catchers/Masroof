@@ -6,6 +6,12 @@ import '../core/widgets/masroof_logo.dart';
 import '../features/accounts/presentation/account_detail_screen.dart';
 import '../features/accounts/presentation/account_form_screen.dart';
 import '../features/accounts/presentation/accounts_screen.dart';
+import '../features/analytics/presentation/analytics_screen.dart';
+import '../features/budgets/data/budget.dart';
+import '../features/budgets/presentation/budget_form_screen.dart';
+import '../features/goals/data/goal.dart';
+import '../features/goals/presentation/goal_form_screen.dart';
+import '../features/planning/presentation/planning_screen.dart';
 import '../features/auth/application/auth_controller.dart';
 import '../features/auth/presentation/forgot_password_screen.dart';
 import '../features/auth/presentation/login_screen.dart';
@@ -57,6 +63,17 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/transactions/:id/edit',
         builder: (_, state) => TransactionFormScreen(transactionId: state.pathParameters['id']),
       ),
+      GoRoute(path: '/accounts', builder: (_, _) => const AccountsScreen()),
+      GoRoute(path: '/budgets/new', builder: (_, _) => const BudgetFormScreen()),
+      GoRoute(
+        path: '/budgets/:id/edit',
+        builder: (_, state) => BudgetFormScreen(budget: state.extra as Budget?),
+      ),
+      GoRoute(path: '/goals/new', builder: (_, _) => const GoalFormScreen()),
+      GoRoute(
+        path: '/goals/:id/edit',
+        builder: (_, state) => GoalFormScreen(goal: state.extra as Goal?),
+      ),
       GoRoute(path: '/accounts/new', builder: (_, _) => const AccountFormScreen()),
       GoRoute(
         path: '/accounts/:id',
@@ -85,7 +102,10 @@ final routerProvider = Provider<GoRouter>((ref) {
             routes: [GoRoute(path: '/transactions', builder: (_, _) => const TransactionsScreen())],
           ),
           StatefulShellBranch(
-            routes: [GoRoute(path: '/accounts', builder: (_, _) => const AccountsScreen())],
+            routes: [GoRoute(path: '/plan', builder: (_, _) => const PlanningScreen())],
+          ),
+          StatefulShellBranch(
+            routes: [GoRoute(path: '/analytics', builder: (_, _) => const AnalyticsScreen())],
           ),
           StatefulShellBranch(
             routes: [GoRoute(path: '/settings', builder: (_, _) => const SettingsScreen())],

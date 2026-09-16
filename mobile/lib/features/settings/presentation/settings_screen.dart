@@ -38,7 +38,7 @@ class SettingsScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.settings)),
+      appBar: AppBar(title: Text(l10n.navMore)),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 4, 16, 32),
         children: [
@@ -147,6 +147,12 @@ class SettingsScreen extends ConsumerWidget {
           ],
           _Section(
             children: [
+              ListTile(
+                leading: const Icon(Icons.account_balance_wallet_outlined),
+                title: Text(l10n.accounts),
+                trailing: const Icon(Icons.chevron_right_rounded),
+                onTap: () => context.push('/accounts'),
+              ),
               ListTile(
                 leading: const Icon(Icons.category_outlined),
                 title: Text(l10n.categories),
