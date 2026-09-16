@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Run a command inside the official Node image with web/ mounted.
+# Usage: scripts/node npm install | scripts/node npm run build
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+RUNTIME="$(command -v docker || command -v podman)"
+TTY_FLAGS=()
+[ -t 0 ] && TTY_FLAGS=(-t)
+exec "$RUNTIME" run --rm -i "${TTY_FLAGS[@]}" --network=host \
+  -e NEXT_TELEMETRY_DISABLED=1 \
+  -v "$ROOT/web":/app:Z -v "${NPM_CACHE_DIR:-$HOME/.cache/masroof-npm}":/root/.npm:Z -w /app \
+  docker.io/library/node:22-alpine "$@"
