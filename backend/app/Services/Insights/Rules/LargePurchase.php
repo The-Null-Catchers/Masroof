@@ -41,7 +41,7 @@ class LargePurchase implements InsightRule
             ->map(fn ($tx) => new Insight(
                 key: 'large_purchase',
                 severity: 'info',
-                params: ['amount' => Money::toDecimal($tx->amount, $tx->currency).' '.$tx->currency, 'merchant' => $tx->merchant ?? '—'],
+                params: ['amount' => Money::display($tx->amount, $tx->currency), 'merchant' => $tx->merchant ?? '—'],
                 data: ['transaction_id' => $tx->id, 'median' => $median],
                 priority: 55,
             ))

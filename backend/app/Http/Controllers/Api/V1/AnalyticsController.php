@@ -29,11 +29,16 @@ class AnalyticsController extends Controller
         ]);
         $user = $request->user();
 
-        $period = isset($data['from'])
-            ? Period::dates($user, $data['from'], $data['to'])
-            : Period::financialMonth($user, null, (int) ($data['offset'] ?? 0));
+        if (isset($data['from'])) {
+            $period = Period::dates($user, $data['from'], $data['to']);
+            $previous = $period->previous();
+        } else {
+            $offset = (int) ($data['offset'] ?? 0);
+            $period = Period::financialMonth($user, null, $offset);
+            $previous = Period::financialMonth($user, null, $offset - 1);
+        }
 
-        return response()->json(['data' => $this->analytics->summary($user, $data['currency'] ?? $user->currency, $period)]);
+        return response()->json(['data' => $this->analytics->summary($user, $data['currency'] ?? $user->currency, $period, $previous)]);
     }
 
     public function trends(Request $request): JsonResponse

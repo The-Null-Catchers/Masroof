@@ -1,46 +1,50 @@
 "use client";
 
-import { Plus, TrendingDown, TrendingUp, Scale } from "lucide-react";
+import { PiggyBank, Plus, Scale, TrendingDown, TrendingUp } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
-import { Bar, BarChart, CartesianGrid, Cell, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { useState, type ReactNode } from "react";
 
+import { CategoryDonut } from "@/components/charts/category-donut";
+import { IncomeExpenseChart, SpendingTrendChart } from "@/components/charts/trend-charts";
 import { EmptyState } from "@/components/common/empty-state";
+import { InsightList } from "@/components/common/insight-list";
+import { ProgressBar } from "@/components/common/progress-bar";
+import { GoalCard } from "@/components/goals/goal-card";
 import { Amount } from "@/components/money/amount";
 import { TransactionDialog } from "@/components/transactions/transaction-dialog";
 import { TransactionRow } from "@/components/transactions/transaction-row";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAccounts, useMe, useNetWorth, useReport, useTransactions } from "@/hooks/use-finance";
-import { periodRange, type PeriodKey } from "@/lib/dates";
+import { useAccounts, useDashboard, useMe } from "@/hooks/use-finance";
+import { formatDate } from "@/lib/dates";
 import { useI18n } from "@/lib/i18n/provider";
-import { exponentOf, formatMoney } from "@/lib/money";
 import type { Transaction } from "@/lib/types";
 
-export function DashboardView() {
-  const { t, format, locale, categoryLabel, dir } = useI18n();
-  const [period, setPeriod] = useState<PeriodKey>("month");
-  const [dialog, setDialog] = useState<{ open: boolean; tx?: Transaction | null }>({ open: false });
-  const range = periodRange(period);
+function SectionCard({ title, href, children, className }: { title: string; href?: string; children: ReactNode; className?: string }) {
+  const { t } = useI18n();
+  return (
+    <Card className={className}>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <CardTitle>{title}</CardTitle>
+        {href && (
+          <Button variant="link" asChild className="h-auto p-0">
+            <Link href={href}>{t.common.seeAll}</Link>
+          </Button>
+        )}
+      </CardHeader>
+      <CardContent>{children}</CardContent>
+    </Card>
+  );
+}
 
+export function DashboardView() {
+  const { t, format, locale } = useI18n();
   const { data: me } = useMe();
   const accounts = useAccounts();
-  const netWorth = useNetWorth();
-  const report = useReport(range.from, range.to);
-  const recent = useTransactions({ per_page: 6 });
-
-  const currency = me?.currency ?? netWorth.data?.[0]?.currency ?? "SAR";
-  const totals = report.data?.totals.find((row) => row.currency === currency) ?? report.data?.totals[0];
-  const reportCurrency = totals?.currency ?? currency;
-  const scale = 10 ** exponentOf(reportCurrency);
-
-  const series = (report.data?.series ?? [])
-    .filter((row) => row.currency === reportCurrency)
-    .map((row) => ({ period: row.period, income: row.income_minor / scale, expense: row.expense_minor / scale }));
-  const spending = (report.data?.by_category ?? []).filter((row) => row.type === "expense" && row.currency === reportCurrency);
-  const spendTotal = spending.reduce((sum, row) => sum + row.total_minor, 0);
+  const dashboard = useDashboard();
+  const [dialog, setDialog] = useState<{ open: boolean; tx?: Transaction | null }>({ open: false });
+  const d = dashboard.data;
 
   if (accounts.data && accounts.data.length === 0) {
     return (
@@ -62,189 +66,179 @@ export function DashboardView() {
     );
   }
 
+  const currency = d?.currency ?? me?.currency ?? "ILS";
+  const primaryNetWorth = d?.net_worth.find((row) => row.currency === currency);
+  const otherNetWorth = d?.net_worth.filter((row) => row.currency !== currency) ?? [];
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">{format(t.dashboard.greeting, { name: me?.name.split(" ")[0] ?? "" })}</h1>
-          <p className="text-sm text-muted-foreground">{t.app.tagline}</p>
+          <p className="text-sm text-muted-foreground">
+            {d
+              ? `${formatDate(d.period.start, locale, { day: "numeric", month: "long" })} – ${formatDate(d.period.end, locale, { day: "numeric", month: "long" })}`
+              : t.app.tagline}
+          </p>
         </div>
-        <div className="flex items-center gap-2">
-          <Select value={period} onValueChange={(v) => setPeriod(v as PeriodKey)}>
-            <SelectTrigger className="w-40" aria-label="Period">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {(Object.keys(t.dashboard.period) as PeriodKey[]).map((key) => (
-                <SelectItem key={key} value={key}>
-                  {t.dashboard.period[key]}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Button onClick={() => setDialog({ open: true, tx: null })}>
-            <Plus />
-            {t.transactions.add}
-          </Button>
+        <Button onClick={() => setDialog({ open: true, tx: null })}>
+          <Plus />
+          {t.transactions.add}
+        </Button>
+      </div>
+
+      {/* Hero: balance + month at a glance */}
+      <div className="grid gap-4 lg:grid-cols-3">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-brand to-brand-deep p-6 text-white shadow-sm lg:col-span-1">
+          <div aria-hidden className="absolute -end-10 -top-10 size-40 rounded-full bg-brand-mint/20 blur-2xl" />
+          <p className="text-sm text-white/75">{t.dashboard.netWorth}</p>
+          {!d ? (
+            <Skeleton className="mt-3 h-10 w-48 bg-white/20" />
+          ) : (
+            <>
+              <Amount
+                minor={primaryNetWorth?.total_minor ?? 0}
+                currency={currency}
+                className="mt-2 block text-3xl font-bold tracking-tight"
+              />
+              {otherNetWorth.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-white/80">
+                  {otherNetWorth.map((row) => (
+                    <Amount key={row.currency} minor={row.total_minor} currency={row.currency} />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+          {d?.budget && (
+            <div className="mt-6 space-y-2">
+              <div className="flex justify-between text-xs text-white/75">
+                <span>{t.dashboard.remainingBudget}</span>
+                <Amount minor={d.budget.remaining_minor} currency={currency} className="font-semibold text-white" />
+              </div>
+              <div className="h-1.5 overflow-hidden rounded-full bg-white/20">
+                <div
+                  className="h-full rounded-full bg-brand-mint"
+                  style={{ width: `${Math.min(100, (d.budget.spent_minor / d.budget.amount_minor) * 100)}%` }}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 lg:col-span-2">
+          {[
+            { label: t.dashboard.income, icon: TrendingUp, minor: d?.month.income_minor, tone: "income" as const },
+            { label: t.dashboard.expenses, icon: TrendingDown, minor: d?.month.expense_minor, tone: "expense" as const },
+            {
+              label: t.dashboard.savings,
+              icon: PiggyBank,
+              minor: d?.month.savings_minor,
+              tone: "auto" as const,
+              extra: d?.month.savings_rate,
+            },
+            { label: t.dashboard.remainingBudget, icon: Scale, minor: d?.budget?.remaining_minor, tone: "auto" as const },
+          ].map(({ label, icon: Icon, minor, tone, extra }) => (
+            <Card key={label} className="gap-2 p-5">
+              <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
+                <Icon className="size-4" />
+                {label}
+              </p>
+              {!d ? (
+                <Skeleton className="h-7 w-28" />
+              ) : minor === undefined ? (
+                <span className="text-sm text-muted-foreground">{t.dashboard.noBudget}</span>
+              ) : (
+                <div className="flex flex-wrap items-baseline gap-2">
+                  <Amount minor={minor} currency={currency} tone={tone} className="text-xl font-bold" />
+                  {extra !== undefined && extra !== null && (
+                    <span className="tabular text-xs text-muted-foreground">{Math.round(extra)}%</span>
+                  )}
+                </div>
+              )}
+            </Card>
+          ))}
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <div className="rounded-xl bg-gradient-to-br from-brand to-brand-deep p-5 text-white shadow-sm">
-          <p className="text-sm text-white/75">{t.dashboard.netWorth}</p>
-          {netWorth.isLoading ? (
-            <Skeleton className="mt-3 h-8 w-40 bg-white/20" />
+      {d && d.insights.length > 0 && (
+        <SectionCard title={t.dashboard.insightsTitle} href="/analytics">
+          <InsightList insights={d.insights} empty="" />
+        </SectionCard>
+      )}
+
+      <div className="grid gap-4 lg:grid-cols-5">
+        <SectionCard title={t.analytics.incomeVsExpense} className="lg:col-span-3">
+          <div className="h-64">
+            {d ? <IncomeExpenseChart months={d.monthly_trend} currency={currency} /> : <Skeleton className="h-full" />}
+          </div>
+        </SectionCard>
+        <SectionCard title={t.dashboard.spendingByCategory} className="lg:col-span-2" href="/analytics">
+          {!d ? (
+            <Skeleton className="h-48" />
+          ) : d.spending_by_category.length ? (
+            <CategoryDonut rows={d.spending_by_category} currency={currency} />
           ) : (
-            netWorth.data?.map((row) => (
-              <Amount key={row.currency} minor={row.total_minor} currency={row.currency} className="mt-2 block text-2xl font-bold" />
-            ))
+            <p className="py-10 text-center text-sm text-muted-foreground">{t.dashboard.noActivity}</p>
           )}
-        </div>
-        <StatCard label={t.dashboard.income} icon={TrendingUp} loading={report.isLoading}>
-          {totals && <Amount minor={totals.income_minor} currency={reportCurrency} tone="income" className="text-xl font-bold" />}
-        </StatCard>
-        <StatCard label={t.dashboard.expenses} icon={TrendingDown} loading={report.isLoading}>
-          {totals && <Amount minor={totals.expense_minor} currency={reportCurrency} tone="expense" className="text-xl font-bold" />}
-        </StatCard>
-        <StatCard label={t.dashboard.net} icon={Scale} loading={report.isLoading}>
-          {totals && <Amount minor={totals.net_minor} currency={reportCurrency} tone="auto" signed className="text-xl font-bold" />}
-        </StatCard>
+        </SectionCard>
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-2">
+        <SectionCard title={t.dashboard.budgetsOverview} href="/budgets">
+          {!d ? (
+            <Skeleton className="h-40" />
+          ) : d.budgets.length ? (
+            <ul className="space-y-4">
+              {d.budgets.map((b) => (
+                <li key={b.id} className="space-y-1.5">
+                  <div className="flex items-center justify-between gap-2 text-sm">
+                    <span className="truncate font-medium">{b.name}</span>
+                    <span className="tabular text-xs text-muted-foreground">{Math.round(b.percent)}%</span>
+                  </div>
+                  <ProgressBar value={b.percent} tone={b.status} label={b.name} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm text-muted-foreground">{t.budgets.emptyBody}</p>
+          )}
+        </SectionCard>
+        <SectionCard title={t.analytics.spendingTrend}>
+          <div className="h-56">
+            {d ? <SpendingTrendChart months={d.monthly_trend} currency={currency} /> : <Skeleton className="h-full" />}
+          </div>
+        </SectionCard>
       </div>
 
       <div className="grid gap-4 lg:grid-cols-5">
-        <Card className="lg:col-span-3">
-          <CardHeader>
-            <CardTitle>{t.dashboard.cashflow}</CardTitle>
-          </CardHeader>
-          <CardContent className="h-72">
-            {report.isLoading ? (
-              <Skeleton className="h-full w-full" />
-            ) : series.length === 0 ? (
-              <p className="grid h-full place-items-center text-sm text-muted-foreground">{t.dashboard.noActivity}</p>
-            ) : (
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={dir === "rtl" ? [...series].reverse() : series} margin={{ top: 4, right: 4, left: 4, bottom: 0 }}>
-                  <CartesianGrid vertical={false} strokeDasharray="3 3" stroke="var(--border)" />
-                  <XAxis
-                    dataKey="period"
-                    tickLine={false}
-                    axisLine={false}
-                    fontSize={11}
-                    tickFormatter={(v: string) => v.slice(report.data?.interval === "month" ? 2 : 5)}
-                  />
-                  <YAxis orientation={dir === "rtl" ? "right" : "left"} tickLine={false} axisLine={false} fontSize={11} width={56} />
-                  <Tooltip
-                    cursor={{ fill: "var(--muted)" }}
-                    contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 12 }}
-                    formatter={(value, name) => [
-                      formatMoney(Math.round(Number(value ?? 0) * scale), reportCurrency, locale),
-                      name === "income" ? t.dashboard.income : t.dashboard.expenses,
-                    ]}
-                  />
-                  <Bar dataKey="income" fill="var(--income)" radius={[4, 4, 0, 0]} maxBarSize={28} />
-                  <Bar dataKey="expense" fill="var(--expense)" radius={[4, 4, 0, 0]} maxBarSize={28} />
-                </BarChart>
-              </ResponsiveContainer>
-            )}
-          </CardContent>
-        </Card>
-
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle>{t.dashboard.spendingByCategory}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {report.isLoading ? (
-              <Skeleton className="h-60 w-full" />
-            ) : spending.length === 0 ? (
-              <p className="py-16 text-center text-sm text-muted-foreground">{t.dashboard.noActivity}</p>
-            ) : (
-              <div className="space-y-4">
-                <div className="h-40">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={spending}
-                        dataKey="total_minor"
-                        nameKey="name"
-                        innerRadius={48}
-                        outerRadius={72}
-                        paddingAngle={2}
-                        strokeWidth={0}
-                      >
-                        {spending.map((row, index) => (
-                          <Cell key={row.category_id ?? index} fill={row.color ?? `var(--chart-${(index % 5) + 1})`} />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
-                </div>
-                <ul className="space-y-2">
-                  {spending.slice(0, 5).map((row, index) => (
-                    <li key={row.category_id ?? index} className="flex items-center gap-2 text-sm">
-                      <span
-                        className="size-2.5 shrink-0 rounded-full"
-                        style={{ background: row.color ?? `var(--chart-${(index % 5) + 1})` }}
-                      />
-                      <span className="min-w-0 flex-1 truncate">{categoryLabel(row)}</span>
-                      <span className="tabular text-xs text-muted-foreground">
-                        {spendTotal ? Math.round((row.total_minor / spendTotal) * 100) : 0}%
-                      </span>
-                      <Amount minor={row.total_minor} currency={row.currency} className="font-medium" />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <CardTitle>{t.dashboard.recent}</CardTitle>
-          <Button variant="link" asChild className="h-auto p-0">
-            <Link href="/transactions">{t.common.seeAll}</Link>
-          </Button>
-        </CardHeader>
-        <CardContent className="px-3">
-          {recent.isLoading ? (
-            <div className="space-y-2 px-3">
-              {Array.from({ length: 4 }, (_, i) => (
-                <Skeleton key={i} className="h-12 w-full" />
+        <SectionCard title={t.dashboard.goalsProgress} href="/goals" className="lg:col-span-2">
+          {!d ? (
+            <Skeleton className="h-40" />
+          ) : d.goals.length ? (
+            <div className="space-y-3">
+              {d.goals.map((goal) => (
+                <GoalCard key={goal.id} goal={goal} compact />
               ))}
             </div>
-          ) : recent.data?.data.length ? (
-            recent.data.data.map((tx) => <TransactionRow key={tx.id} tx={tx} onClick={() => setDialog({ open: true, tx })} />)
           ) : (
-            <p className="px-3 py-6 text-center text-sm text-muted-foreground">{t.transactions.emptyBody}</p>
+            <p className="text-sm text-muted-foreground">{t.goals.emptyBody}</p>
           )}
-        </CardContent>
-      </Card>
+        </SectionCard>
+        <SectionCard title={t.dashboard.recent} href="/transactions" className="lg:col-span-3">
+          <div className="-mx-3">
+            {!d ? (
+              <Skeleton className="mx-3 h-60" />
+            ) : d.recent_transactions.length ? (
+              d.recent_transactions.map((tx) => <TransactionRow key={tx.id} tx={tx} onClick={() => setDialog({ open: true, tx })} />)
+            ) : (
+              <p className="px-3 py-6 text-center text-sm text-muted-foreground">{t.transactions.emptyBody}</p>
+            )}
+          </div>
+        </SectionCard>
+      </div>
 
-      <TransactionDialog open={dialog.open} transaction={dialog.tx} onOpenChange={(open) => setDialog((d) => ({ ...d, open }))} />
+      <TransactionDialog open={dialog.open} transaction={dialog.tx} onOpenChange={(open) => setDialog((s) => ({ ...s, open }))} />
     </div>
-  );
-}
-
-function StatCard({
-  label,
-  icon: Icon,
-  loading,
-  children,
-}: {
-  label: string;
-  icon: typeof Plus;
-  loading: boolean;
-  children: React.ReactNode;
-}) {
-  return (
-    <Card className="gap-2 p-5">
-      <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
-        <Icon className="size-4" />
-        {label}
-      </p>
-      {loading ? <Skeleton className="h-7 w-32" /> : (children ?? <span className="text-xl text-muted-foreground">—</span>)}
-    </Card>
   );
 }

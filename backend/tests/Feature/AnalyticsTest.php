@@ -86,6 +86,20 @@ class AnalyticsTest extends TestCase
         $this->assertSame(['merchant' => 'Zaytouna', 'count' => 2, 'total' => 590_00], $data['top_merchants'][0]);
     }
 
+    public function test_month_comparison_uses_the_previous_financial_month(): void
+    {
+        // Income on the 1st of each month must be compared month to month.
+        $this->tx('income', $this->salary, 10_000_00, '2026-08-01 08:00');
+        $this->tx('income', $this->salary, 9_000_00, '2026-09-01 08:00');
+        $this->tx('income', $this->salary, 8_000_00, '2026-07-01 08:00');
+
+        $this->getJson('/api/v1/analytics/summary')->assertJsonPath('data.previous.income', 10_000_00)->assertJsonPath('data.changes.income', -10);
+        $this->getJson('/api/v1/analytics/summary?offset=-1')
+            ->assertJsonPath('data.period', ['start' => '2026-08-01', 'end' => '2026-08-31'])
+            ->assertJsonPath('data.previous_period', ['start' => '2026-07-01', 'end' => '2026-07-31'])
+            ->assertJsonPath('data.changes.income', 25);
+    }
+
     public function test_trends_include_closing_balances(): void
     {
         $this->seedTwoMonths();

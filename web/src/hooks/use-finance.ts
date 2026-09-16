@@ -5,14 +5,21 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tansta
 import { api } from "@/lib/api/client";
 import type {
   Account,
+  AnalyticsSummary,
+  Budget,
   Category,
   CategoryType,
+  Dashboard,
+  Goal,
+  GoalEntry,
+  Insight,
   NetWorthRow,
   Paginated,
   ReportSummary,
   SessionToken,
   Tag,
   Transaction,
+  TrendMonth,
   User,
   UserSettings,
 } from "@/lib/types";
@@ -94,6 +101,10 @@ function useInvalidateFinance() {
       client.invalidateQueries({ queryKey: ["accounts"] }),
       client.invalidateQueries({ queryKey: ["transactions"] }),
       client.invalidateQueries({ queryKey: ["reports"] }),
+      client.invalidateQueries({ queryKey: ["dashboard"] }),
+      client.invalidateQueries({ queryKey: ["budgets"] }),
+      client.invalidateQueries({ queryKey: ["analytics"] }),
+      client.invalidateQueries({ queryKey: ["insights"] }),
     ]);
 }
 
@@ -208,4 +219,129 @@ export function useDuplicateTransaction() {
     mutationFn: (id: string) => api<{ data: Transaction }>(`/transactions/${id}/duplicate`, { method: "POST", body: {} }),
     onSuccess: invalidate,
   });
+}
+
+// ---------------------------------------------------------------------------
+// Phase 2: dashboard, budgets, goals, analytics
+
+export function useDashboard() {
+  return useQuery({ queryKey: ["dashboard"], queryFn: () => api<{ data: Dashboard }>("/dashboard").then((r) => r.data) });
+}
+
+export function useBudgets() {
+  return useQuery({ queryKey: ["budgets"], queryFn: () => api<{ data: Budget[] }>("/budgets").then((r) => r.data) });
+}
+
+export type BudgetPayload = {
+  name: string;
+  period: string;
+  currency: string;
+  amount: string;
+  starts_on?: string | null;
+  ends_on?: string | null;
+  alert_thresholds: number[];
+  category_ids: string[];
+};
+
+export function useSaveBudget() {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, payload }: { id?: string; payload: BudgetPayload }) =>
+      id
+        ? api<{ data: Budget }>(`/budgets/${id}`, { method: "PATCH", body: payload })
+        : api<{ data: Budget }>("/budgets", { method: "POST", body: payload }),
+    onSuccess: () =>
+      Promise.all([client.invalidateQueries({ queryKey: ["budgets"] }), client.invalidateQueries({ queryKey: ["dashboard"] })]),
+  });
+}
+
+export function useDeleteBudget() {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => api<void>(`/budgets/${id}`, { method: "DELETE" }),
+    onSuccess: () =>
+      Promise.all([client.invalidateQueries({ queryKey: ["budgets"] }), client.invalidateQueries({ queryKey: ["dashboard"] })]),
+  });
+}
+
+export function useGoals() {
+  return useQuery({ queryKey: ["goals"], queryFn: () => api<{ data: Goal[] }>("/goals").then((r) => r.data) });
+}
+
+export function useGoalEntries(goalId: string | null) {
+  return useQuery({
+    queryKey: ["goals", goalId, "entries"],
+    enabled: !!goalId,
+    queryFn: () => api<{ data: GoalEntry[] }>(`/goals/${goalId}/entries`).then((r) => r.data),
+  });
+}
+
+export type GoalPayload = {
+  name: string;
+  kind: string;
+  currency?: string;
+  target_amount: string;
+  target_date: string | null;
+  account_id: string | null;
+  color: string | null;
+  notes: string | null;
+};
+
+function useInvalidateGoals() {
+  const client = useQueryClient();
+  return () => Promise.all([client.invalidateQueries({ queryKey: ["goals"] }), client.invalidateQueries({ queryKey: ["dashboard"] })]);
+}
+
+export function useSaveGoal() {
+  const invalidate = useInvalidateGoals();
+  return useMutation({
+    mutationFn: ({ id, payload }: { id?: string; payload: GoalPayload }) =>
+      id
+        ? api<{ data: Goal }>(`/goals/${id}`, { method: "PATCH", body: payload })
+        : api<{ data: Goal }>("/goals", { method: "POST", body: payload }),
+    onSuccess: invalidate,
+  });
+}
+
+export function useDeleteGoal() {
+  const invalidate = useInvalidateGoals();
+  return useMutation({ mutationFn: (id: string) => api<void>(`/goals/${id}`, { method: "DELETE" }), onSuccess: invalidate });
+}
+
+export function useAddGoalEntry() {
+  const invalidate = useInvalidateGoals();
+  return useMutation({
+    mutationFn: ({ goalId, ...body }: { goalId: string; type: string; amount: string; note?: string | null }) =>
+      api<{ data: GoalEntry; goal: Goal }>(`/goals/${goalId}/entries`, { method: "POST", body }),
+    onSuccess: invalidate,
+  });
+}
+
+export function useDeleteGoalEntry() {
+  const invalidate = useInvalidateGoals();
+  return useMutation({
+    mutationFn: ({ goalId, entryId }: { goalId: string; entryId: string }) =>
+      api<{ goal: Goal }>(`/goals/${goalId}/entries/${entryId}`, { method: "DELETE" }),
+    onSuccess: invalidate,
+  });
+}
+
+export function useAnalytics(offset: number) {
+  return useQuery({
+    queryKey: ["analytics", "summary", offset],
+    queryFn: () => api<{ data: AnalyticsSummary }>("/analytics/summary", { query: { offset } }).then((r) => r.data),
+    placeholderData: keepPreviousData,
+  });
+}
+
+export function useTrends(months = 6) {
+  return useQuery({
+    queryKey: ["analytics", "trends", months],
+    queryFn: () =>
+      api<{ data: { currency: string; months: TrendMonth[] } }>("/analytics/trends", { query: { months } }).then((r) => r.data),
+  });
+}
+
+export function useInsights() {
+  return useQuery({ queryKey: ["insights"], queryFn: () => api<{ data: Insight[] }>("/insights").then((r) => r.data) });
 }

@@ -137,3 +137,139 @@ export interface SessionToken {
   expires_at: string | null;
   current: boolean;
 }
+
+export type BudgetPeriod = "monthly" | "weekly" | "custom";
+export type BudgetStatus = "on_track" | "warning" | "exceeded";
+
+export interface Budget {
+  id: string;
+  name: string;
+  period: BudgetPeriod;
+  currency: string;
+  amount: string;
+  amount_minor: number;
+  starts_on: string | null;
+  ends_on: string | null;
+  alert_thresholds: number[];
+  category_ids: string[];
+  archived: boolean;
+  progress: {
+    period: { start: string; end: string };
+    spent_minor: number;
+    remaining_minor: number;
+    percent: number;
+    days_left: number;
+    safe_to_spend_daily_minor: number;
+    expected_spent_minor: number;
+    projected_spent_minor: number;
+    reached_thresholds: number[];
+    status: BudgetStatus;
+  };
+}
+
+export type GoalKind = "emergency_fund" | "laptop" | "car" | "travel" | "wedding" | "home" | "custom";
+
+export interface Goal {
+  id: string;
+  name: string;
+  kind: GoalKind;
+  currency: string;
+  target_amount: string;
+  target_amount_minor: number;
+  current_amount: string;
+  current_amount_minor: number;
+  target_date: string | null;
+  account_id: string | null;
+  icon: string | null;
+  color: string | null;
+  notes: string | null;
+  achieved: boolean;
+  archived: boolean;
+  progress: {
+    percent: number;
+    remaining_minor: number;
+    monthly_needed_minor: number | null;
+    average_monthly_contribution_minor: number;
+    expected_completion_date: string | null;
+  };
+}
+
+export interface GoalEntry {
+  id: string;
+  type: "contribution" | "withdrawal";
+  amount: string;
+  amount_minor: number;
+  occurred_at: string;
+  note: string | null;
+}
+
+export interface Insight {
+  key: string;
+  severity: "positive" | "info" | "warning" | "critical";
+  message: string;
+  params: Record<string, string | number>;
+  data: Record<string, unknown>;
+}
+
+export interface CategoryTotal {
+  category_id: string | null;
+  name: string | null;
+  default_key: string | null;
+  color: string | null;
+  icon: string | null;
+  is_fixed: boolean;
+  total: number;
+  count: number;
+  previous_total?: number;
+  change?: number | null;
+  share?: number;
+}
+
+export interface TrendMonth {
+  period: { start: string; end: string };
+  label: string;
+  income: number;
+  expense: number;
+  savings: number;
+  savings_rate: number | null;
+  closing_balance: number;
+}
+
+export interface AnalyticsSummary {
+  currency: string;
+  period: { start: string; end: string };
+  previous_period: { start: string; end: string };
+  income: number;
+  expense: number;
+  savings: number;
+  savings_rate: number | null;
+  average_daily_spending: number;
+  previous: { income: number; expense: number; savings: number; savings_rate: number | null };
+  changes: { income: number | null; expense: number | null };
+  categories: CategoryTotal[];
+  fixed_vs_variable: { fixed: number; variable: number };
+  largest_expenses: {
+    id: string;
+    amount: number;
+    merchant: string | null;
+    note: string | null;
+    category: string | null;
+    default_key: string | null;
+    occurred_at: string;
+  }[];
+  top_merchants: { merchant: string; count: number; total: number }[];
+}
+
+export interface Dashboard {
+  currency: string;
+  period: { start: string; end: string };
+  net_worth: { currency: string; total_minor: number }[];
+  month: { income_minor: number; expense_minor: number; savings_minor: number; savings_rate: number | null };
+  budget: { amount_minor: number; spent_minor: number; remaining_minor: number } | null;
+  budgets: { id: string; name: string; amount_minor: number; spent_minor: number; percent: number; status: BudgetStatus }[];
+  spending_by_category: CategoryTotal[];
+  monthly_trend: TrendMonth[];
+  goals: Goal[];
+  recent_transactions: Transaction[];
+  insights: Insight[];
+}

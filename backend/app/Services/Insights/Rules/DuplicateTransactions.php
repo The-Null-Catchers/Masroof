@@ -37,7 +37,7 @@ class DuplicateTransactions implements InsightRule
                 $insights[] = new Insight(
                     key: 'possible_duplicate',
                     severity: 'warning',
-                    params: ['amount' => Money::toDecimal($a->amount, $a->currency).' '.$a->currency, 'merchant' => $a->merchant ?? '—'],
+                    params: ['amount' => Money::display($a->amount, $a->currency), 'merchant' => $a->merchant ?? '—'],
                     data: ['transaction_ids' => [$a->id, $b->id]],
                     priority: 80,
                 );

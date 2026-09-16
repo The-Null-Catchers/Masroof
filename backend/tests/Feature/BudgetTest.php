@@ -82,6 +82,17 @@ class BudgetTest extends TestCase
             ->assertJsonPath('data.progress.reached_thresholds', [80, 100]);
     }
 
+    public function test_projection_does_not_extrapolate_fixed_costs(): void
+    {
+        $rent = $this->category($this->user, 'expense', ['name' => 'Rent', 'is_fixed' => true]);
+        $this->spend($rent, 3_000_00, '2026-09-02 10:00');
+        $this->spend($this->food, 400_00, '2026-09-10 10:00');
+
+        // Day 16 of 30: variable 400 projects to 750; rent stays 3000.
+        $this->postJson('/api/v1/budgets', ['name' => 'All', 'period' => 'monthly', 'currency' => 'ILS', 'amount' => '5000'])
+            ->assertJsonPath('data.progress.projected_spent_minor', 3_000_00 + 750_00);
+    }
+
     public function test_weekly_and_custom_periods(): void
     {
         $this->spend($this->food, 40_00, '2026-09-13 10:00'); // this week (week starts Saturday 12th)

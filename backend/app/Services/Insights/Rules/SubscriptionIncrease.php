@@ -53,7 +53,7 @@ class SubscriptionIncrease implements InsightRule
                 params: [
                     'merchant' => $latest->merchant,
                     'percent' => (int) round($increase),
-                    'amount' => Money::toDecimal($latest->amount, $context->currency).' '.$context->currency,
+                    'amount' => Money::display($latest->amount, $context->currency),
                 ],
                 data: ['transaction_id' => $latest->id, 'previous_amount' => $previous->amount],
                 priority: 70,

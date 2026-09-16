@@ -22,7 +22,7 @@ final readonly class InsightContext
 
     public function money(int $minor): string
     {
-        return Money::toDecimal($minor, $this->currency).' '.$this->currency;
+        return Money::display($minor, $this->currency);
     }
 
     /** Minimum amount worth mentioning (e.g. 20.00 in the user's currency). */

@@ -35,6 +35,7 @@ class BudgetCalculator
         $now ??= CarbonImmutable::now();
         $period = $this->periodFor($budget, $user, $now);
         $spent = $this->spent($budget, $user, $period);
+        $fixedSpent = $this->spent($budget, $user, $period, fixedOnly: true);
 
         $remaining = $budget->amount - $spent;
         $percent = round($spent * 100 / $budget->amount, 1);
@@ -57,7 +58,8 @@ class BudgetCalculator
             'safe_to_spend_daily' => $daysLeft > 0 ? intdiv(max($remaining, 0), $daysLeft) : 0,
             // Linear pace: how much "should" be spent by today.
             'expected_spent' => intdiv($budget->amount * $elapsedDays, $totalDays),
-            'projected_spent' => $now->lt($period->start) ? 0 : intdiv($spent * $totalDays, $elapsedDays),
+            // Fixed costs (rent, bills…) are paid once, so only variable spending is extrapolated.
+            'projected_spent' => $now->lt($period->start) ? 0 : $fixedSpent + intdiv(($spent - $fixedSpent) * $totalDays, $elapsedDays),
             'reached_thresholds' => $reached,
             'status' => match (true) {
                 $percent >= 100 => 'exceeded',
@@ -67,11 +69,12 @@ class BudgetCalculator
         ];
     }
 
-    public function spent(Budget $budget, User $user, Period $period): int
+    public function spent(Budget $budget, User $user, Period $period, bool $fixedOnly = false): int
     {
         $categoryIds = $this->scopeCategoryIds($budget);
 
         return (int) $user->transactions()
+            ->when($fixedOnly, fn ($q) => $q->whereHas('category', fn ($c) => $c->where('is_fixed', true)))
             ->where('type', 'expense')
             ->where('currency', $budget->currency)
             ->where('occurred_at', '>=', $period->start)

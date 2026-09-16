@@ -38,6 +38,14 @@ class MoneyTest extends TestCase
         $this->assertSame('0.001', Money::toDecimal(1, 'BHD'));
     }
 
+    public function test_it_displays_localized_amounts_with_bidi_isolates(): void
+    {
+        $this->assertSame("₪ \u{2066}1,250.50\u{2069}", Money::display(125050, 'ILS', 'en'));
+        $this->assertSame("\u{2066}-1,250.500\u{2069} د.أ", Money::display(-1250500, 'JOD', 'ar'));
+        $this->assertSame("\u{2066}12.00\u{2069} ر.س", Money::display(1200, 'SAR', 'ar'));
+        $this->assertSame("EGP \u{2066}0.07\u{2069}", Money::display(7, 'EGP', 'en'));
+    }
+
     public function test_it_rejects_too_many_decimals(): void
     {
         $this->expectException(InvalidArgumentException::class);

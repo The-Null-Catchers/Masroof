@@ -69,10 +69,11 @@ class AnalyticsService
      *
      * @return array<string, mixed>
      */
-    public function summary(User $user, string $currency, Period $period, ?CarbonImmutable $now = null): array
+    public function summary(User $user, string $currency, Period $period, ?Period $previous = null, ?CarbonImmutable $now = null): array
     {
         $now ??= CarbonImmutable::now();
-        $previous = $period->previous();
+        // Financial months differ in length, so callers pass the previous month explicitly.
+        $previous ??= $period->previous();
         $current = $this->totals($user, $currency, $period);
         $before = $this->totals($user, $currency, $previous);
 

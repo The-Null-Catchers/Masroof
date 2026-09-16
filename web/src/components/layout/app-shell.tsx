@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import { LogOut, MailWarning, Moon, Sun } from "lucide-react";
+import { LogOut, MailWarning, Menu, Moon, Sun } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 import { Logo } from "@/components/brand/logo";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetClose, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -26,7 +27,7 @@ import { useI18n } from "@/lib/i18n/provider";
 import { cn } from "@/lib/utils";
 
 import { LanguageToggle } from "./language-toggle";
-import { NAV_ITEMS } from "./nav-items";
+import { MOBILE_PRIMARY, NAV_ITEMS } from "./nav-items";
 
 function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -129,7 +130,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 pt-6 pb-24 sm:px-6 lg:pb-10">{children}</main>
 
         <nav aria-label="Main" className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-5 border-t bg-background/95 backdrop-blur lg:hidden">
-          {NAV_ITEMS.map(({ href, key, icon: Icon }) => (
+          {NAV_ITEMS.filter((item) => (MOBILE_PRIMARY as readonly string[]).includes(item.href)).map(({ href, key, icon: Icon }) => (
             <Link
               key={href}
               href={href}
@@ -143,6 +144,39 @@ export function AppShell({ children }: { children: ReactNode }) {
               {t.nav[key]}
             </Link>
           ))}
+          <Sheet>
+            <SheetTrigger
+              className={cn(
+                "flex flex-col items-center gap-1 py-2 text-[0.7rem] font-medium text-muted-foreground",
+                NAV_ITEMS.some((item) => !(MOBILE_PRIMARY as readonly string[]).includes(item.href) && isActive(pathname, item.href)) &&
+                  "text-primary",
+              )}
+            >
+              <Menu className="size-5" />
+              {t.nav.more}
+            </SheetTrigger>
+            <SheetContent side="bottom" className="rounded-t-2xl pb-8">
+              <SheetHeader>
+                <SheetTitle>{t.nav.more}</SheetTitle>
+              </SheetHeader>
+              <div className="grid grid-cols-4 gap-2 px-4">
+                {NAV_ITEMS.filter((item) => !(MOBILE_PRIMARY as readonly string[]).includes(item.href)).map(({ href, key, icon: Icon }) => (
+                  <SheetClose asChild key={href}>
+                    <Link
+                      href={href}
+                      className={cn(
+                        "flex flex-col items-center gap-2 rounded-xl p-3 text-xs hover:bg-muted",
+                        isActive(pathname, href) && "bg-muted text-primary",
+                      )}
+                    >
+                      <Icon className="size-5" />
+                      {t.nav[key]}
+                    </Link>
+                  </SheetClose>
+                ))}
+              </div>
+            </SheetContent>
+          </Sheet>
         </nav>
       </div>
     </div>

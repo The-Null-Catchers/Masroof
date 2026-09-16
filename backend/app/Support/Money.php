@@ -54,6 +54,30 @@ final class Money
         return $negative ? -$minor : $minor;
     }
 
+    private const SYMBOLS = ['ILS' => '₪', 'USD' => '$', 'EUR' => '€', 'GBP' => '£'];
+
+    private const ARABIC_SYMBOLS = [
+        'JOD' => 'د.أ', 'SAR' => 'ر.س', 'AED' => 'د.إ', 'KWD' => 'د.ك', 'BHD' => 'د.ب', 'OMR' => 'ر.ع',
+        'QAR' => 'ر.ق', 'EGP' => 'ج.م', 'IQD' => 'د.ع', 'MAD' => 'د.م', 'TND' => 'د.ت', 'DZD' => 'د.ج', 'LBP' => 'ل.ل',
+    ];
+
+    /**
+     * Human readable amount for messages, e.g. "₪ 1,250.50" or "1,250.500 د.أ".
+     * Unicode isolates keep the number intact inside right-to-left sentences.
+     */
+    public static function display(int $minor, string $currency, ?string $locale = null): string
+    {
+        $locale ??= app()->getLocale();
+        $decimal = self::toDecimal(abs($minor), $currency);
+        [$whole, $fraction] = array_pad(explode('.', $decimal, 2), 2, null);
+        $number = ($minor < 0 ? '-' : '').number_format((int) $whole).($fraction !== null ? '.'.$fraction : '');
+        $arabic = str_starts_with($locale, 'ar');
+        $symbol = self::SYMBOLS[$currency] ?? ($arabic ? (self::ARABIC_SYMBOLS[$currency] ?? $currency) : $currency);
+        $isolated = "\u{2066}{$number}\u{2069}";
+
+        return $arabic ? "{$isolated} {$symbol}" : "{$symbol} {$isolated}";
+    }
+
     public static function toDecimal(int $minor, string $currency): string
     {
         $exponent = self::exponent($currency);
