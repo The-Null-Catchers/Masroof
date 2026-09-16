@@ -15,6 +15,7 @@ class AccountDraft {
     required this.openingBalance,
     this.color,
     this.icon,
+    this.notes,
     this.includeInTotal = true,
   });
 
@@ -24,6 +25,7 @@ class AccountDraft {
   final int openingBalance;
   final String? color;
   final String? icon;
+  final String? notes;
   final bool includeInTotal;
 
   Map<String, Object?> toPayload() => {
@@ -33,6 +35,7 @@ class AccountDraft {
     'opening_balance': Money.toDecimal(openingBalance, currency),
     'color': color,
     'icon': icon,
+    'notes': notes,
     'include_in_total': includeInTotal,
   };
 }
@@ -77,6 +80,7 @@ class AccountsRepository {
               balance: Value(draft.openingBalance),
               color: Value(draft.color),
               icon: Value(draft.icon),
+              notes: Value(draft.notes),
               includeInTotal: Value(draft.includeInTotal),
               updatedAt: DateTime.now().toUtc(),
             ),
@@ -97,6 +101,7 @@ class AccountsRepository {
         balance: Value(current.balance + draft.openingBalance - current.openingBalance),
         color: Value(draft.color),
         icon: Value(draft.icon),
+        notes: Value(draft.notes),
         includeInTotal: Value(draft.includeInTotal),
         updatedAt: Value(DateTime.now().toUtc()),
       ),

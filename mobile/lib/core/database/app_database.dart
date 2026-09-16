@@ -10,7 +10,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? driftDatabase(name: 'masroof'));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -18,6 +18,14 @@ class AppDatabase extends _$AppDatabase {
       await m.createAll();
       await customStatement('CREATE INDEX idx_transactions_occurred ON transactions (occurred_at DESC)');
       await customStatement('CREATE INDEX idx_transactions_account ON transactions (account_id)');
+    },
+    onUpgrade: (m, from, to) async {
+      if (from < 2) {
+        await m.renameColumn(transactions, 'payee', transactions.merchant);
+        await m.addColumn(transactions, transactions.paymentMethod);
+        await m.addColumn(transactions, transactions.tags);
+        await m.addColumn(accounts, accounts.notes);
+      }
     },
   );
 

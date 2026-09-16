@@ -72,8 +72,13 @@ class AuthController extends Notifier<AuthState> {
     _signedIn(user);
   }
 
-  Future<void> updateProfile(Map<String, Object?> changes) async {
-    final user = await ref.read(authRepositoryProvider).updateProfile(changes);
+  Future<void> updateSettings(Map<String, Object?> changes) async {
+    final user = await ref.read(authRepositoryProvider).updateSettings(changes);
+    state = Authenticated(user);
+  }
+
+  Future<void> completeOnboarding(Map<String, Object?> answers) async {
+    final user = await ref.read(authRepositoryProvider).completeOnboarding(answers);
     state = Authenticated(user);
   }
 

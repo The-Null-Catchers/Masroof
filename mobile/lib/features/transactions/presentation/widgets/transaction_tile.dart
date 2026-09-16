@@ -47,12 +47,12 @@ class TransactionTile extends StatelessWidget {
       case 'income':
         final category = view.category;
         title =
-            t.payee ??
+            t.merchant ??
             (category == null
                 ? l10n.uncategorized
                 : l10n.categoryLabel(name: category.name, defaultKey: category.defaultKey));
         subtitle = [
-          if (t.payee != null && category != null)
+          if (t.merchant != null && category != null)
             l10n.categoryLabel(name: category.name, defaultKey: category.defaultKey),
           view.account?.name,
         ].whereType<String>().join(' · ');
@@ -61,12 +61,12 @@ class TransactionTile extends StatelessWidget {
       default:
         final category = view.category;
         title =
-            t.payee ??
+            t.merchant ??
             (category == null
                 ? l10n.uncategorized
                 : l10n.categoryLabel(name: category.name, defaultKey: category.defaultKey));
         subtitle = [
-          if (t.payee != null && category != null)
+          if (t.merchant != null && category != null)
             l10n.categoryLabel(name: category.name, defaultKey: category.defaultKey),
           view.account?.name,
         ].whereType<String>().join(' · ');

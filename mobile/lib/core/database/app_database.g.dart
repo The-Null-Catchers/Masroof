@@ -83,6 +83,15 @@ class $AccountsTable extends Accounts with TableInfo<$AccountsTable, AccountEnti
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  @override
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _includeInTotalMeta = const VerificationMeta('includeInTotal');
   @override
   late final GeneratedColumn<bool> includeInTotal = GeneratedColumn<bool>(
@@ -134,6 +143,7 @@ class $AccountsTable extends Accounts with TableInfo<$AccountsTable, AccountEnti
     balance,
     color,
     icon,
+    notes,
     includeInTotal,
     archived,
     sortOrder,
@@ -183,6 +193,9 @@ class $AccountsTable extends Accounts with TableInfo<$AccountsTable, AccountEnti
     if (data.containsKey('icon')) {
       context.handle(_iconMeta, icon.isAcceptableOrUnknown(data['icon']!, _iconMeta));
     }
+    if (data.containsKey('notes')) {
+      context.handle(_notesMeta, notes.isAcceptableOrUnknown(data['notes']!, _notesMeta));
+    }
     if (data.containsKey('include_in_total')) {
       context.handle(
         _includeInTotalMeta,
@@ -217,6 +230,7 @@ class $AccountsTable extends Accounts with TableInfo<$AccountsTable, AccountEnti
       balance: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}balance'])!,
       color: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}color']),
       icon: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}icon']),
+      notes: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}notes']),
       includeInTotal: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}include_in_total'])!,
       archived: attachedDatabase.typeMapping.read(DriftSqlType.bool, data['${effectivePrefix}archived'])!,
       sortOrder: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}sort_order'])!,
@@ -239,6 +253,7 @@ class AccountEntity extends DataClass implements Insertable<AccountEntity> {
   final int balance;
   final String? color;
   final String? icon;
+  final String? notes;
   final bool includeInTotal;
   final bool archived;
   final int sortOrder;
@@ -252,6 +267,7 @@ class AccountEntity extends DataClass implements Insertable<AccountEntity> {
     required this.balance,
     this.color,
     this.icon,
+    this.notes,
     required this.includeInTotal,
     required this.archived,
     required this.sortOrder,
@@ -272,6 +288,9 @@ class AccountEntity extends DataClass implements Insertable<AccountEntity> {
     if (!nullToAbsent || icon != null) {
       map['icon'] = Variable<String>(icon);
     }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
     map['include_in_total'] = Variable<bool>(includeInTotal);
     map['archived'] = Variable<bool>(archived);
     map['sort_order'] = Variable<int>(sortOrder);
@@ -289,6 +308,7 @@ class AccountEntity extends DataClass implements Insertable<AccountEntity> {
       balance: Value(balance),
       color: color == null && nullToAbsent ? const Value.absent() : Value(color),
       icon: icon == null && nullToAbsent ? const Value.absent() : Value(icon),
+      notes: notes == null && nullToAbsent ? const Value.absent() : Value(notes),
       includeInTotal: Value(includeInTotal),
       archived: Value(archived),
       sortOrder: Value(sortOrder),
@@ -307,6 +327,7 @@ class AccountEntity extends DataClass implements Insertable<AccountEntity> {
       balance: serializer.fromJson<int>(json['balance']),
       color: serializer.fromJson<String?>(json['color']),
       icon: serializer.fromJson<String?>(json['icon']),
+      notes: serializer.fromJson<String?>(json['notes']),
       includeInTotal: serializer.fromJson<bool>(json['includeInTotal']),
       archived: serializer.fromJson<bool>(json['archived']),
       sortOrder: serializer.fromJson<int>(json['sortOrder']),
@@ -325,6 +346,7 @@ class AccountEntity extends DataClass implements Insertable<AccountEntity> {
       'balance': serializer.toJson<int>(balance),
       'color': serializer.toJson<String?>(color),
       'icon': serializer.toJson<String?>(icon),
+      'notes': serializer.toJson<String?>(notes),
       'includeInTotal': serializer.toJson<bool>(includeInTotal),
       'archived': serializer.toJson<bool>(archived),
       'sortOrder': serializer.toJson<int>(sortOrder),
@@ -341,6 +363,7 @@ class AccountEntity extends DataClass implements Insertable<AccountEntity> {
     int? balance,
     Value<String?> color = const Value.absent(),
     Value<String?> icon = const Value.absent(),
+    Value<String?> notes = const Value.absent(),
     bool? includeInTotal,
     bool? archived,
     int? sortOrder,
@@ -354,6 +377,7 @@ class AccountEntity extends DataClass implements Insertable<AccountEntity> {
     balance: balance ?? this.balance,
     color: color.present ? color.value : this.color,
     icon: icon.present ? icon.value : this.icon,
+    notes: notes.present ? notes.value : this.notes,
     includeInTotal: includeInTotal ?? this.includeInTotal,
     archived: archived ?? this.archived,
     sortOrder: sortOrder ?? this.sortOrder,
@@ -369,6 +393,7 @@ class AccountEntity extends DataClass implements Insertable<AccountEntity> {
       balance: data.balance.present ? data.balance.value : this.balance,
       color: data.color.present ? data.color.value : this.color,
       icon: data.icon.present ? data.icon.value : this.icon,
+      notes: data.notes.present ? data.notes.value : this.notes,
       includeInTotal: data.includeInTotal.present ? data.includeInTotal.value : this.includeInTotal,
       archived: data.archived.present ? data.archived.value : this.archived,
       sortOrder: data.sortOrder.present ? data.sortOrder.value : this.sortOrder,
@@ -387,6 +412,7 @@ class AccountEntity extends DataClass implements Insertable<AccountEntity> {
           ..write('balance: $balance, ')
           ..write('color: $color, ')
           ..write('icon: $icon, ')
+          ..write('notes: $notes, ')
           ..write('includeInTotal: $includeInTotal, ')
           ..write('archived: $archived, ')
           ..write('sortOrder: $sortOrder, ')
@@ -405,6 +431,7 @@ class AccountEntity extends DataClass implements Insertable<AccountEntity> {
     balance,
     color,
     icon,
+    notes,
     includeInTotal,
     archived,
     sortOrder,
@@ -422,6 +449,7 @@ class AccountEntity extends DataClass implements Insertable<AccountEntity> {
           other.balance == this.balance &&
           other.color == this.color &&
           other.icon == this.icon &&
+          other.notes == this.notes &&
           other.includeInTotal == this.includeInTotal &&
           other.archived == this.archived &&
           other.sortOrder == this.sortOrder &&
@@ -437,6 +465,7 @@ class AccountsCompanion extends UpdateCompanion<AccountEntity> {
   final Value<int> balance;
   final Value<String?> color;
   final Value<String?> icon;
+  final Value<String?> notes;
   final Value<bool> includeInTotal;
   final Value<bool> archived;
   final Value<int> sortOrder;
@@ -451,6 +480,7 @@ class AccountsCompanion extends UpdateCompanion<AccountEntity> {
     this.balance = const Value.absent(),
     this.color = const Value.absent(),
     this.icon = const Value.absent(),
+    this.notes = const Value.absent(),
     this.includeInTotal = const Value.absent(),
     this.archived = const Value.absent(),
     this.sortOrder = const Value.absent(),
@@ -466,6 +496,7 @@ class AccountsCompanion extends UpdateCompanion<AccountEntity> {
     this.balance = const Value.absent(),
     this.color = const Value.absent(),
     this.icon = const Value.absent(),
+    this.notes = const Value.absent(),
     this.includeInTotal = const Value.absent(),
     this.archived = const Value.absent(),
     this.sortOrder = const Value.absent(),
@@ -485,6 +516,7 @@ class AccountsCompanion extends UpdateCompanion<AccountEntity> {
     Expression<int>? balance,
     Expression<String>? color,
     Expression<String>? icon,
+    Expression<String>? notes,
     Expression<bool>? includeInTotal,
     Expression<bool>? archived,
     Expression<int>? sortOrder,
@@ -500,6 +532,7 @@ class AccountsCompanion extends UpdateCompanion<AccountEntity> {
       if (balance != null) 'balance': balance,
       if (color != null) 'color': color,
       if (icon != null) 'icon': icon,
+      if (notes != null) 'notes': notes,
       if (includeInTotal != null) 'include_in_total': includeInTotal,
       if (archived != null) 'archived': archived,
       if (sortOrder != null) 'sort_order': sortOrder,
@@ -517,6 +550,7 @@ class AccountsCompanion extends UpdateCompanion<AccountEntity> {
     Value<int>? balance,
     Value<String?>? color,
     Value<String?>? icon,
+    Value<String?>? notes,
     Value<bool>? includeInTotal,
     Value<bool>? archived,
     Value<int>? sortOrder,
@@ -532,6 +566,7 @@ class AccountsCompanion extends UpdateCompanion<AccountEntity> {
       balance: balance ?? this.balance,
       color: color ?? this.color,
       icon: icon ?? this.icon,
+      notes: notes ?? this.notes,
       includeInTotal: includeInTotal ?? this.includeInTotal,
       archived: archived ?? this.archived,
       sortOrder: sortOrder ?? this.sortOrder,
@@ -567,6 +602,9 @@ class AccountsCompanion extends UpdateCompanion<AccountEntity> {
     if (icon.present) {
       map['icon'] = Variable<String>(icon.value);
     }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
     if (includeInTotal.present) {
       map['include_in_total'] = Variable<bool>(includeInTotal.value);
     }
@@ -596,6 +634,7 @@ class AccountsCompanion extends UpdateCompanion<AccountEntity> {
           ..write('balance: $balance, ')
           ..write('color: $color, ')
           ..write('icon: $icon, ')
+          ..write('notes: $notes, ')
           ..write('includeInTotal: $includeInTotal, ')
           ..write('archived: $archived, ')
           ..write('sortOrder: $sortOrder, ')
@@ -1200,10 +1239,19 @@ class $TransactionsTable extends Transactions with TableInfo<$TransactionsTable,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _payeeMeta = const VerificationMeta('payee');
+  static const VerificationMeta _merchantMeta = const VerificationMeta('merchant');
   @override
-  late final GeneratedColumn<String> payee = GeneratedColumn<String>(
-    'payee',
+  late final GeneratedColumn<String> merchant = GeneratedColumn<String>(
+    'merchant',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _paymentMethodMeta = const VerificationMeta('paymentMethod');
+  @override
+  late final GeneratedColumn<String> paymentMethod = GeneratedColumn<String>(
+    'payment_method',
     aliasedName,
     true,
     type: DriftSqlType.string,
@@ -1217,6 +1265,16 @@ class $TransactionsTable extends Transactions with TableInfo<$TransactionsTable,
     true,
     type: DriftSqlType.string,
     requiredDuringInsert: false,
+  );
+  static const VerificationMeta _tagsMeta = const VerificationMeta('tags');
+  @override
+  late final GeneratedColumn<String> tags = GeneratedColumn<String>(
+    'tags',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultValue: const Constant('[]'),
   );
   static const VerificationMeta _updatedAtMeta = const VerificationMeta('updatedAt');
   @override
@@ -1238,8 +1296,10 @@ class $TransactionsTable extends Transactions with TableInfo<$TransactionsTable,
     transferAccountId,
     transferAmount,
     occurredAt,
-    payee,
+    merchant,
+    paymentMethod,
     note,
+    tags,
     updatedAt,
   ];
   @override
@@ -1296,11 +1356,20 @@ class $TransactionsTable extends Transactions with TableInfo<$TransactionsTable,
     } else if (isInserting) {
       context.missing(_occurredAtMeta);
     }
-    if (data.containsKey('payee')) {
-      context.handle(_payeeMeta, payee.isAcceptableOrUnknown(data['payee']!, _payeeMeta));
+    if (data.containsKey('merchant')) {
+      context.handle(_merchantMeta, merchant.isAcceptableOrUnknown(data['merchant']!, _merchantMeta));
+    }
+    if (data.containsKey('payment_method')) {
+      context.handle(
+        _paymentMethodMeta,
+        paymentMethod.isAcceptableOrUnknown(data['payment_method']!, _paymentMethodMeta),
+      );
     }
     if (data.containsKey('note')) {
       context.handle(_noteMeta, note.isAcceptableOrUnknown(data['note']!, _noteMeta));
+    }
+    if (data.containsKey('tags')) {
+      context.handle(_tagsMeta, tags.isAcceptableOrUnknown(data['tags']!, _tagsMeta));
     }
     if (data.containsKey('updated_at')) {
       context.handle(_updatedAtMeta, updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta));
@@ -1328,8 +1397,10 @@ class $TransactionsTable extends Transactions with TableInfo<$TransactionsTable,
       ),
       transferAmount: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}transfer_amount']),
       occurredAt: attachedDatabase.typeMapping.read(DriftSqlType.dateTime, data['${effectivePrefix}occurred_at'])!,
-      payee: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}payee']),
+      merchant: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}merchant']),
+      paymentMethod: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}payment_method']),
       note: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}note']),
+      tags: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}tags'])!,
       updatedAt: attachedDatabase.typeMapping.read(DriftSqlType.dateTime, data['${effectivePrefix}updated_at'])!,
     );
   }
@@ -1350,8 +1421,12 @@ class TransactionEntity extends DataClass implements Insertable<TransactionEntit
   final String? transferAccountId;
   final int? transferAmount;
   final DateTime occurredAt;
-  final String? payee;
+  final String? merchant;
+  final String? paymentMethod;
   final String? note;
+
+  /// JSON array of tag names.
+  final String tags;
   final DateTime updatedAt;
   const TransactionEntity({
     required this.id,
@@ -1363,8 +1438,10 @@ class TransactionEntity extends DataClass implements Insertable<TransactionEntit
     this.transferAccountId,
     this.transferAmount,
     required this.occurredAt,
-    this.payee,
+    this.merchant,
+    this.paymentMethod,
     this.note,
+    required this.tags,
     required this.updatedAt,
   });
   @override
@@ -1385,12 +1462,16 @@ class TransactionEntity extends DataClass implements Insertable<TransactionEntit
       map['transfer_amount'] = Variable<int>(transferAmount);
     }
     map['occurred_at'] = Variable<DateTime>(occurredAt);
-    if (!nullToAbsent || payee != null) {
-      map['payee'] = Variable<String>(payee);
+    if (!nullToAbsent || merchant != null) {
+      map['merchant'] = Variable<String>(merchant);
+    }
+    if (!nullToAbsent || paymentMethod != null) {
+      map['payment_method'] = Variable<String>(paymentMethod);
     }
     if (!nullToAbsent || note != null) {
       map['note'] = Variable<String>(note);
     }
+    map['tags'] = Variable<String>(tags);
     map['updated_at'] = Variable<DateTime>(updatedAt);
     return map;
   }
@@ -1406,8 +1487,10 @@ class TransactionEntity extends DataClass implements Insertable<TransactionEntit
       transferAccountId: transferAccountId == null && nullToAbsent ? const Value.absent() : Value(transferAccountId),
       transferAmount: transferAmount == null && nullToAbsent ? const Value.absent() : Value(transferAmount),
       occurredAt: Value(occurredAt),
-      payee: payee == null && nullToAbsent ? const Value.absent() : Value(payee),
+      merchant: merchant == null && nullToAbsent ? const Value.absent() : Value(merchant),
+      paymentMethod: paymentMethod == null && nullToAbsent ? const Value.absent() : Value(paymentMethod),
       note: note == null && nullToAbsent ? const Value.absent() : Value(note),
+      tags: Value(tags),
       updatedAt: Value(updatedAt),
     );
   }
@@ -1424,8 +1507,10 @@ class TransactionEntity extends DataClass implements Insertable<TransactionEntit
       transferAccountId: serializer.fromJson<String?>(json['transferAccountId']),
       transferAmount: serializer.fromJson<int?>(json['transferAmount']),
       occurredAt: serializer.fromJson<DateTime>(json['occurredAt']),
-      payee: serializer.fromJson<String?>(json['payee']),
+      merchant: serializer.fromJson<String?>(json['merchant']),
+      paymentMethod: serializer.fromJson<String?>(json['paymentMethod']),
       note: serializer.fromJson<String?>(json['note']),
+      tags: serializer.fromJson<String>(json['tags']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
     );
   }
@@ -1442,8 +1527,10 @@ class TransactionEntity extends DataClass implements Insertable<TransactionEntit
       'transferAccountId': serializer.toJson<String?>(transferAccountId),
       'transferAmount': serializer.toJson<int?>(transferAmount),
       'occurredAt': serializer.toJson<DateTime>(occurredAt),
-      'payee': serializer.toJson<String?>(payee),
+      'merchant': serializer.toJson<String?>(merchant),
+      'paymentMethod': serializer.toJson<String?>(paymentMethod),
       'note': serializer.toJson<String?>(note),
+      'tags': serializer.toJson<String>(tags),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
     };
   }
@@ -1458,8 +1545,10 @@ class TransactionEntity extends DataClass implements Insertable<TransactionEntit
     Value<String?> transferAccountId = const Value.absent(),
     Value<int?> transferAmount = const Value.absent(),
     DateTime? occurredAt,
-    Value<String?> payee = const Value.absent(),
+    Value<String?> merchant = const Value.absent(),
+    Value<String?> paymentMethod = const Value.absent(),
     Value<String?> note = const Value.absent(),
+    String? tags,
     DateTime? updatedAt,
   }) => TransactionEntity(
     id: id ?? this.id,
@@ -1471,8 +1560,10 @@ class TransactionEntity extends DataClass implements Insertable<TransactionEntit
     transferAccountId: transferAccountId.present ? transferAccountId.value : this.transferAccountId,
     transferAmount: transferAmount.present ? transferAmount.value : this.transferAmount,
     occurredAt: occurredAt ?? this.occurredAt,
-    payee: payee.present ? payee.value : this.payee,
+    merchant: merchant.present ? merchant.value : this.merchant,
+    paymentMethod: paymentMethod.present ? paymentMethod.value : this.paymentMethod,
     note: note.present ? note.value : this.note,
+    tags: tags ?? this.tags,
     updatedAt: updatedAt ?? this.updatedAt,
   );
   TransactionEntity copyWithCompanion(TransactionsCompanion data) {
@@ -1486,8 +1577,10 @@ class TransactionEntity extends DataClass implements Insertable<TransactionEntit
       transferAccountId: data.transferAccountId.present ? data.transferAccountId.value : this.transferAccountId,
       transferAmount: data.transferAmount.present ? data.transferAmount.value : this.transferAmount,
       occurredAt: data.occurredAt.present ? data.occurredAt.value : this.occurredAt,
-      payee: data.payee.present ? data.payee.value : this.payee,
+      merchant: data.merchant.present ? data.merchant.value : this.merchant,
+      paymentMethod: data.paymentMethod.present ? data.paymentMethod.value : this.paymentMethod,
       note: data.note.present ? data.note.value : this.note,
+      tags: data.tags.present ? data.tags.value : this.tags,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
   }
@@ -1504,8 +1597,10 @@ class TransactionEntity extends DataClass implements Insertable<TransactionEntit
           ..write('transferAccountId: $transferAccountId, ')
           ..write('transferAmount: $transferAmount, ')
           ..write('occurredAt: $occurredAt, ')
-          ..write('payee: $payee, ')
+          ..write('merchant: $merchant, ')
+          ..write('paymentMethod: $paymentMethod, ')
           ..write('note: $note, ')
+          ..write('tags: $tags, ')
           ..write('updatedAt: $updatedAt')
           ..write(')'))
         .toString();
@@ -1522,8 +1617,10 @@ class TransactionEntity extends DataClass implements Insertable<TransactionEntit
     transferAccountId,
     transferAmount,
     occurredAt,
-    payee,
+    merchant,
+    paymentMethod,
     note,
+    tags,
     updatedAt,
   );
   @override
@@ -1539,8 +1636,10 @@ class TransactionEntity extends DataClass implements Insertable<TransactionEntit
           other.transferAccountId == this.transferAccountId &&
           other.transferAmount == this.transferAmount &&
           other.occurredAt == this.occurredAt &&
-          other.payee == this.payee &&
+          other.merchant == this.merchant &&
+          other.paymentMethod == this.paymentMethod &&
           other.note == this.note &&
+          other.tags == this.tags &&
           other.updatedAt == this.updatedAt);
 }
 
@@ -1554,8 +1653,10 @@ class TransactionsCompanion extends UpdateCompanion<TransactionEntity> {
   final Value<String?> transferAccountId;
   final Value<int?> transferAmount;
   final Value<DateTime> occurredAt;
-  final Value<String?> payee;
+  final Value<String?> merchant;
+  final Value<String?> paymentMethod;
   final Value<String?> note;
+  final Value<String> tags;
   final Value<DateTime> updatedAt;
   final Value<int> rowid;
   const TransactionsCompanion({
@@ -1568,8 +1669,10 @@ class TransactionsCompanion extends UpdateCompanion<TransactionEntity> {
     this.transferAccountId = const Value.absent(),
     this.transferAmount = const Value.absent(),
     this.occurredAt = const Value.absent(),
-    this.payee = const Value.absent(),
+    this.merchant = const Value.absent(),
+    this.paymentMethod = const Value.absent(),
     this.note = const Value.absent(),
+    this.tags = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -1583,8 +1686,10 @@ class TransactionsCompanion extends UpdateCompanion<TransactionEntity> {
     this.transferAccountId = const Value.absent(),
     this.transferAmount = const Value.absent(),
     required DateTime occurredAt,
-    this.payee = const Value.absent(),
+    this.merchant = const Value.absent(),
+    this.paymentMethod = const Value.absent(),
     this.note = const Value.absent(),
+    this.tags = const Value.absent(),
     required DateTime updatedAt,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
@@ -1604,8 +1709,10 @@ class TransactionsCompanion extends UpdateCompanion<TransactionEntity> {
     Expression<String>? transferAccountId,
     Expression<int>? transferAmount,
     Expression<DateTime>? occurredAt,
-    Expression<String>? payee,
+    Expression<String>? merchant,
+    Expression<String>? paymentMethod,
     Expression<String>? note,
+    Expression<String>? tags,
     Expression<DateTime>? updatedAt,
     Expression<int>? rowid,
   }) {
@@ -1619,8 +1726,10 @@ class TransactionsCompanion extends UpdateCompanion<TransactionEntity> {
       if (transferAccountId != null) 'transfer_account_id': transferAccountId,
       if (transferAmount != null) 'transfer_amount': transferAmount,
       if (occurredAt != null) 'occurred_at': occurredAt,
-      if (payee != null) 'payee': payee,
+      if (merchant != null) 'merchant': merchant,
+      if (paymentMethod != null) 'payment_method': paymentMethod,
       if (note != null) 'note': note,
+      if (tags != null) 'tags': tags,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (rowid != null) 'rowid': rowid,
     });
@@ -1636,8 +1745,10 @@ class TransactionsCompanion extends UpdateCompanion<TransactionEntity> {
     Value<String?>? transferAccountId,
     Value<int?>? transferAmount,
     Value<DateTime>? occurredAt,
-    Value<String?>? payee,
+    Value<String?>? merchant,
+    Value<String?>? paymentMethod,
     Value<String?>? note,
+    Value<String>? tags,
     Value<DateTime>? updatedAt,
     Value<int>? rowid,
   }) {
@@ -1651,8 +1762,10 @@ class TransactionsCompanion extends UpdateCompanion<TransactionEntity> {
       transferAccountId: transferAccountId ?? this.transferAccountId,
       transferAmount: transferAmount ?? this.transferAmount,
       occurredAt: occurredAt ?? this.occurredAt,
-      payee: payee ?? this.payee,
+      merchant: merchant ?? this.merchant,
+      paymentMethod: paymentMethod ?? this.paymentMethod,
       note: note ?? this.note,
+      tags: tags ?? this.tags,
       updatedAt: updatedAt ?? this.updatedAt,
       rowid: rowid ?? this.rowid,
     );
@@ -1688,11 +1801,17 @@ class TransactionsCompanion extends UpdateCompanion<TransactionEntity> {
     if (occurredAt.present) {
       map['occurred_at'] = Variable<DateTime>(occurredAt.value);
     }
-    if (payee.present) {
-      map['payee'] = Variable<String>(payee.value);
+    if (merchant.present) {
+      map['merchant'] = Variable<String>(merchant.value);
+    }
+    if (paymentMethod.present) {
+      map['payment_method'] = Variable<String>(paymentMethod.value);
     }
     if (note.present) {
       map['note'] = Variable<String>(note.value);
+    }
+    if (tags.present) {
+      map['tags'] = Variable<String>(tags.value);
     }
     if (updatedAt.present) {
       map['updated_at'] = Variable<DateTime>(updatedAt.value);
@@ -1715,8 +1834,10 @@ class TransactionsCompanion extends UpdateCompanion<TransactionEntity> {
           ..write('transferAccountId: $transferAccountId, ')
           ..write('transferAmount: $transferAmount, ')
           ..write('occurredAt: $occurredAt, ')
-          ..write('payee: $payee, ')
+          ..write('merchant: $merchant, ')
+          ..write('paymentMethod: $paymentMethod, ')
           ..write('note: $note, ')
+          ..write('tags: $tags, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -2337,6 +2458,7 @@ typedef $$AccountsTableCreateCompanionBuilder = AccountsCompanion Function({
   Value<int> balance,
   Value<String?> color,
   Value<String?> icon,
+  Value<String?> notes,
   Value<bool> includeInTotal,
   Value<bool> archived,
   Value<int> sortOrder,
@@ -2352,6 +2474,7 @@ typedef $$AccountsTableUpdateCompanionBuilder = AccountsCompanion Function({
   Value<int> balance,
   Value<String?> color,
   Value<String?> icon,
+  Value<String?> notes,
   Value<bool> includeInTotal,
   Value<bool> archived,
   Value<int> sortOrder,
@@ -2386,6 +2509,9 @@ class $$AccountsTableFilterComposer extends Composer<_$AppDatabase, $AccountsTab
       $composableBuilder(column: $table.color, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get icon => $composableBuilder(column: $table.icon, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<bool> get includeInTotal =>
       $composableBuilder(column: $table.includeInTotal, builder: (column) => ColumnFilters(column));
@@ -2431,6 +2557,9 @@ class $$AccountsTableOrderingComposer extends Composer<_$AppDatabase, $AccountsT
   ColumnOrderings<String> get icon =>
       $composableBuilder(column: $table.icon, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get notes =>
+      $composableBuilder(column: $table.notes, builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<bool> get includeInTotal =>
       $composableBuilder(column: $table.includeInTotal, builder: (column) => ColumnOrderings(column));
 
@@ -2468,6 +2597,8 @@ class $$AccountsTableAnnotationComposer extends Composer<_$AppDatabase, $Account
   GeneratedColumn<String> get color => $composableBuilder(column: $table.color, builder: (column) => column);
 
   GeneratedColumn<String> get icon => $composableBuilder(column: $table.icon, builder: (column) => column);
+
+  GeneratedColumn<String> get notes => $composableBuilder(column: $table.notes, builder: (column) => column);
 
   GeneratedColumn<bool> get includeInTotal =>
       $composableBuilder(column: $table.includeInTotal, builder: (column) => column);
@@ -2512,6 +2643,7 @@ class $$AccountsTableTableManager
                 Value<int> balance = const Value.absent(),
                 Value<String?> color = const Value.absent(),
                 Value<String?> icon = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
                 Value<bool> includeInTotal = const Value.absent(),
                 Value<bool> archived = const Value.absent(),
                 Value<int> sortOrder = const Value.absent(),
@@ -2526,6 +2658,7 @@ class $$AccountsTableTableManager
                 balance: balance,
                 color: color,
                 icon: icon,
+                notes: notes,
                 includeInTotal: includeInTotal,
                 archived: archived,
                 sortOrder: sortOrder,
@@ -2542,6 +2675,7 @@ class $$AccountsTableTableManager
                 Value<int> balance = const Value.absent(),
                 Value<String?> color = const Value.absent(),
                 Value<String?> icon = const Value.absent(),
+                Value<String?> notes = const Value.absent(),
                 Value<bool> includeInTotal = const Value.absent(),
                 Value<bool> archived = const Value.absent(),
                 Value<int> sortOrder = const Value.absent(),
@@ -2556,6 +2690,7 @@ class $$AccountsTableTableManager
                 balance: balance,
                 color: color,
                 icon: icon,
+                notes: notes,
                 includeInTotal: includeInTotal,
                 archived: archived,
                 sortOrder: sortOrder,
@@ -2830,8 +2965,10 @@ typedef $$TransactionsTableCreateCompanionBuilder = TransactionsCompanion Functi
   Value<String?> transferAccountId,
   Value<int?> transferAmount,
   required DateTime occurredAt,
-  Value<String?> payee,
+  Value<String?> merchant,
+  Value<String?> paymentMethod,
   Value<String?> note,
+  Value<String> tags,
   required DateTime updatedAt,
   Value<int> rowid,
 });
@@ -2845,8 +2982,10 @@ typedef $$TransactionsTableUpdateCompanionBuilder = TransactionsCompanion Functi
   Value<String?> transferAccountId,
   Value<int?> transferAmount,
   Value<DateTime> occurredAt,
-  Value<String?> payee,
+  Value<String?> merchant,
+  Value<String?> paymentMethod,
   Value<String?> note,
+  Value<String> tags,
   Value<DateTime> updatedAt,
   Value<int> rowid,
 });
@@ -2884,10 +3023,15 @@ class $$TransactionsTableFilterComposer extends Composer<_$AppDatabase, $Transac
   ColumnFilters<DateTime> get occurredAt =>
       $composableBuilder(column: $table.occurredAt, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get payee =>
-      $composableBuilder(column: $table.payee, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get merchant =>
+      $composableBuilder(column: $table.merchant, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get paymentMethod =>
+      $composableBuilder(column: $table.paymentMethod, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get note => $composableBuilder(column: $table.note, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get tags => $composableBuilder(column: $table.tags, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<DateTime> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnFilters(column));
@@ -2927,11 +3071,17 @@ class $$TransactionsTableOrderingComposer extends Composer<_$AppDatabase, $Trans
   ColumnOrderings<DateTime> get occurredAt =>
       $composableBuilder(column: $table.occurredAt, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get payee =>
-      $composableBuilder(column: $table.payee, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get merchant =>
+      $composableBuilder(column: $table.merchant, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get paymentMethod =>
+      $composableBuilder(column: $table.paymentMethod, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get note =>
       $composableBuilder(column: $table.note, builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<String> get tags =>
+      $composableBuilder(column: $table.tags, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<DateTime> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => ColumnOrderings(column));
@@ -2966,9 +3116,14 @@ class $$TransactionsTableAnnotationComposer extends Composer<_$AppDatabase, $Tra
   GeneratedColumn<DateTime> get occurredAt =>
       $composableBuilder(column: $table.occurredAt, builder: (column) => column);
 
-  GeneratedColumn<String> get payee => $composableBuilder(column: $table.payee, builder: (column) => column);
+  GeneratedColumn<String> get merchant => $composableBuilder(column: $table.merchant, builder: (column) => column);
+
+  GeneratedColumn<String> get paymentMethod =>
+      $composableBuilder(column: $table.paymentMethod, builder: (column) => column);
 
   GeneratedColumn<String> get note => $composableBuilder(column: $table.note, builder: (column) => column);
+
+  GeneratedColumn<String> get tags => $composableBuilder(column: $table.tags, builder: (column) => column);
 
   GeneratedColumn<DateTime> get updatedAt => $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 }
@@ -3007,8 +3162,10 @@ class $$TransactionsTableTableManager
                 Value<String?> transferAccountId = const Value.absent(),
                 Value<int?> transferAmount = const Value.absent(),
                 Value<DateTime> occurredAt = const Value.absent(),
-                Value<String?> payee = const Value.absent(),
+                Value<String?> merchant = const Value.absent(),
+                Value<String?> paymentMethod = const Value.absent(),
                 Value<String?> note = const Value.absent(),
+                Value<String> tags = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => TransactionsCompanion(
@@ -3021,8 +3178,10 @@ class $$TransactionsTableTableManager
                 transferAccountId: transferAccountId,
                 transferAmount: transferAmount,
                 occurredAt: occurredAt,
-                payee: payee,
+                merchant: merchant,
+                paymentMethod: paymentMethod,
                 note: note,
+                tags: tags,
                 updatedAt: updatedAt,
                 rowid: rowid,
               ),
@@ -3037,8 +3196,10 @@ class $$TransactionsTableTableManager
                 Value<String?> transferAccountId = const Value.absent(),
                 Value<int?> transferAmount = const Value.absent(),
                 required DateTime occurredAt,
-                Value<String?> payee = const Value.absent(),
+                Value<String?> merchant = const Value.absent(),
+                Value<String?> paymentMethod = const Value.absent(),
                 Value<String?> note = const Value.absent(),
+                Value<String> tags = const Value.absent(),
                 required DateTime updatedAt,
                 Value<int> rowid = const Value.absent(),
               }) => TransactionsCompanion.insert(
@@ -3051,8 +3212,10 @@ class $$TransactionsTableTableManager
                 transferAccountId: transferAccountId,
                 transferAmount: transferAmount,
                 occurredAt: occurredAt,
-                payee: payee,
+                merchant: merchant,
+                paymentMethod: paymentMethod,
                 note: note,
+                tags: tags,
                 updatedAt: updatedAt,
                 rowid: rowid,
               ),

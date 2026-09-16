@@ -740,12 +740,6 @@ abstract class AppLocalizations {
   /// **'Date'**
   String get date;
 
-  /// No description provided for @payee.
-  ///
-  /// In en, this message translates to:
-  /// **'Payee'**
-  String get payee;
-
   /// No description provided for @note.
   ///
   /// In en, this message translates to:
@@ -809,7 +803,7 @@ abstract class AppLocalizations {
   /// No description provided for @searchTransactions.
   ///
   /// In en, this message translates to:
-  /// **'Search payee, note or category'**
+  /// **'Search merchant, note, category or tag'**
   String get searchTransactions;
 
   /// No description provided for @settings.
@@ -944,11 +938,293 @@ abstract class AppLocalizations {
   /// **'Saved'**
   String get saved;
 
+  /// No description provided for @merchant.
+  ///
+  /// In en, this message translates to:
+  /// **'Merchant'**
+  String get merchant;
+
+  /// No description provided for @paymentMethod.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment method'**
+  String get paymentMethod;
+
+  /// No description provided for @paymentCash.
+  ///
+  /// In en, this message translates to:
+  /// **'Cash'**
+  String get paymentCash;
+
+  /// No description provided for @paymentCard.
+  ///
+  /// In en, this message translates to:
+  /// **'Card'**
+  String get paymentCard;
+
+  /// No description provided for @paymentBankTransfer.
+  ///
+  /// In en, this message translates to:
+  /// **'Bank transfer'**
+  String get paymentBankTransfer;
+
+  /// No description provided for @paymentWallet.
+  ///
+  /// In en, this message translates to:
+  /// **'Digital wallet'**
+  String get paymentWallet;
+
+  /// No description provided for @paymentCheque.
+  ///
+  /// In en, this message translates to:
+  /// **'Cheque'**
+  String get paymentCheque;
+
+  /// No description provided for @paymentOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Other'**
+  String get paymentOther;
+
+  /// No description provided for @tags.
+  ///
+  /// In en, this message translates to:
+  /// **'Tags'**
+  String get tags;
+
+  /// No description provided for @addTag.
+  ///
+  /// In en, this message translates to:
+  /// **'Add tag'**
+  String get addTag;
+
+  /// No description provided for @duplicate.
+  ///
+  /// In en, this message translates to:
+  /// **'Duplicate'**
+  String get duplicate;
+
+  /// No description provided for @duplicated.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction duplicated'**
+  String get duplicated;
+
+  /// No description provided for @undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get undo;
+
+  /// No description provided for @transactionDeleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction deleted'**
+  String get transactionDeleted;
+
+  /// No description provided for @notes.
+  ///
+  /// In en, this message translates to:
+  /// **'Notes'**
+  String get notes;
+
+  /// No description provided for @verifyEmailBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'Please verify your email address.'**
+  String get verifyEmailBanner;
+
+  /// No description provided for @resendLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend link'**
+  String get resendLink;
+
+  /// No description provided for @verificationSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Verification link sent. Check your inbox.'**
+  String get verificationSent;
+
+  /// No description provided for @onboardingTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Let\'s personalize Masroof'**
+  String get onboardingTitle;
+
+  /// No description provided for @skip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get skip;
+
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// No description provided for @continueLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get continueLabel;
+
+  /// No description provided for @finishOnboarding.
+  ///
+  /// In en, this message translates to:
+  /// **'Start using Masroof'**
+  String get finishOnboarding;
+
+  /// No description provided for @onboardingNameTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What should we call you?'**
+  String get onboardingNameTitle;
+
+  /// No description provided for @onboardingLanguageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose your language'**
+  String get onboardingLanguageTitle;
+
+  /// No description provided for @onboardingCurrencyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your main currency'**
+  String get onboardingCurrencyTitle;
+
+  /// No description provided for @onboardingCurrencyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Totals and reports use this currency. Accounts can still use others.'**
+  String get onboardingCurrencyBody;
+
+  /// No description provided for @onboardingIncomeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Roughly how much do you earn per month?'**
+  String get onboardingIncomeTitle;
+
+  /// No description provided for @onboardingIncomeBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional — it helps us suggest realistic budgets.'**
+  String get onboardingIncomeBody;
+
+  /// No description provided for @onboardingGoalTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s your main financial goal?'**
+  String get onboardingGoalTitle;
+
+  /// No description provided for @onboardingAlertsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay on track'**
+  String get onboardingAlertsTitle;
+
+  /// No description provided for @goalTrackSpending.
+  ///
+  /// In en, this message translates to:
+  /// **'Understand my spending'**
+  String get goalTrackSpending;
+
+  /// No description provided for @goalSaveMoney.
+  ///
+  /// In en, this message translates to:
+  /// **'Save more money'**
+  String get goalSaveMoney;
+
+  /// No description provided for @goalEmergencyFund.
+  ///
+  /// In en, this message translates to:
+  /// **'Build an emergency fund'**
+  String get goalEmergencyFund;
+
+  /// No description provided for @goalPayDebt.
+  ///
+  /// In en, this message translates to:
+  /// **'Pay off debt'**
+  String get goalPayDebt;
+
+  /// No description provided for @goalBudgetBetter.
+  ///
+  /// In en, this message translates to:
+  /// **'Stick to a budget'**
+  String get goalBudgetBetter;
+
+  /// No description provided for @goalInvest.
+  ///
+  /// In en, this message translates to:
+  /// **'Grow my investments'**
+  String get goalInvest;
+
+  /// No description provided for @goalOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Something else'**
+  String get goalOther;
+
+  /// No description provided for @budgetAlerts.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget alerts'**
+  String get budgetAlerts;
+
+  /// No description provided for @budgetAlertsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Warn me as budgets fill up'**
+  String get budgetAlertsHint;
+
+  /// No description provided for @recurringReminders.
+  ///
+  /// In en, this message translates to:
+  /// **'Recurring reminders'**
+  String get recurringReminders;
+
+  /// No description provided for @recurringRemindersHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind me about upcoming recurring payments'**
+  String get recurringRemindersHint;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @defaultAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Default account'**
+  String get defaultAccount;
+
+  /// No description provided for @none.
+  ///
+  /// In en, this message translates to:
+  /// **'None'**
+  String get none;
+
+  /// No description provided for @monthStartDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Financial month starts on day'**
+  String get monthStartDay;
+
   /// No description provided for @categoryFood.
   ///
   /// In en, this message translates to:
-  /// **'Food & Dining'**
+  /// **'Food'**
   String get categoryFood;
+
+  /// No description provided for @categoryRestaurants.
+  ///
+  /// In en, this message translates to:
+  /// **'Restaurants'**
+  String get categoryRestaurants;
 
   /// No description provided for @categoryGroceries.
   ///
@@ -956,23 +1232,17 @@ abstract class AppLocalizations {
   /// **'Groceries'**
   String get categoryGroceries;
 
-  /// No description provided for @categoryTransport.
+  /// No description provided for @categoryTransportation.
   ///
   /// In en, this message translates to:
-  /// **'Transport'**
-  String get categoryTransport;
+  /// **'Transportation'**
+  String get categoryTransportation;
 
-  /// No description provided for @categoryHousing.
+  /// No description provided for @categoryFuel.
   ///
   /// In en, this message translates to:
-  /// **'Housing & Rent'**
-  String get categoryHousing;
-
-  /// No description provided for @categoryBills.
-  ///
-  /// In en, this message translates to:
-  /// **'Bills & Utilities'**
-  String get categoryBills;
+  /// **'Fuel'**
+  String get categoryFuel;
 
   /// No description provided for @categoryShopping.
   ///
@@ -980,11 +1250,41 @@ abstract class AppLocalizations {
   /// **'Shopping'**
   String get categoryShopping;
 
-  /// No description provided for @categoryHealth.
+  /// No description provided for @categoryEntertainment.
   ///
   /// In en, this message translates to:
-  /// **'Health'**
-  String get categoryHealth;
+  /// **'Entertainment'**
+  String get categoryEntertainment;
+
+  /// No description provided for @categoryBills.
+  ///
+  /// In en, this message translates to:
+  /// **'Bills'**
+  String get categoryBills;
+
+  /// No description provided for @categoryInternet.
+  ///
+  /// In en, this message translates to:
+  /// **'Internet'**
+  String get categoryInternet;
+
+  /// No description provided for @categoryMobile.
+  ///
+  /// In en, this message translates to:
+  /// **'Mobile'**
+  String get categoryMobile;
+
+  /// No description provided for @categoryRent.
+  ///
+  /// In en, this message translates to:
+  /// **'Rent'**
+  String get categoryRent;
+
+  /// No description provided for @categoryHealthcare.
+  ///
+  /// In en, this message translates to:
+  /// **'Healthcare'**
+  String get categoryHealthcare;
 
   /// No description provided for @categoryEducation.
   ///
@@ -992,23 +1292,23 @@ abstract class AppLocalizations {
   /// **'Education'**
   String get categoryEducation;
 
-  /// No description provided for @categoryEntertainment.
-  ///
-  /// In en, this message translates to:
-  /// **'Entertainment'**
-  String get categoryEntertainment;
-
   /// No description provided for @categoryTravel.
   ///
   /// In en, this message translates to:
   /// **'Travel'**
   String get categoryTravel;
 
-  /// No description provided for @categoryCharity.
+  /// No description provided for @categoryGifts.
   ///
   /// In en, this message translates to:
-  /// **'Charity & Zakat'**
-  String get categoryCharity;
+  /// **'Gifts'**
+  String get categoryGifts;
+
+  /// No description provided for @categorySubscriptions.
+  ///
+  /// In en, this message translates to:
+  /// **'Subscriptions'**
+  String get categorySubscriptions;
 
   /// No description provided for @categoryFamily.
   ///
@@ -1028,17 +1328,17 @@ abstract class AppLocalizations {
   /// **'Salary'**
   String get categorySalary;
 
+  /// No description provided for @categoryFreelancing.
+  ///
+  /// In en, this message translates to:
+  /// **'Freelancing'**
+  String get categoryFreelancing;
+
   /// No description provided for @categoryBusiness.
   ///
   /// In en, this message translates to:
   /// **'Business'**
   String get categoryBusiness;
-
-  /// No description provided for @categoryGifts.
-  ///
-  /// In en, this message translates to:
-  /// **'Gifts'**
-  String get categoryGifts;
 
   /// No description provided for @categoryInvestments.
   ///
@@ -1046,10 +1346,22 @@ abstract class AppLocalizations {
   /// **'Investments'**
   String get categoryInvestments;
 
+  /// No description provided for @categoryGiftsIncome.
+  ///
+  /// In en, this message translates to:
+  /// **'Gifts'**
+  String get categoryGiftsIncome;
+
+  /// No description provided for @categoryRefunds.
+  ///
+  /// In en, this message translates to:
+  /// **'Refunds'**
+  String get categoryRefunds;
+
   /// No description provided for @categoryOtherIncome.
   ///
   /// In en, this message translates to:
-  /// **'Other income'**
+  /// **'Other'**
   String get categoryOtherIncome;
 }
 

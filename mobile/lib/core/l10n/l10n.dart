@@ -30,23 +30,49 @@ extension DomainLabels on AppLocalizations {
   /// Built-in categories follow the UI language until the user renames them.
   String categoryLabel({required String name, String? defaultKey}) => switch (defaultKey) {
     'food' => categoryFood,
+    'restaurants' => categoryRestaurants,
     'groceries' => categoryGroceries,
-    'transport' => categoryTransport,
-    'housing' => categoryHousing,
-    'bills' => categoryBills,
+    'transportation' => categoryTransportation,
+    'fuel' => categoryFuel,
     'shopping' => categoryShopping,
-    'health' => categoryHealth,
-    'education' => categoryEducation,
     'entertainment' => categoryEntertainment,
+    'bills' => categoryBills,
+    'internet' => categoryInternet,
+    'mobile' => categoryMobile,
+    'rent' => categoryRent,
+    'healthcare' => categoryHealthcare,
+    'education' => categoryEducation,
     'travel' => categoryTravel,
-    'charity' => categoryCharity,
+    'gifts' => categoryGifts,
+    'subscriptions' => categorySubscriptions,
     'family' => categoryFamily,
     'other_expense' => categoryOtherExpense,
     'salary' => categorySalary,
+    'freelancing' => categoryFreelancing,
     'business' => categoryBusiness,
-    'gifts' => categoryGifts,
     'investments' => categoryInvestments,
+    'gifts_income' => categoryGiftsIncome,
+    'refunds' => categoryRefunds,
     'other_income' => categoryOtherIncome,
     _ => name,
+  };
+
+  String paymentMethodLabel(String method) => switch (method) {
+    'cash' => paymentCash,
+    'card' => paymentCard,
+    'bank_transfer' => paymentBankTransfer,
+    'wallet' => paymentWallet,
+    'cheque' => paymentCheque,
+    _ => paymentOther,
+  };
+
+  String goalLabel(String goal) => switch (goal) {
+    'track_spending' => goalTrackSpending,
+    'save_money' => goalSaveMoney,
+    'emergency_fund' => goalEmergencyFund,
+    'pay_debt' => goalPayDebt,
+    'budget_better' => goalBudgetBetter,
+    'invest' => goalInvest,
+    _ => goalOther,
   };
 }

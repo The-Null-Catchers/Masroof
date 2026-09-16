@@ -1,4 +1,10 @@
 import {
+  BriefcaseBusiness,
+  Hospital,
+  Pizza,
+  RefreshCcw,
+  Repeat,
+  Wifi,
   Baby,
   BadgeDollarSign,
   Banknote,
@@ -37,6 +43,12 @@ import type { AccountType } from "@/lib/types";
 /** Icon identifiers shared with the API and the mobile app. */
 export const CATEGORY_ICONS: Record<string, LucideIcon> = {
   restaurant: Utensils,
+  fastfood: Pizza,
+  wifi: Wifi,
+  local_hospital: Hospital,
+  subscriptions: Repeat,
+  work: BriefcaseBusiness,
+  currency_exchange: RefreshCcw,
   shopping_basket: ShoppingBasket,
   directions_car: Car,
   home: Home,

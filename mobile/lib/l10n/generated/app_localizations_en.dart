@@ -346,9 +346,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get date => 'Date';
 
   @override
-  String get payee => 'Payee';
-
-  @override
   String get note => 'Note';
 
   @override
@@ -383,7 +380,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get all => 'All';
 
   @override
-  String get searchTransactions => 'Search payee, note or category';
+  String get searchTransactions => 'Search merchant, note, category or tag';
 
   @override
   String get settings => 'Settings';
@@ -458,37 +455,190 @@ class AppLocalizationsEn extends AppLocalizations {
   String get saved => 'Saved';
 
   @override
-  String get categoryFood => 'Food & Dining';
+  String get merchant => 'Merchant';
+
+  @override
+  String get paymentMethod => 'Payment method';
+
+  @override
+  String get paymentCash => 'Cash';
+
+  @override
+  String get paymentCard => 'Card';
+
+  @override
+  String get paymentBankTransfer => 'Bank transfer';
+
+  @override
+  String get paymentWallet => 'Digital wallet';
+
+  @override
+  String get paymentCheque => 'Cheque';
+
+  @override
+  String get paymentOther => 'Other';
+
+  @override
+  String get tags => 'Tags';
+
+  @override
+  String get addTag => 'Add tag';
+
+  @override
+  String get duplicate => 'Duplicate';
+
+  @override
+  String get duplicated => 'Transaction duplicated';
+
+  @override
+  String get undo => 'Undo';
+
+  @override
+  String get transactionDeleted => 'Transaction deleted';
+
+  @override
+  String get notes => 'Notes';
+
+  @override
+  String get verifyEmailBanner => 'Please verify your email address.';
+
+  @override
+  String get resendLink => 'Resend link';
+
+  @override
+  String get verificationSent => 'Verification link sent. Check your inbox.';
+
+  @override
+  String get onboardingTitle => 'Let\'s personalize Masroof';
+
+  @override
+  String get skip => 'Skip';
+
+  @override
+  String get back => 'Back';
+
+  @override
+  String get continueLabel => 'Continue';
+
+  @override
+  String get finishOnboarding => 'Start using Masroof';
+
+  @override
+  String get onboardingNameTitle => 'What should we call you?';
+
+  @override
+  String get onboardingLanguageTitle => 'Choose your language';
+
+  @override
+  String get onboardingCurrencyTitle => 'Your main currency';
+
+  @override
+  String get onboardingCurrencyBody => 'Totals and reports use this currency. Accounts can still use others.';
+
+  @override
+  String get onboardingIncomeTitle => 'Roughly how much do you earn per month?';
+
+  @override
+  String get onboardingIncomeBody => 'Optional — it helps us suggest realistic budgets.';
+
+  @override
+  String get onboardingGoalTitle => 'What\'s your main financial goal?';
+
+  @override
+  String get onboardingAlertsTitle => 'Stay on track';
+
+  @override
+  String get goalTrackSpending => 'Understand my spending';
+
+  @override
+  String get goalSaveMoney => 'Save more money';
+
+  @override
+  String get goalEmergencyFund => 'Build an emergency fund';
+
+  @override
+  String get goalPayDebt => 'Pay off debt';
+
+  @override
+  String get goalBudgetBetter => 'Stick to a budget';
+
+  @override
+  String get goalInvest => 'Grow my investments';
+
+  @override
+  String get goalOther => 'Something else';
+
+  @override
+  String get budgetAlerts => 'Budget alerts';
+
+  @override
+  String get budgetAlertsHint => 'Warn me as budgets fill up';
+
+  @override
+  String get recurringReminders => 'Recurring reminders';
+
+  @override
+  String get recurringRemindersHint => 'Remind me about upcoming recurring payments';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get defaultAccount => 'Default account';
+
+  @override
+  String get none => 'None';
+
+  @override
+  String get monthStartDay => 'Financial month starts on day';
+
+  @override
+  String get categoryFood => 'Food';
+
+  @override
+  String get categoryRestaurants => 'Restaurants';
 
   @override
   String get categoryGroceries => 'Groceries';
 
   @override
-  String get categoryTransport => 'Transport';
+  String get categoryTransportation => 'Transportation';
 
   @override
-  String get categoryHousing => 'Housing & Rent';
-
-  @override
-  String get categoryBills => 'Bills & Utilities';
+  String get categoryFuel => 'Fuel';
 
   @override
   String get categoryShopping => 'Shopping';
 
   @override
-  String get categoryHealth => 'Health';
+  String get categoryEntertainment => 'Entertainment';
+
+  @override
+  String get categoryBills => 'Bills';
+
+  @override
+  String get categoryInternet => 'Internet';
+
+  @override
+  String get categoryMobile => 'Mobile';
+
+  @override
+  String get categoryRent => 'Rent';
+
+  @override
+  String get categoryHealthcare => 'Healthcare';
 
   @override
   String get categoryEducation => 'Education';
 
   @override
-  String get categoryEntertainment => 'Entertainment';
-
-  @override
   String get categoryTravel => 'Travel';
 
   @override
-  String get categoryCharity => 'Charity & Zakat';
+  String get categoryGifts => 'Gifts';
+
+  @override
+  String get categorySubscriptions => 'Subscriptions';
 
   @override
   String get categoryFamily => 'Family';
@@ -500,14 +650,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get categorySalary => 'Salary';
 
   @override
-  String get categoryBusiness => 'Business';
+  String get categoryFreelancing => 'Freelancing';
 
   @override
-  String get categoryGifts => 'Gifts';
+  String get categoryBusiness => 'Business';
 
   @override
   String get categoryInvestments => 'Investments';
 
   @override
-  String get categoryOtherIncome => 'Other income';
+  String get categoryGiftsIncome => 'Gifts';
+
+  @override
+  String get categoryRefunds => 'Refunds';
+
+  @override
+  String get categoryOtherIncome => 'Other';
 }

@@ -164,7 +164,7 @@ void main() {
     expect(totals.single.expense, 2500);
   });
 
-  test('search matches payee and notes', () async {
+  test('search matches merchant and notes', () async {
     final bank = await accounts.create(
       const AccountDraft(name: 'Bank', type: 'bank', currency: 'SAR', openingBalance: 0),
     );
@@ -175,7 +175,7 @@ void main() {
         accountId: bank,
         categoryId: food,
         amount: 1,
-        payee: 'Starbucks',
+        merchant: 'Starbucks',
         occurredAt: DateTime(2026),
       ),
     );
@@ -192,5 +192,39 @@ void main() {
 
     expect(await transactions.watch(const TransactionFilter(search: 'star')).first, hasLength(1));
     expect(await transactions.watch(const TransactionFilter(search: 'البيك')).first, hasLength(1));
+  });
+
+  test('tags and payment method are stored and duplicate creates a queued copy', () async {
+    final bank = await accounts.create(
+      const AccountDraft(name: 'Bank', type: 'bank', currency: 'ILS', openingBalance: 10000),
+    );
+    final food = await categories.create(const CategoryDraft(name: 'Food', type: 'expense'));
+    await db.delete(db.pendingOperations).go();
+
+    final id = await transactions.create(
+      TransactionDraft(
+        type: 'expense',
+        accountId: bank,
+        categoryId: food,
+        amount: 2500,
+        occurredAt: DateTime(2026, 9, 1),
+        merchant: 'Zaytouna',
+        paymentMethod: 'card',
+        tags: const ['lunch', 'work'],
+      ),
+    );
+    final copyId = await transactions.duplicate(id, occurredAt: DateTime(2026, 9, 2));
+
+    final copy = (await transactions.find(copyId))!;
+    expect(copy.merchant, 'Zaytouna');
+    expect(copy.paymentMethod, 'card');
+    expect(decodeTags(copy.tags), ['lunch', 'work']);
+    expect(await balanceOf(bank), 5000);
+
+    final queued = await ops();
+    expect(queued.map((o) => o.method), ['POST', 'POST']);
+    final payload = jsonDecode(queued.last.payload!) as Map<String, dynamic>;
+    expect(payload['tags'], ['lunch', 'work']);
+    expect(payload['payment_method'], 'card');
   });
 }

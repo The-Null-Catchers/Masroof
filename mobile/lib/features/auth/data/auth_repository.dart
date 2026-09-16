@@ -54,10 +54,19 @@ class AuthRepository {
     return _cache(User.fromJson(response['data'] as Map<String, dynamic>));
   }
 
-  Future<User> updateProfile(Map<String, Object?> changes) async {
-    final response = await _api.patch('/me', changes);
+  /// Updates profile preferences and financial settings (PATCH /settings).
+  Future<User> updateSettings(Map<String, Object?> changes) async {
+    final response = await _api.patch('/settings', changes);
     return _cache(User.fromJson(response['data'] as Map<String, dynamic>));
   }
+
+  /// Saves onboarding answers (all optional) and marks onboarding complete.
+  Future<User> completeOnboarding(Map<String, Object?> answers) async {
+    final response = await _api.post('/onboarding', answers);
+    return _cache(User.fromJson(response['data'] as Map<String, dynamic>));
+  }
+
+  Future<void> resendVerification() => _api.post('/auth/email/verification-notification', const {});
 
   Future<void> changePassword({required String current, required String next}) =>
       _api.put('/me/password', {'current_password': current, 'password': next, 'password_confirmation': next});

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 
 import '../../../core/database/app_database.dart';
@@ -15,8 +17,10 @@ class TransactionDraft {
     this.categoryId,
     this.transferAccountId,
     this.transferAmount,
-    this.payee,
+    this.merchant,
     this.note,
+    this.paymentMethod,
+    this.tags = const [],
   });
 
   final String type;
@@ -26,8 +30,33 @@ class TransactionDraft {
   final String? categoryId;
   final String? transferAccountId;
   final int? transferAmount;
-  final String? payee;
+  final String? merchant;
   final String? note;
+  final String? paymentMethod;
+  final List<String> tags;
+
+  /// Copy of an existing transaction dated [occurredAt].
+  factory TransactionDraft.copyOf(TransactionEntity t, {required DateTime occurredAt}) => TransactionDraft(
+    type: t.type,
+    accountId: t.accountId,
+    amount: t.amount,
+    occurredAt: occurredAt,
+    categoryId: t.categoryId,
+    transferAccountId: t.transferAccountId,
+    transferAmount: t.transferAmount,
+    merchant: t.merchant,
+    note: t.note,
+    paymentMethod: t.paymentMethod,
+    tags: decodeTags(t.tags),
+  );
+}
+
+List<String> decodeTags(String raw) {
+  try {
+    return (jsonDecode(raw) as List).cast<String>();
+  } catch (_) {
+    return const [];
+  }
 }
 
 /// A transaction joined with the records needed to render it.
@@ -125,7 +154,7 @@ class TransactionsRepository {
     final search = filter.search?.trim();
     if (search != null && search.isNotEmpty) {
       final like = '%$search%';
-      query.where(t.payee.like(like) | t.note.like(like) | category.name.like(like));
+      query.where(t.merchant.like(like) | t.note.like(like) | category.name.like(like));
     }
 
     query.orderBy([OrderingTerm.desc(t.occurredAt), OrderingTerm.desc(t.id)]);
@@ -200,8 +229,10 @@ class TransactionsRepository {
         transferAccountId: normalized.transferAccountId,
         transferAmount: normalized.transferAmount,
         occurredAt: draft.occurredAt.toUtc(),
-        payee: _blankToNull(draft.payee),
+        merchant: _blankToNull(draft.merchant),
         note: _blankToNull(draft.note),
+        paymentMethod: normalized.type == 'transfer' ? null : draft.paymentMethod,
+        tags: jsonEncode(draft.tags),
         updatedAt: DateTime.now().toUtc(),
       );
       await _db.into(_db.transactions).insert(entity);
@@ -223,14 +254,23 @@ class TransactionsRepository {
       transferAccountId: Value(normalized.transferAccountId),
       transferAmount: Value(normalized.transferAmount),
       occurredAt: draft.occurredAt.toUtc(),
-      payee: Value(_blankToNull(draft.payee)),
+      merchant: Value(_blankToNull(draft.merchant)),
       note: Value(_blankToNull(draft.note)),
+      paymentMethod: Value(draft.type == 'transfer' ? null : draft.paymentMethod),
+      tags: jsonEncode(draft.tags),
       updatedAt: DateTime.now().toUtc(),
     );
     await _db.update(_db.transactions).replace(after);
     await _applyEffects(diffEffects(effectsOf(before), effectsOf(after)));
     await _outbox.update(SyncEntity.transactions, id, await _payload(after));
   });
+
+  /// Duplicates a transaction as a new local record (queued like any create).
+  Future<String> duplicate(String id, {DateTime? occurredAt}) async {
+    final source = await find(id);
+    if (source == null) throw StateError('Transaction $id not found');
+    return create(TransactionDraft.copyOf(source, occurredAt: occurredAt ?? DateTime.now()));
+  }
 
   Future<void> delete(String id) => _db.transaction(() async {
     final existing = await (_db.select(_db.transactions)..where((t) => t.id.equals(id))).getSingleOrNull();
@@ -261,6 +301,7 @@ class TransactionsRepository {
       transferAccountId: isTransfer ? draft.transferAccountId : null,
       transferAmount: transferAmount,
       occurredAt: draft.occurredAt,
+      tags: '[]',
       updatedAt: DateTime.now(),
     );
   }
@@ -281,8 +322,10 @@ class TransactionsRepository {
       if (t.transferAmount != null && transferCurrency != null)
         'transfer_amount': Money.toDecimal(t.transferAmount!, transferCurrency),
       'occurred_at': t.occurredAt.toUtc().toIso8601String(),
-      'payee': t.payee,
+      'merchant': t.merchant,
       'note': t.note,
+      'payment_method': t.paymentMethod,
+      'tags': decodeTags(t.tags),
     };
   }
 

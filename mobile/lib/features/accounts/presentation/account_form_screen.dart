@@ -26,8 +26,9 @@ class _AccountFormScreenState extends ConsumerState<AccountFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _name = TextEditingController();
   final _opening = TextEditingController(text: '0');
+  final _notes = TextEditingController();
   String _type = 'bank';
-  String _currency = 'SAR';
+  String _currency = 'ILS';
   String _color = toHexColor(AppColors.pickerPalette.first);
   bool _includeInTotal = true;
   bool _archived = false;
@@ -60,6 +61,7 @@ class _AccountFormScreenState extends ConsumerState<AccountFormScreen> {
       _opening.text = Money.toDecimal(account.openingBalance, account.currency);
       _color = account.color ?? _color;
       _includeInTotal = account.includeInTotal;
+      _notes.text = account.notes ?? '';
       _archived = account.archived;
       _currencyLocked = locked;
       _loaded = true;
@@ -70,6 +72,7 @@ class _AccountFormScreenState extends ConsumerState<AccountFormScreen> {
   void dispose() {
     _name.dispose();
     _opening.dispose();
+    _notes.dispose();
     super.dispose();
   }
 
@@ -84,6 +87,7 @@ class _AccountFormScreenState extends ConsumerState<AccountFormScreen> {
       openingBalance: negative ? -minor : minor,
       color: _color,
       icon: null,
+      notes: _notes.text.trim().isEmpty ? null : _notes.text.trim(),
       includeInTotal: _includeInTotal,
     );
     final repo = ref.read(accountsRepositoryProvider);
@@ -214,6 +218,14 @@ class _AccountFormScreenState extends ConsumerState<AccountFormScreen> {
               ],
             ),
             const SizedBox(height: 12),
+            TextFormField(
+              controller: _notes,
+              maxLines: 3,
+              minLines: 1,
+              maxLength: 1000,
+              decoration: InputDecoration(labelText: '${l10n.notes} (${l10n.optional})', counterText: ''),
+            ),
+            const SizedBox(height: 8),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,
               title: Text(l10n.includeInTotal),

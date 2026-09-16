@@ -4,6 +4,12 @@ import 'package:flutter/material.dart';
 abstract final class IconCatalog {
   static const icons = <String, IconData>{
     'restaurant': Icons.restaurant_rounded,
+    'fastfood': Icons.fastfood_rounded,
+    'wifi': Icons.wifi_rounded,
+    'local_hospital': Icons.local_hospital_rounded,
+    'subscriptions': Icons.subscriptions_rounded,
+    'work': Icons.work_rounded,
+    'currency_exchange': Icons.currency_exchange_rounded,
     'shopping_basket': Icons.shopping_basket_rounded,
     'directions_car': Icons.directions_car_rounded,
     'home': Icons.home_rounded,

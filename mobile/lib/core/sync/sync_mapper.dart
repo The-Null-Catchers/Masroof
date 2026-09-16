@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:drift/drift.dart';
 
 import '../database/app_database.dart';
@@ -15,6 +17,7 @@ abstract final class SyncMapper {
     balance: Value(json['balance_minor'] as int),
     color: Value(json['color'] as String?),
     icon: Value(json['icon'] as String?),
+    notes: Value(json['notes'] as String?),
     includeInTotal: Value(json['include_in_total'] as bool),
     archived: Value(json['archived'] as bool),
     sortOrder: Value(json['sort_order'] as int),
@@ -44,7 +47,9 @@ abstract final class SyncMapper {
     transferAccountId: Value(json['transfer_account_id'] as String?),
     transferAmount: Value(json['transfer_amount_minor'] as int?),
     occurredAt: _date(json['occurred_at']),
-    payee: Value(json['payee'] as String?),
+    merchant: Value(json['merchant'] as String?),
+    paymentMethod: Value(json['payment_method'] as String?),
+    tags: Value(jsonEncode([for (final tag in (json['tags'] as List?) ?? const []) (tag as Map)['name']])),
     note: Value(json['note'] as String?),
     updatedAt: _date(json['updated_at']),
   );

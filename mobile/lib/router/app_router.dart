@@ -13,6 +13,7 @@ import '../features/auth/presentation/register_screen.dart';
 import '../features/categories/presentation/categories_screen.dart';
 import '../features/categories/presentation/category_form_screen.dart';
 import '../features/dashboard/presentation/dashboard_screen.dart';
+import '../features/onboarding/presentation/onboarding_screen.dart';
 import '../features/settings/presentation/settings_screen.dart';
 import '../features/transactions/presentation/transaction_form_screen.dart';
 import '../features/transactions/presentation/transactions_screen.dart';
@@ -33,11 +34,15 @@ final routerProvider = Provider<GoRouter>((ref) {
       final location = state.matchedLocation;
       if (auth is AuthLoading) return location == '/splash' ? null : '/splash';
       if (auth is Unauthenticated) return _publicRoutes.contains(location) ? null : '/login';
-      if (_publicRoutes.contains(location) || location == '/splash') return '/';
+      if (auth is Authenticated && !auth.user.settings.onboardingCompleted) {
+        return location == '/onboarding' ? null : '/onboarding';
+      }
+      if (_publicRoutes.contains(location) || location == '/splash' || location == '/onboarding') return '/';
       return null;
     },
     routes: [
       GoRoute(path: '/splash', builder: (_, _) => const _SplashScreen()),
+      GoRoute(path: '/onboarding', builder: (_, _) => const OnboardingScreen()),
       GoRoute(path: '/login', builder: (_, _) => const LoginScreen()),
       GoRoute(path: '/register', builder: (_, _) => const RegisterScreen()),
       GoRoute(path: '/forgot-password', builder: (_, _) => const ForgotPasswordScreen()),

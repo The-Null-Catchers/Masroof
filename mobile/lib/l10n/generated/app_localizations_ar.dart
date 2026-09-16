@@ -349,9 +349,6 @@ class AppLocalizationsAr extends AppLocalizations {
   String get date => 'التاريخ';
 
   @override
-  String get payee => 'الجهة';
-
-  @override
   String get note => 'ملاحظة';
 
   @override
@@ -386,7 +383,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get all => 'الكل';
 
   @override
-  String get searchTransactions => 'ابحث بالجهة أو الملاحظة أو الفئة';
+  String get searchTransactions => 'ابحث بالجهة أو الملاحظة أو الفئة أو الوسم';
 
   @override
   String get settings => 'الإعدادات';
@@ -459,37 +456,190 @@ class AppLocalizationsAr extends AppLocalizations {
   String get saved => 'تم الحفظ';
 
   @override
-  String get categoryFood => 'الطعام والمطاعم';
+  String get merchant => 'الجهة';
+
+  @override
+  String get paymentMethod => 'طريقة الدفع';
+
+  @override
+  String get paymentCash => 'نقدًا';
+
+  @override
+  String get paymentCard => 'بطاقة';
+
+  @override
+  String get paymentBankTransfer => 'تحويل بنكي';
+
+  @override
+  String get paymentWallet => 'محفظة رقمية';
+
+  @override
+  String get paymentCheque => 'شيك';
+
+  @override
+  String get paymentOther => 'أخرى';
+
+  @override
+  String get tags => 'الوسوم';
+
+  @override
+  String get addTag => 'إضافة وسم';
+
+  @override
+  String get duplicate => 'تكرار';
+
+  @override
+  String get duplicated => 'تم تكرار المعاملة';
+
+  @override
+  String get undo => 'تراجع';
+
+  @override
+  String get transactionDeleted => 'تم حذف المعاملة';
+
+  @override
+  String get notes => 'ملاحظات';
+
+  @override
+  String get verifyEmailBanner => 'يرجى تأكيد بريدك الإلكتروني.';
+
+  @override
+  String get resendLink => 'إعادة إرسال الرابط';
+
+  @override
+  String get verificationSent => 'تم إرسال رابط التحقق. تفقد بريدك.';
+
+  @override
+  String get onboardingTitle => 'لنخصص مصروف لك';
+
+  @override
+  String get skip => 'تخطي';
+
+  @override
+  String get back => 'رجوع';
+
+  @override
+  String get continueLabel => 'متابعة';
+
+  @override
+  String get finishOnboarding => 'ابدأ استخدام مصروف';
+
+  @override
+  String get onboardingNameTitle => 'بماذا نناديك؟';
+
+  @override
+  String get onboardingLanguageTitle => 'اختر لغتك';
+
+  @override
+  String get onboardingCurrencyTitle => 'عملتك الرئيسية';
+
+  @override
+  String get onboardingCurrencyBody => 'تُحسب الإجماليات والتقارير بهذه العملة، ويمكن للحسابات استخدام عملات أخرى.';
+
+  @override
+  String get onboardingIncomeTitle => 'كم دخلك الشهري تقريبًا؟';
+
+  @override
+  String get onboardingIncomeBody => 'اختياري — يساعدنا على اقتراح ميزانيات واقعية.';
+
+  @override
+  String get onboardingGoalTitle => 'ما هدفك المالي الرئيسي؟';
+
+  @override
+  String get onboardingAlertsTitle => 'ابقَ على المسار';
+
+  @override
+  String get goalTrackSpending => 'فهم مصروفاتي';
+
+  @override
+  String get goalSaveMoney => 'ادخار المزيد';
+
+  @override
+  String get goalEmergencyFund => 'بناء صندوق طوارئ';
+
+  @override
+  String get goalPayDebt => 'سداد الديون';
+
+  @override
+  String get goalBudgetBetter => 'الالتزام بميزانية';
+
+  @override
+  String get goalInvest => 'تنمية استثماراتي';
+
+  @override
+  String get goalOther => 'هدف آخر';
+
+  @override
+  String get budgetAlerts => 'تنبيهات الميزانية';
+
+  @override
+  String get budgetAlertsHint => 'نبّهني عند اقتراب الميزانيات من حدها';
+
+  @override
+  String get recurringReminders => 'تذكير الدفعات المتكررة';
+
+  @override
+  String get recurringRemindersHint => 'ذكّرني بالدفعات المتكررة القادمة';
+
+  @override
+  String get notifications => 'الإشعارات';
+
+  @override
+  String get defaultAccount => 'الحساب الافتراضي';
+
+  @override
+  String get none => 'بدون';
+
+  @override
+  String get monthStartDay => 'يبدأ الشهر المالي في اليوم';
+
+  @override
+  String get categoryFood => 'الطعام';
+
+  @override
+  String get categoryRestaurants => 'المطاعم';
 
   @override
   String get categoryGroceries => 'البقالة';
 
   @override
-  String get categoryTransport => 'المواصلات';
+  String get categoryTransportation => 'المواصلات';
 
   @override
-  String get categoryHousing => 'السكن والإيجار';
-
-  @override
-  String get categoryBills => 'الفواتير والخدمات';
+  String get categoryFuel => 'الوقود';
 
   @override
   String get categoryShopping => 'التسوق';
 
   @override
-  String get categoryHealth => 'الصحة';
+  String get categoryEntertainment => 'الترفيه';
+
+  @override
+  String get categoryBills => 'الفواتير';
+
+  @override
+  String get categoryInternet => 'الإنترنت';
+
+  @override
+  String get categoryMobile => 'الجوال';
+
+  @override
+  String get categoryRent => 'الإيجار';
+
+  @override
+  String get categoryHealthcare => 'الرعاية الصحية';
 
   @override
   String get categoryEducation => 'التعليم';
 
   @override
-  String get categoryEntertainment => 'الترفيه';
-
-  @override
   String get categoryTravel => 'السفر';
 
   @override
-  String get categoryCharity => 'الصدقات والزكاة';
+  String get categoryGifts => 'الهدايا';
+
+  @override
+  String get categorySubscriptions => 'الاشتراكات';
 
   @override
   String get categoryFamily => 'العائلة';
@@ -501,14 +651,20 @@ class AppLocalizationsAr extends AppLocalizations {
   String get categorySalary => 'الراتب';
 
   @override
-  String get categoryBusiness => 'الأعمال';
+  String get categoryFreelancing => 'العمل الحر';
 
   @override
-  String get categoryGifts => 'الهدايا';
+  String get categoryBusiness => 'الأعمال';
 
   @override
   String get categoryInvestments => 'الاستثمارات';
 
   @override
-  String get categoryOtherIncome => 'دخل آخر';
+  String get categoryGiftsIncome => 'الهدايا';
+
+  @override
+  String get categoryRefunds => 'المبالغ المستردة';
+
+  @override
+  String get categoryOtherIncome => 'أخرى';
 }

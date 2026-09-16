@@ -9,7 +9,7 @@ void main() {
       expect(Money.tryParse('0.29', 'USD'), 29);
       expect(Money.tryParse('1,250.75', 'SAR'), 125075);
       expect(Money.tryParse('1.234', 'KWD'), 1234);
-      expect(Money.tryParse('1500', 'JPY'), 1500);
+      expect(Money.tryParse('12.5', 'ILS'), 1250);
     });
 
     test('accepts Arabic-Indic digits and Arabic decimal separator', () {
@@ -21,7 +21,7 @@ void main() {
       expect(Money.tryParse('', 'SAR'), isNull);
       expect(Money.tryParse('abc', 'SAR'), isNull);
       expect(Money.tryParse('1.234', 'SAR'), isNull);
-      expect(Money.tryParse('1.5', 'JPY'), isNull);
+      expect(Money.tryParse('1.5555', 'JOD'), isNull);
       expect(Money.tryParse('-5', 'SAR'), isNull);
       expect(Money.tryParse('1e3', 'SAR'), isNull);
     });
@@ -33,7 +33,7 @@ void main() {
       expect(Money.toDecimal(7, 'SAR'), '0.07');
       expect(Money.toDecimal(-5, 'SAR'), '-0.05');
       expect(Money.toDecimal(1, 'BHD'), '0.001');
-      expect(Money.toDecimal(1500, 'JPY'), '1500');
+      expect(Money.toDecimal(1500, 'JOD'), '1.500');
     });
 
     test('round-trips with tryParse', () {
@@ -45,9 +45,10 @@ void main() {
 
   group('Money.format', () {
     test('uses grouping, localized symbols and bidi isolates', () {
-      expect(Money.format(125075, 'SAR', locale: 'en'), 'SAR \u20661,250.75\u2069');
-      expect(Money.format(-125075, 'SAR', locale: 'ar'), '\u2066-1,250.75\u2069 ر.س');
-      expect(Money.format(500, 'USD', locale: 'en', signed: true), 'USD \u2066+5.00\u2069');
+      expect(Money.format(125075, 'USD', locale: 'en'), '\$ \u20661,250.75\u2069');
+      expect(Money.format(4200, 'ILS', locale: 'ar'), '\u206642.00\u2069 ₪');
+      expect(Money.format(-1500, 'JOD', locale: 'ar'), '\u2066-1.500\u2069 د.أ');
+      expect(Money.format(500, 'EUR', locale: 'en', signed: true), '€ \u2066+5.00\u2069');
       expect(Money.format(1234567, 'KWD', locale: 'en', withSymbol: false), '1,234.567');
     });
   });

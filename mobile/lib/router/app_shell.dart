@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 import '../core/l10n/l10n.dart';
 import '../core/widgets/sync_banner.dart';
+import '../core/widgets/verification_banner.dart';
 
 class AppShell extends StatelessWidget {
   const AppShell({super.key, required this.navigationShell});
@@ -15,6 +16,7 @@ class AppShell extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
+          const VerificationBanner(),
           const SyncBanner(),
           Expanded(child: navigationShell),
         ],

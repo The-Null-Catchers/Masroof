@@ -18,6 +18,9 @@ import '../../../core/widgets/icon_catalog.dart';
 import '../../accounts/application/account_providers.dart';
 import '../../categories/application/category_providers.dart';
 import '../data/transactions_repository.dart';
+import 'widgets/tags_field.dart';
+
+const paymentMethods = ['cash', 'card', 'bank_transfer', 'wallet', 'cheque', 'other'];
 
 class TransactionFormScreen extends ConsumerStatefulWidget {
   const TransactionFormScreen({super.key, this.transactionId, this.initialType = 'expense', this.initialAccountId});
@@ -34,8 +37,10 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _amount = TextEditingController();
   final _transferAmount = TextEditingController();
-  final _payee = TextEditingController();
+  final _merchant = TextEditingController();
   final _note = TextEditingController();
+  String? _paymentMethod;
+  List<String> _tags = [];
 
   late String _type = widget.initialType;
   String? _accountId;
@@ -85,8 +90,10 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
       if (t.transferAmount != null && destinationCurrency != null) {
         _transferAmount.text = Money.toDecimal(t.transferAmount!, destinationCurrency);
       }
-      _payee.text = t.payee ?? '';
+      _merchant.text = t.merchant ?? '';
       _note.text = t.note ?? '';
+      _paymentMethod = t.paymentMethod;
+      _tags = decodeTags(t.tags);
       _loaded = true;
     });
   }
@@ -95,7 +102,7 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
   void dispose() {
     _amount.dispose();
     _transferAmount.dispose();
-    _payee.dispose();
+    _merchant.dispose();
     _note.dispose();
     super.dispose();
   }
@@ -114,8 +121,10 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
       categoryId: _type == 'transfer' ? null : _categoryId,
       transferAccountId: _type == 'transfer' ? _transferAccountId : null,
       transferAmount: crossCurrency ? Money.tryParse(_transferAmount.text, destination.currency) : null,
-      payee: _type == 'transfer' ? null : _payee.text,
+      merchant: _type == 'transfer' ? null : _merchant.text,
       note: _note.text,
+      paymentMethod: _type == 'transfer' ? null : _paymentMethod,
+      tags: _tags,
     );
 
     setState(() => _saving = true);
@@ -288,16 +297,32 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
                   _CategoryField(type: _type, value: _categoryId, onChanged: (id) => setState(() => _categoryId = id)),
                   const SizedBox(height: 16),
                   TextFormField(
-                    controller: _payee,
+                    controller: _merchant,
                     textInputAction: TextInputAction.next,
                     maxLength: 120,
                     decoration: InputDecoration(
-                      labelText: '${l10n.payee} (${l10n.optional})',
+                      labelText: '${l10n.merchant} (${l10n.optional})',
                       prefixIcon: const Icon(Icons.storefront_outlined),
                       counterText: '',
                     ),
                   ),
+                  const SizedBox(height: 16),
+                  DropdownButtonFormField<String?>(
+                    initialValue: _paymentMethod,
+                    decoration: InputDecoration(
+                      labelText: '${l10n.paymentMethod} (${l10n.optional})',
+                      prefixIcon: const Icon(Icons.credit_card_outlined),
+                    ),
+                    items: [
+                      const DropdownMenuItem<String?>(value: null, child: Text('—')),
+                      for (final method in paymentMethods)
+                        DropdownMenuItem<String?>(value: method, child: Text(l10n.paymentMethodLabel(method))),
+                    ],
+                    onChanged: (value) => setState(() => _paymentMethod = value),
+                  ),
                 ],
+                const SizedBox(height: 16),
+                TagsField(tags: _tags, onChanged: (tags) => setState(() => _tags = tags)),
                 const SizedBox(height: 16),
                 InkWell(
                   borderRadius: BorderRadius.circular(12),

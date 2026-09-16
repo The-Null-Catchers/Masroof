@@ -26,7 +26,7 @@ void main() {
 
   tearDown(() => db.close());
 
-  Future<void> pumpApp(WidgetTester tester, {required String locale}) async {
+  Future<void> pumpApp(WidgetTester tester, {required String locale, FakeApiClient? api}) async {
     SharedPreferences.setMockInitialValues({'settings.locale': locale});
     final prefs = await SharedPreferences.getInstance();
     tester.view.physicalSize = const Size(1080, 2400);
@@ -39,7 +39,7 @@ void main() {
           sharedPreferencesProvider.overrideWithValue(prefs),
           databaseProvider.overrideWithValue(db),
           tokenStorageProvider.overrideWithValue(tokens),
-          apiClientProvider.overrideWithValue(FakeApiClient((method, path, body, query) => throw offline)),
+          apiClientProvider.overrideWithValue(api ?? FakeApiClient((method, path, body, query) => throw offline)),
         ],
         child: const MasroofApp(),
       ),
@@ -47,7 +47,7 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  Future<void> signInLocally() async {
+  Future<void> signInLocally({bool onboarded = true}) async {
     await tokens.write('test-token');
     await db.writeValue(
       'auth.user',
@@ -56,9 +56,11 @@ void main() {
         'name': 'Sara Ahmed',
         'email': 'sara@example.com',
         'locale': 'ar',
-        'currency': 'SAR',
-        'timezone': 'Asia/Riyadh',
+        'currency': 'ILS',
+        'timezone': 'Asia/Hebron',
         'week_start': 6,
+        'email_verified': true,
+        'settings': {'onboarding_completed': onboarded},
       }),
     );
   }
@@ -103,7 +105,7 @@ void main() {
         .insert(
           CategoriesCompanion.insert(
             id: '01j00000000000000000000001',
-            name: 'الطعام والمطاعم',
+            name: 'الطعام',
             type: 'expense',
             defaultKey: const Value('food'),
             updatedAt: DateTime.utc(2026),
@@ -117,15 +119,63 @@ void main() {
     await tester.tap(find.text('Select a category').first);
     await tester.pumpAndSettle();
     // Built-in category is shown in the UI language, not the stored name.
-    await tester.tap(find.text('Food & Dining'));
+    await tester.tap(find.text('Food'));
     await tester.pumpAndSettle();
     await tester.tap(find.byKey(const Key('save-transaction')));
     await tester.pumpAndSettle();
 
     expect(find.textContaining('154.50'), findsWidgets);
-    expect(find.text('Food & Dining'), findsWidgets);
+    expect(find.text('Food'), findsWidgets);
     // Both writes are queued for sync while offline.
     expect(await db.select(db.pendingOperations).get(), hasLength(2));
     expect(find.textContaining('Offline'), findsOneWidget);
+  });
+
+  testWidgets('users who have not onboarded are guided through onboarding', (tester) async {
+    await signInLocally(onboarded: false);
+    Map<String, dynamic>? submitted;
+    final api = FakeApiClient((method, path, body, query) {
+      if (method == 'POST' && path == '/onboarding') {
+        submitted = body as Map<String, dynamic>;
+        return {
+          'data': {
+            'id': '01j00000000000000000000000',
+            'name': 'Sara Ahmed',
+            'email': 'sara@example.com',
+            'locale': 'en',
+            'currency': 'JOD',
+            'timezone': 'Asia/Amman',
+            'week_start': 6,
+            'email_verified': true,
+            'settings': {'onboarding_completed': true},
+          },
+        };
+      }
+      throw offline;
+    });
+    await pumpApp(tester, locale: 'en', api: api);
+
+    expect(find.text('What should we call you?'), findsOneWidget);
+    await tester.tap(find.byKey(const Key('onboarding-next')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('onboarding-next')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('JOD'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('onboarding-next')));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField), '850.5');
+    await tester.tap(find.byKey(const Key('onboarding-next')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Build an emergency fund'));
+    await tester.tap(find.byKey(const Key('onboarding-next')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byKey(const Key('onboarding-next')));
+    await tester.pumpAndSettle();
+
+    expect(submitted, containsPair('currency', 'JOD'));
+    expect(submitted, containsPair('monthly_income_estimate', '850.500'));
+    expect(submitted, containsPair('main_goal', 'emergency_fund'));
+    expect(find.text('Hello, Sara'), findsOneWidget);
   });
 }

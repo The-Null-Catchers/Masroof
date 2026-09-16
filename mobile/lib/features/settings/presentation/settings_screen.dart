@@ -12,6 +12,7 @@ import '../../../core/providers.dart';
 import '../../../core/sync/sync_engine.dart';
 import '../../../core/widgets/error_text.dart';
 import '../../../core/widgets/masroof_logo.dart';
+import '../../accounts/application/account_providers.dart';
 import '../../auth/application/auth_controller.dart';
 import '../../auth/presentation/widgets/auth_layout.dart';
 import '../application/settings_controller.dart';
@@ -28,9 +29,9 @@ class SettingsScreen extends ConsumerWidget {
     final user = auth is Authenticated ? auth.user : null;
     final sync = ref.watch(syncStatusProvider).value;
 
-    Future<void> updateProfile(Map<String, Object?> changes) async {
+    Future<void> updateSettings(Map<String, Object?> changes) async {
       try {
-        await ref.read(authControllerProvider.notifier).updateProfile(changes);
+        await ref.read(authControllerProvider.notifier).updateSettings(changes);
       } catch (e) {
         if (context.mounted) showErrorSnack(context, e);
       }
@@ -72,7 +73,7 @@ class SettingsScreen extends ConsumerWidget {
                   showSelectedIcon: false,
                   onSelectionChanged: (v) {
                     unawaited(ref.read(settingsControllerProvider.notifier).setLocale(v.first));
-                    if (user != null) unawaited(updateProfile({'locale': v.first}));
+                    if (user != null) unawaited(updateSettings({'locale': v.first}));
                   },
                 ),
               ),
@@ -99,12 +100,51 @@ class SettingsScreen extends ConsumerWidget {
                     value: user.currency,
                     underline: const SizedBox.shrink(),
                     items: [for (final c in Money.currencies) DropdownMenuItem(value: c, child: Text(c))],
-                    onChanged: (c) => c == null ? null : updateProfile({'currency': c}),
+                    onChanged: (c) => c == null ? null : updateSettings({'currency': c}),
                   ),
                 ),
             ],
           ),
           const SizedBox(height: 16),
+          if (user != null) ...[
+            _Section(
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.account_balance_wallet_outlined),
+                  title: Text(l10n.defaultAccount),
+                  trailing: _DefaultAccountPicker(
+                    value: user.settings.defaultAccountId,
+                    onChanged: (id) => updateSettings({'default_account_id': id}),
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.calendar_month_outlined),
+                  title: Text(l10n.monthStartDay),
+                  trailing: DropdownButton<int>(
+                    value: user.settings.monthStartDay,
+                    underline: const SizedBox.shrink(),
+                    items: [for (var d = 1; d <= 28; d++) DropdownMenuItem(value: d, child: Text('$d'))],
+                    onChanged: (d) => d == null ? null : updateSettings({'month_start_day': d}),
+                  ),
+                ),
+                SwitchListTile(
+                  secondary: const Icon(Icons.notifications_active_outlined),
+                  title: Text(l10n.budgetAlerts),
+                  subtitle: Text(l10n.budgetAlertsHint),
+                  value: user.settings.budgetAlerts,
+                  onChanged: (v) => updateSettings({'budget_alerts': v}),
+                ),
+                SwitchListTile(
+                  secondary: const Icon(Icons.event_repeat_outlined),
+                  title: Text(l10n.recurringReminders),
+                  subtitle: Text(l10n.recurringRemindersHint),
+                  value: user.settings.recurringReminders,
+                  onChanged: (v) => updateSettings({'recurring_reminders': v}),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+          ],
           _Section(
             children: [
               ListTile(
@@ -343,6 +383,28 @@ class _DeleteAccountDialogState extends ConsumerState<_DeleteAccountDialog> {
           child: Text(l10n.delete),
         ),
       ],
+    );
+  }
+}
+
+class _DefaultAccountPicker extends ConsumerWidget {
+  const _DefaultAccountPicker({required this.value, required this.onChanged});
+
+  final String? value;
+  final ValueChanged<String?> onChanged;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final accounts = ref.watch(accountsProvider(false)).value ?? const [];
+    final known = accounts.any((a) => a.id == value);
+    return DropdownButton<String?>(
+      value: known ? value : null,
+      underline: const SizedBox.shrink(),
+      items: [
+        DropdownMenuItem<String?>(value: null, child: Text(context.l10n.none)),
+        for (final a in accounts) DropdownMenuItem<String?>(value: a.id, child: Text(a.name)),
+      ],
+      onChanged: onChanged,
     );
   }
 }

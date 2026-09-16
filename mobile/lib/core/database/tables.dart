@@ -10,6 +10,7 @@ class Accounts extends Table {
   IntColumn get balance => integer().withDefault(const Constant(0))();
   TextColumn get color => text().nullable()();
   TextColumn get icon => text().nullable()();
+  TextColumn get notes => text().nullable()();
   BoolColumn get includeInTotal => boolean().withDefault(const Constant(true))();
   BoolColumn get archived => boolean().withDefault(const Constant(false))();
   IntColumn get sortOrder => integer().withDefault(const Constant(0))();
@@ -47,8 +48,12 @@ class Transactions extends Table {
   TextColumn get transferAccountId => text().nullable()();
   IntColumn get transferAmount => integer().nullable()();
   DateTimeColumn get occurredAt => dateTime()();
-  TextColumn get payee => text().nullable()();
+  TextColumn get merchant => text().nullable()();
+  TextColumn get paymentMethod => text().nullable()();
   TextColumn get note => text().nullable()();
+
+  /// JSON array of tag names.
+  TextColumn get tags => text().withDefault(const Constant('[]'))();
   DateTimeColumn get updatedAt => dateTime()();
 
   @override
