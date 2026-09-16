@@ -7,6 +7,7 @@ Single source of truth for the Masroof mark (wallet + coin). It writes:
   branding/icon/masroof-mark.svg              transparent mark (for UI use)
   branding/icon/png/icon-1024.png             master raster (iOS / stores / flutter_launcher_icons)
   branding/icon/png/adaptive-foreground.png   Android adaptive foreground (mask-safe)
+  branding/icon/png/adaptive-background.png   Android adaptive background (gradient)
   branding/icon/png/adaptive-monochrome.png   Android 13+ themed icon
   branding/icon/png/mark-*.png                transparent mark for splash / in-app use
   web/public/*                                favicon.ico, icon.svg, PWA icons
@@ -150,6 +151,9 @@ FULL_SCALE = 1.0
 # guaranteed visible. Content half-diagonal (~410 at scale 1) must stay within
 # 1024 * 33/108 = 313px, so scale to 0.72 (≈297px, inside the safe circle).
 ADAPTIVE_SCALE = 0.72
+# Android 12 splash icon: 768/1152 visible circle => radius 384 on 1152,
+# i.e. 341px on the 1024 grid; content half-diagonal 413 * 0.72 = 297 fits.
+ANDROID12_SPLASH_SCALE = 0.72
 # Transparent mark used in-app/splash: fill the canvas with small padding.
 MARK_SCALE = 1.1
 
@@ -173,6 +177,14 @@ def main() -> None:
     # Splash variant for dark backgrounds: clasp matches dark splash colour.
     render(1024, scale=MARK_SCALE, background=False, clasp_color=BG_BOTTOM).save(
         PNG_DIR / "mark-splash.png", optimize=True
+    )
+
+    # Android adaptive background keeps the brand gradient.
+    _gradient(1024).convert("RGB").save(PNG_DIR / "adaptive-background.png", optimize=True)
+    # Android 12+ splash: 1152px canvas, content must sit inside the central
+    # 768px circle, so reuse the adaptive safe-zone scale on a larger canvas.
+    render(1152, scale=ANDROID12_SPLASH_SCALE, background=False, clasp_color=BG_BOTTOM).save(
+        PNG_DIR / "mark-splash-android12.png", optimize=True
     )
 
     # Web / PWA

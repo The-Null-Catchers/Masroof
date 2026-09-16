@@ -11,8 +11,9 @@ code so every platform uses identical geometry.
 | `icon/masroof-mark.svg` | Transparent mark for in-app use |
 | `icon/png/icon-1024.png` | Master raster for iOS / `flutter_launcher_icons` |
 | `icon/png/adaptive-foreground.png` | Android adaptive foreground (inside 66dp safe zone) |
+| `icon/png/adaptive-background.png` | Android adaptive background gradient |
 | `icon/png/adaptive-monochrome.png` | Android 13+ themed icon |
-| `icon/png/mark-*.png` | Splash and in-app mark |
+| `icon/png/mark-*.png` | Splash (incl. Android 12 safe-zone variant) and in-app mark |
 
 Palette: emerald `#0F7A68 → #07463D`, mint `#7FE3C1`, gold `#F5B83D`.
 

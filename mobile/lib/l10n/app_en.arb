@@ -1,0 +1,212 @@
+{
+  "@@locale": "en",
+  "appName": "Masroof",
+  "appTagline": "Your money, clearly.",
+  "save": "Save",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "edit": "Edit",
+  "retry": "Try again",
+  "done": "Done",
+  "optional": "Optional",
+  "search": "Search",
+  "seeAll": "See all",
+  "requiredField": "This field is required",
+  "invalidAmount": "Enter a valid amount",
+  "amountMustBePositive": "Amount must be greater than zero",
+  "genericError": "Something went wrong. Please try again.",
+  "networkError": "You're offline. Check your connection and try again.",
+  "confirmDeleteTitle": "Delete permanently?",
+  "confirmDeleteBody": "This can't be undone.",
+  "loginTitle": "Welcome back",
+  "loginSubtitle": "Sign in to keep track of your money.",
+  "registerTitle": "Create your account",
+  "registerSubtitle": "Start budgeting in under a minute.",
+  "email": "Email",
+  "password": "Password",
+  "fullName": "Full name",
+  "signIn": "Sign in",
+  "signUp": "Create account",
+  "noAccount": "New to Masroof?",
+  "haveAccount": "Already have an account?",
+  "forgotPassword": "Forgot password?",
+  "forgotPasswordTitle": "Reset your password",
+  "forgotPasswordBody": "Enter your email and we'll send you a reset link.",
+  "sendResetLink": "Send reset link",
+  "resetLinkSent": "If that email is registered, a reset link is on its way.",
+  "backToSignIn": "Back to sign in",
+  "invalidEmail": "Enter a valid email address",
+  "passwordRules": "At least 8 characters with letters and numbers",
+  "sessionExpired": "Your session expired. Please sign in again.",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+  "defaultCurrency": "Main currency",
+  "navHome": "Home",
+  "navTransactions": "Transactions",
+  "navAccounts": "Accounts",
+  "navSettings": "Settings",
+  "greeting": "Hello, {name}",
+  "@greeting": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "netWorth": "Total balance",
+  "thisMonth": "This month",
+  "income": "Income",
+  "expenses": "Expenses",
+  "net": "Net",
+  "recentTransactions": "Recent transactions",
+  "topSpending": "Top spending",
+  "uncategorized": "Uncategorized",
+  "addTransaction": "Add transaction",
+  "emptyDashboardTitle": "Let's set up your money",
+  "emptyDashboardBody": "Add your first account — cash, bank or card — to start tracking.",
+  "emptyTransactionsTitle": "No transactions yet",
+  "emptyTransactionsBody": "Transactions you add will appear here.",
+  "noResults": "No matching transactions",
+  "syncOffline": "Offline — changes will sync when you're back online",
+  "syncPending": "{count, plural, =1{1 change waiting to sync} other{{count} changes waiting to sync}}",
+  "@syncPending": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "syncRejected": "Some changes were rejected by the server and have been reverted.",
+  "accounts": "Accounts",
+  "addAccount": "Add account",
+  "editAccount": "Edit account",
+  "accountName": "Account name",
+  "accountType": "Type",
+  "currency": "Currency",
+  "openingBalance": "Opening balance",
+  "color": "Color",
+  "includeInTotal": "Include in total balance",
+  "archive": "Archive",
+  "unarchive": "Unarchive",
+  "archived": "Archived",
+  "showArchived": "Show archived",
+  "currencyLocked": "Currency can't change after transactions are recorded",
+  "deleteAccountWarning": "Deleting this account also deletes its transactions and reverses its transfers.",
+  "emptyAccountsTitle": "No accounts yet",
+  "emptyAccountsBody": "Accounts hold your balances: a wallet, a bank account, a card.",
+  "accountTypeCash": "Cash",
+  "accountTypeBank": "Bank account",
+  "accountTypeCreditCard": "Credit card",
+  "accountTypeSavings": "Savings",
+  "accountTypeEWallet": "E-wallet",
+  "accountTypeOther": "Other",
+  "categories": "Categories",
+  "addCategory": "Add category",
+  "editCategory": "Edit category",
+  "categoryName": "Category name",
+  "parentCategory": "Parent category",
+  "noParent": "None (top level)",
+  "category": "Category",
+  "icon": "Icon",
+  "moveTransactionsTo": "Move its transactions to",
+  "leaveUncategorized": "Leave uncategorized",
+  "transactions": "Transactions",
+  "newTransaction": "New transaction",
+  "editTransaction": "Edit transaction",
+  "typeExpense": "Expense",
+  "typeIncome": "Income",
+  "typeTransfer": "Transfer",
+  "amount": "Amount",
+  "account": "Account",
+  "fromAccount": "From account",
+  "toAccount": "To account",
+  "amountReceived": "Amount received ({currency})",
+  "@amountReceived": {
+    "placeholders": {
+      "currency": {
+        "type": "String"
+      }
+    }
+  },
+  "date": "Date",
+  "payee": "Payee",
+  "note": "Note",
+  "selectAccount": "Select an account",
+  "selectCategory": "Select a category",
+  "sameAccountError": "Choose a different account",
+  "needAccountFirst": "Add an account before recording transactions.",
+  "transferTo": "Transfer to {account}",
+  "@transferTo": {
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "transferFrom": "Transfer from {account}",
+  "@transferFrom": {
+    "placeholders": {
+      "account": {
+        "type": "String"
+      }
+    }
+  },
+  "today": "Today",
+  "yesterday": "Yesterday",
+  "all": "All",
+  "searchTransactions": "Search payee, note or category",
+  "settings": "Settings",
+  "language": "Language",
+  "theme": "Appearance",
+  "themeSystem": "System",
+  "themeLight": "Light",
+  "themeDark": "Dark",
+  "profile": "Profile",
+  "security": "Security",
+  "changePassword": "Change password",
+  "currentPassword": "Current password",
+  "newPassword": "New password",
+  "passwordChanged": "Password changed. Other devices were signed out.",
+  "signOut": "Sign out",
+  "signOutPending": "You have unsynced changes. Signing out now will discard them.",
+  "deleteMyAccount": "Delete my account",
+  "deleteMyAccountBody": "This permanently deletes your profile and all financial data. Enter your password to confirm.",
+  "about": "About Masroof",
+  "version": "Version {version}",
+  "@version": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "aboutBody": "Masroof helps you understand where your money goes — in Arabic and English, online or offline.",
+  "syncNow": "Sync now",
+  "lastSynced": "Last synced {time}",
+  "@lastSynced": {
+    "placeholders": {
+      "time": {
+        "type": "String"
+      }
+    }
+  },
+  "saved": "Saved",
+  "categoryFood": "Food & Dining",
+  "categoryGroceries": "Groceries",
+  "categoryTransport": "Transport",
+  "categoryHousing": "Housing & Rent",
+  "categoryBills": "Bills & Utilities",
+  "categoryShopping": "Shopping",
+  "categoryHealth": "Health",
+  "categoryEducation": "Education",
+  "categoryEntertainment": "Entertainment",
+  "categoryTravel": "Travel",
+  "categoryCharity": "Charity & Zakat",
+  "categoryFamily": "Family",
+  "categoryOtherExpense": "Other",
+  "categorySalary": "Salary",
+  "categoryBusiness": "Business",
+  "categoryGifts": "Gifts",
+  "categoryInvestments": "Investments",
+  "categoryOtherIncome": "Other income"
+}
