@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Run a command inside the Masroof PHP dev image with backend/ mounted.
+# Usage: scripts/php artisan migrate | scripts/php composer install | scripts/php vendor/bin/phpunit
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+RUNTIME="$(command -v docker || command -v podman)"
+exec "$RUNTIME" run --rm -i --network=host \
+  -v "$ROOT/backend":/var/www/backend:Z -w /var/www/backend \
+  masroof-php:dev "$@"
