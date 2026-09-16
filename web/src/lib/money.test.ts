@@ -7,7 +7,7 @@ describe("parseAmount", () => {
     expect(parseAmount("0.29", "USD")).toBe(29);
     expect(parseAmount("1,250.75", "SAR")).toBe(125075);
     expect(parseAmount("1.234", "JOD")).toBe(1234);
-    expect(parseAmount("1500", "JPY")).toBe(1500);
+    expect(parseAmount("12.5", "ILS")).toBe(1250);
   });
 
   it("accepts Arabic-Indic digits", () => {
@@ -29,7 +29,9 @@ describe("toDecimal / formatMoney", () => {
   });
 
   it("formats with grouping and bidi isolation", () => {
-    expect(formatMoney(125075, "USD", "en")).toBe("USD ⁦1,250.75⁩");
-    expect(formatMoney(-500, "USD", "en", { signed: true })).toBe("USD ⁦-5.00⁩");
+    expect(formatMoney(125075, "USD", "en")).toBe("$ \u20661,250.75\u2069");
+    expect(formatMoney(4200, "ILS", "ar")).toBe("\u206642.00\u2069 ₪");
+    expect(formatMoney(1500, "JOD", "ar")).toBe("\u20661.500\u2069 د.أ");
+    expect(formatMoney(-500, "USD", "en", { signed: true })).toBe("$ \u2066-5.00\u2069");
   });
 });

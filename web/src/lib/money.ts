@@ -3,16 +3,17 @@
  * and returns decimal strings. Mirrors backend config/masroof.php.
  */
 export const CURRENCY_EXPONENTS: Record<string, number> = {
+  ILS: 2,
+  USD: 2,
+  JOD: 3,
+  EUR: 2,
+  EGP: 2,
   SAR: 2,
   AED: 2,
   KWD: 3,
   BHD: 3,
   OMR: 3,
   QAR: 2,
-  EGP: 2,
-  JOD: 3,
-  USD: 2,
-  EUR: 2,
   GBP: 2,
   TRY: 2,
   MAD: 2,
@@ -20,14 +21,14 @@ export const CURRENCY_EXPONENTS: Record<string, number> = {
   DZD: 2,
   IQD: 3,
   LBP: 2,
-  PKR: 2,
-  INR: 2,
-  IDR: 2,
-  MYR: 2,
-  JPY: 0,
 };
 
+/** Primary market currencies, shown first in pickers. */
+export const PRIMARY_CURRENCIES = ["ILS", "USD", "JOD", "EUR"];
+
 export const CURRENCIES = Object.keys(CURRENCY_EXPONENTS);
+
+const SYMBOLS: Record<string, string> = { ILS: "₪", USD: "$", EUR: "€", GBP: "£" };
 
 const ARABIC_SYMBOLS: Record<string, string> = {
   SAR: "ر.س",
@@ -79,6 +80,7 @@ export function toDecimal(minor: number, currency: string): string {
 }
 
 export function currencySymbol(currency: string, locale: string): string {
+  if (SYMBOLS[currency]) return SYMBOLS[currency];
   return locale.startsWith("ar") ? (ARABIC_SYMBOLS[currency] ?? currency) : currency;
 }
 

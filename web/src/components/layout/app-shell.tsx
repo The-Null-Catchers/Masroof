@@ -1,10 +1,12 @@
 "use client";
 
-import { LogOut, Moon, Sun } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { LogOut, MailWarning, Moon, Sun } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
-import type { ReactNode } from "react";
+import { toast } from "sonner";
+import { useEffect, type ReactNode } from "react";
 
 import { Logo } from "@/components/brand/logo";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -18,7 +20,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useMe, useUpdateProfile } from "@/hooks/use-finance";
-import { authRequest } from "@/lib/api/client";
+import { api, authRequest } from "@/lib/api/client";
+import { describeError } from "@/lib/api/describe";
 import { useI18n } from "@/lib/i18n/provider";
 import { cn } from "@/lib/utils";
 
@@ -35,6 +38,11 @@ export function AppShell({ children }: { children: ReactNode }) {
   const router = useRouter();
   const { resolvedTheme, setTheme } = useTheme();
   const { data: me } = useMe();
+
+  // New users answer the onboarding questions before using the app.
+  useEffect(() => {
+    if (me && !me.settings.onboarding_completed) router.replace("/onboarding");
+  }, [me, router]);
   const updateProfile = useUpdateProfile();
 
   const initials = (me?.name ?? "?")
@@ -117,6 +125,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </div>
         </header>
 
+        {me && !me.email_verified && <VerificationBanner />}
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 pt-6 pb-24 sm:px-6 lg:pb-10">{children}</main>
 
         <nav aria-label="Main" className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-5 border-t bg-background/95 backdrop-blur lg:hidden">
@@ -136,6 +145,33 @@ export function AppShell({ children }: { children: ReactNode }) {
           ))}
         </nav>
       </div>
+    </div>
+  );
+}
+
+function VerificationBanner() {
+  const { t } = useI18n();
+  const resend = useMutation({
+    mutationFn: () => api("/auth/email/verification-notification", { method: "POST", body: {} }),
+    onSuccess: () => toast.success(t.verify.sent),
+    onError: (e) => toast.error(describeError(e, t)),
+  });
+  return (
+    <div
+      role="status"
+      className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-brand-gold/15 px-4 py-2 text-center text-sm"
+    >
+      <MailWarning className="size-4 shrink-0" />
+      {t.verify.banner}
+      <Button
+        variant="link"
+        size="sm"
+        className="h-auto p-0"
+        disabled={resend.isPending || resend.isSuccess}
+        onClick={() => resend.mutate()}
+      >
+        {t.verify.resend}
+      </Button>
     </div>
   );
 }

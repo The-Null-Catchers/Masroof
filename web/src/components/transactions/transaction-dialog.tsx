@@ -11,7 +11,9 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { useAccounts, useCategories, useSaveTransaction, type TransactionPayload } from "@/hooks/use-finance";
+import { useAccounts, useCategories, useSaveTransaction, useTags, type TransactionPayload } from "@/hooks/use-finance";
+
+import { TagInput } from "./tag-input";
 import { describeError } from "@/lib/api/describe";
 import { ApiError } from "@/lib/api/errors";
 import { useI18n } from "@/lib/i18n/provider";
@@ -25,6 +27,8 @@ interface Props {
   defaultAccountId?: string;
 }
 
+const NONE = "none";
+
 const empty = {
   type: "expense" as TransactionType,
   account_id: "",
@@ -33,8 +37,10 @@ const empty = {
   amount: "",
   transfer_amount: "",
   date: "",
-  payee: "",
+  merchant: "",
   note: "",
+  payment_method: "",
+  tags: [] as string[],
 };
 
 function initialForm(transaction: Transaction | null | undefined, defaultAccountId?: string) {
@@ -47,8 +53,10 @@ function initialForm(transaction: Transaction | null | undefined, defaultAccount
     amount: transaction.amount,
     transfer_amount: transaction.transfer_amount ?? "",
     date: format(new Date(transaction.occurred_at), "yyyy-MM-dd'T'HH:mm"),
-    payee: transaction.payee ?? "",
+    merchant: transaction.merchant ?? "",
     note: transaction.note ?? "",
+    payment_method: transaction.payment_method ?? "",
+    tags: transaction.tags?.map((tag) => tag.name) ?? [],
   };
 }
 
@@ -76,6 +84,7 @@ function TransactionForm({
   const { data: accounts = [] } = useAccounts(true);
   const { data: categories = [] } = useCategories();
   const save = useSaveTransaction();
+  const { data: knownTags = [] } = useTags();
   const [form, setForm] = useState(() => initialForm(transaction, defaultAccountId));
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -117,9 +126,11 @@ function TransactionForm({
       amount: toDecimal(minor, account.currency),
       occurred_at: new Date(form.date).toISOString(),
       note: form.note.trim() || null,
+      tags: form.tags,
+      payment_method: form.type === "transfer" ? null : form.payment_method || null,
       category_id: form.type === "transfer" ? null : form.category_id,
       transfer_account_id: form.type === "transfer" ? form.transfer_account_id : null,
-      payee: form.type === "transfer" ? null : form.payee.trim() || null,
+      merchant: form.type === "transfer" ? null : form.merchant.trim() || null,
       ...(crossCurrency
         ? { transfer_amount: toDecimal(parseAmount(form.transfer_amount, destination!.currency)!, destination!.currency) }
         : {}),
@@ -259,10 +270,33 @@ function TransactionForm({
               <Input id="date" type="datetime-local" value={form.date} onChange={(e) => set("date", e.target.value)} />
             </Field>
             {form.type !== "transfer" && (
-              <Field id="payee" label={`${t.transactions.payee} (${t.common.optional})`} error={errors.payee}>
-                <Input id="payee" maxLength={120} value={form.payee} onChange={(e) => set("payee", e.target.value)} />
+              <Field id="merchant" label={`${t.transactions.merchant} (${t.common.optional})`} error={errors.merchant}>
+                <Input id="merchant" maxLength={120} value={form.merchant} onChange={(e) => set("merchant", e.target.value)} />
               </Field>
             )}
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2">
+            {form.type !== "transfer" && (
+              <Field id="payment-method" label={`${t.transactions.paymentMethod} (${t.common.optional})`} error={errors.payment_method}>
+                <Select value={form.payment_method || NONE} onValueChange={(v) => set("payment_method", v === NONE ? "" : v)}>
+                  <SelectTrigger id="payment-method" className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value={NONE}>—</SelectItem>
+                    {(Object.keys(t.transactions.paymentMethods) as (keyof typeof t.transactions.paymentMethods)[]).map((method) => (
+                      <SelectItem key={method} value={method}>
+                        {t.transactions.paymentMethods[method]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </Field>
+            )}
+            <Field id="tags" label={`${t.transactions.tags} (${t.common.optional})`} error={errors.tags}>
+              <TagInput id="tags" value={form.tags} onChange={(tags) => set("tags", tags)} suggestions={knownTags.map((tag) => tag.name)} />
+            </Field>
           </div>
 
           <Field id="note" label={`${t.transactions.note} (${t.common.optional})`} error={errors.note}>

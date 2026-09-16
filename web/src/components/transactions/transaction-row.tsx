@@ -10,7 +10,7 @@ import type { Transaction } from "@/lib/types";
 
 export function transactionTitle(tx: Transaction, t: ReturnType<typeof useI18n>) {
   if (tx.type === "transfer") return t.format(t.t.transactions.transferTo, { account: tx.transfer_account?.name ?? "—" });
-  return tx.payee ?? t.categoryLabel(tx.category);
+  return tx.merchant ?? t.categoryLabel(tx.category);
 }
 
 export function TransactionRow({ tx, onClick }: { tx: Transaction; onClick?: () => void }) {
@@ -18,7 +18,9 @@ export function TransactionRow({ tx, onClick }: { tx: Transaction; onClick?: () 
   const { locale, categoryLabel } = i18n;
   const icon = tx.type === "transfer" ? ArrowLeftRight : (CATEGORY_ICONS[tx.category?.icon ?? ""] ?? CATEGORY_ICONS.category);
   const color = tx.type === "transfer" ? "var(--transfer)" : tx.category?.color;
-  const subtitle = [tx.type !== "transfer" && tx.payee ? categoryLabel(tx.category) : null, tx.account?.name].filter(Boolean).join(" · ");
+  const subtitle = [tx.type !== "transfer" && tx.merchant ? categoryLabel(tx.category) : null, tx.account?.name]
+    .filter(Boolean)
+    .join(" · ");
 
   return (
     <button

@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 import { useMe, useSaveAccount } from "@/hooks/use-finance";
 import { describeError } from "@/lib/api/describe";
 import { ApiError } from "@/lib/api/errors";
@@ -53,14 +54,16 @@ function AccountForm({ account, onDone }: { account?: Account | null; onDone: ()
           opening_balance: account.opening_balance,
           color: account.color ?? PALETTE[0],
           include_in_total: account.include_in_total,
+          notes: account.notes ?? "",
         }
       : {
           name: "",
           type: "bank" as AccountType,
-          currency: me?.currency ?? "SAR",
+          currency: me?.currency ?? "ILS",
           opening_balance: "0",
           color: PALETTE[0],
           include_in_total: true,
+          notes: "",
         },
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -77,7 +80,7 @@ function AccountForm({ account, onDone }: { account?: Account | null; onDone: ()
     try {
       await save.mutateAsync({
         id: account?.id,
-        payload: { ...form, name: form.name.trim(), opening_balance: toDecimal(opening, form.currency) },
+        payload: { ...form, name: form.name.trim(), notes: form.notes.trim() || null, opening_balance: toDecimal(opening, form.currency) },
       });
       toast.success(t.common.saved);
       onDone();
@@ -173,6 +176,15 @@ function AccountForm({ account, onDone }: { account?: Account | null; onDone: ()
             ))}
           </div>
         </div>
+        <Field id="account-notes" label={`${t.accounts.notes} (${t.common.optional})`} error={errors.notes}>
+          <Textarea
+            id="account-notes"
+            rows={2}
+            maxLength={1000}
+            value={form.notes}
+            onChange={(e) => setForm({ ...form, notes: e.target.value })}
+          />
+        </Field>
         <div className="flex items-center justify-between gap-4 rounded-lg border px-3 py-2.5">
           <Label htmlFor="include-total">{t.accounts.includeInTotal}</Label>
           <Switch

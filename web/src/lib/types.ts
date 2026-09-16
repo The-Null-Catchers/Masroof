@@ -2,6 +2,26 @@ export type Locale = "ar" | "en";
 export type AccountType = "cash" | "bank" | "credit_card" | "savings" | "e_wallet" | "other";
 export type CategoryType = "income" | "expense";
 export type TransactionType = "income" | "expense" | "transfer";
+export type PaymentMethod = "cash" | "card" | "bank_transfer" | "wallet" | "cheque" | "other";
+export type FinancialGoal = "track_spending" | "save_money" | "emergency_fund" | "pay_debt" | "budget_better" | "invest" | "other";
+
+export interface UserSettings {
+  monthly_income_estimate: string | null;
+  monthly_income_estimate_minor: number | null;
+  main_goal: FinancialGoal | null;
+  budget_alerts: boolean;
+  recurring_reminders: boolean;
+  default_account_id: string | null;
+  month_start_day: number;
+  onboarding_completed: boolean;
+}
+
+export interface Tag {
+  id: string;
+  name: string;
+  color: string | null;
+  transactions_count?: number;
+}
 
 export interface User {
   id: string;
@@ -12,7 +32,9 @@ export interface User {
   currency: string;
   timezone: string;
   week_start: number;
+  email_verified: boolean;
   email_verified_at: string | null;
+  settings: UserSettings;
   created_at: string;
 }
 
@@ -27,6 +49,7 @@ export interface Account {
   balance_minor: number;
   color: string | null;
   icon: string | null;
+  notes: string | null;
   include_in_total: boolean;
   archived: boolean;
   sort_order: number;
@@ -59,8 +82,11 @@ export interface Transaction {
   transfer_amount_minor: number | null;
   transfer_currency: string | null;
   occurred_at: string;
-  payee: string | null;
+  merchant: string | null;
+  payment_method: PaymentMethod | null;
   note: string | null;
+  location: { name: string | null; latitude: number | null; longitude: number | null } | null;
+  tags?: Tag[];
   account?: { id: string; name: string; type: AccountType; color: string | null };
   transfer_account?: { id: string; name: string; type: AccountType; color: string | null } | null;
   category?: { id: string; name: string; default_key: string | null; icon: string | null; color: string | null } | null;

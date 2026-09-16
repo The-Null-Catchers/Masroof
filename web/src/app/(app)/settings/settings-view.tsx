@@ -15,8 +15,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { keys, useMe, useSessions, useUpdateProfile } from "@/hooks/use-finance";
+import { keys, useAccounts, useMe, useSessions, useUpdateProfile } from "@/hooks/use-finance";
 import { api } from "@/lib/api/client";
 import { describeError } from "@/lib/api/describe";
 import { formatDate } from "@/lib/dates";
@@ -46,6 +47,7 @@ export function SettingsView() {
   const { theme, setTheme } = useTheme();
   const { data: me } = useMe();
   const sessions = useSessions();
+  const { data: accounts = [] } = useAccounts();
   const update = useUpdateProfile();
   const client = useQueryClient();
   const router = useRouter();
@@ -193,6 +195,78 @@ export function SettingsView() {
                 </SelectContent>
               </Select>
             </Field>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>{t.settings.financial}</CardTitle>
+          </CardHeader>
+          <CardContent className="grid gap-4 sm:grid-cols-2">
+            <Field id="pref-default-account" label={t.settings.defaultAccount}>
+              <Select
+                value={me?.settings.default_account_id ?? "none"}
+                onValueChange={(v) => savePreference({ default_account_id: v === "none" ? null : v })}
+              >
+                <SelectTrigger id="pref-default-account" className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="none">{t.settings.none}</SelectItem>
+                  {accounts.map((a) => (
+                    <SelectItem key={a.id} value={a.id}>
+                      {a.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </Field>
+            <Field id="pref-month-start" label={t.settings.monthStartDay}>
+              <Select
+                value={me ? String(me.settings.month_start_day) : undefined}
+                onValueChange={(v) => savePreference({ month_start_day: Number(v) })}
+              >
+                <SelectTrigger id="pref-month-start" className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {Array.from({ length: 28 }, (_, i) => (
+                    <SelectItem key={i + 1} value={String(i + 1)}>
+                      {i + 1}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </Field>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>{t.settings.notifications}</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {(
+              [
+                ["budget_alerts", t.settings.budgetAlerts, t.settings.budgetAlertsHint],
+                ["recurring_reminders", t.settings.recurringReminders, t.settings.recurringRemindersHint],
+              ] as const
+            ).map(([key, label, hint]) => (
+              <div key={key} className="flex items-center justify-between gap-4">
+                <div>
+                  <label htmlFor={`pref-${key}`} className="text-sm font-medium">
+                    {label}
+                  </label>
+                  <p className="text-xs text-muted-foreground">{hint}</p>
+                </div>
+                <Switch
+                  id={`pref-${key}`}
+                  checked={me?.settings[key] ?? true}
+                  disabled={!me}
+                  onCheckedChange={(checked) => savePreference({ [key]: checked })}
+                />
+              </div>
+            ))}
           </CardContent>
         </Card>
 

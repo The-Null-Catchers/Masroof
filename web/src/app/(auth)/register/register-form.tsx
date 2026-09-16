@@ -18,7 +18,7 @@ import { CURRENCIES, currencySymbol } from "@/lib/money";
 export function RegisterForm() {
   const { t, locale } = useI18n();
   const router = useRouter();
-  const [form, setForm] = useState({ name: "", email: "", password: "", password_confirmation: "", currency: "SAR" });
+  const [form, setForm] = useState({ name: "", email: "", password: "", password_confirmation: "", currency: "ILS" });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);

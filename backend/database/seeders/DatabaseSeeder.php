@@ -25,6 +25,9 @@ class DatabaseSeeder extends Seeder
             return;
         }
 
+        $user->markEmailAsVerified();
+        $user->settingsOrDefault()->forceFill(['onboarding_completed_at' => now(), 'monthly_income_estimate' => 1_200_000])->save();
+
         $defaults->provision($user);
 
         $bank = $user->accounts()->create(['name' => 'Main bank', 'type' => 'bank', 'currency' => 'ILS', 'opening_balance' => 1_250_000, 'color' => '#0F7A68', 'icon' => 'account_balance']);

@@ -29,7 +29,14 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useAccounts, useCategories, useDeleteTransaction, useTransactions, type TransactionFilters } from "@/hooks/use-finance";
+import {
+  useAccounts,
+  useCategories,
+  useDeleteTransaction,
+  useDuplicateTransaction,
+  useTransactions,
+  type TransactionFilters,
+} from "@/hooks/use-finance";
 import { describeError } from "@/lib/api/describe";
 import { formatDate } from "@/lib/dates";
 import { useI18n } from "@/lib/i18n/provider";
@@ -50,6 +57,16 @@ export function TransactionsView() {
   const { data: categories = [] } = useCategories();
   const transactions = useTransactions(filters);
   const remove = useDeleteTransaction();
+  const duplicate = useDuplicateTransaction();
+
+  async function duplicateTransaction(tx: Transaction) {
+    try {
+      await duplicate.mutateAsync(tx.id);
+      toast.success(t.transactions.duplicated);
+    } catch (e) {
+      toast.error(describeError(e, t));
+    }
+  }
 
   useEffect(() => {
     const handle = setTimeout(() => setFilters((f) => ({ ...f, search: search.trim() || undefined, page: 1 })), 300);
@@ -58,7 +75,16 @@ export function TransactionsView() {
 
   const update = (patch: Partial<TransactionFilters>) => setFilters((f) => ({ ...f, ...patch, page: 1 }));
   const meta = transactions.data?.meta;
-  const hasFilters = Boolean(filters.type || filters.account_id || filters.category_id || filters.from || filters.to || filters.search);
+  const hasFilters = Boolean(
+    filters.type ||
+    filters.account_id ||
+    filters.category_id ||
+    filters.from ||
+    filters.to ||
+    filters.search ||
+    filters.min_amount ||
+    filters.max_amount,
+  );
 
   async function confirmDelete() {
     if (!pendingDelete) return;
@@ -95,7 +121,7 @@ export function TransactionsView() {
             aria-label={t.common.search}
           />
         </div>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-7">
           <Select value={filters.type ?? ALL} onValueChange={(v) => update({ type: v === ALL ? undefined : v })}>
             <SelectTrigger className="w-full" aria-label={t.transactions.type}>
               <SelectValue />
@@ -146,6 +172,26 @@ export function TransactionsView() {
             value={filters.to ?? ""}
             min={filters.from}
             onChange={(e) => update({ to: e.target.value || undefined })}
+          />
+          <Input
+            type="number"
+            min="0"
+            step="any"
+            dir="ltr"
+            placeholder={t.transactions.minAmount}
+            aria-label={t.transactions.minAmount}
+            value={filters.min_amount ?? ""}
+            onChange={(e) => update({ min_amount: e.target.value || undefined })}
+          />
+          <Input
+            type="number"
+            min="0"
+            step="any"
+            dir="ltr"
+            placeholder={t.transactions.maxAmount}
+            aria-label={t.transactions.maxAmount}
+            value={filters.max_amount ?? ""}
+            onChange={(e) => update({ max_amount: e.target.value || undefined })}
           />
         </div>
       </Card>
@@ -227,6 +273,7 @@ export function TransactionsView() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem onSelect={() => setDialog({ open: true, tx })}>{t.common.edit}</DropdownMenuItem>
+                            <DropdownMenuItem onSelect={() => duplicateTransaction(tx)}>{t.transactions.duplicate}</DropdownMenuItem>
                             <DropdownMenuItem variant="destructive" onSelect={() => setPendingDelete(tx)}>
                               {t.common.delete}
                             </DropdownMenuItem>
