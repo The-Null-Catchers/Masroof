@@ -10,7 +10,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         if (app()->isProduction()) {
-            $this->command?->warn('Demo data is never seeded in production.');
+            // No console command when seeded programmatically (e.g. in tests).
+            $this->command?->warn( // @phpstan-ignore nullsafe.neverNull
+                'Demo data is never seeded in production.');
 
             return;
         }

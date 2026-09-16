@@ -31,7 +31,8 @@ class DemoUserSeeder extends Seeder
     public function run(): void
     {
         if (User::query()->where('email', self::EMAIL)->exists()) {
-            $this->command?->info('Demo user already exists; skipping.');
+            $this->command?->info( // @phpstan-ignore nullsafe.neverNull
+                'Demo user already exists; skipping.');
 
             return;
         }
