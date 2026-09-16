@@ -24,6 +24,7 @@ class AccountResource extends JsonResource
             'balance_minor' => $this->balance,
             'color' => $this->color,
             'icon' => $this->icon,
+            'notes' => $this->notes,
             'include_in_total' => $this->include_in_total,
             'archived' => $this->archived_at !== null,
             'archived_at' => $this->archived_at?->toIso8601String(),

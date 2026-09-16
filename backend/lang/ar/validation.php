@@ -100,7 +100,7 @@ return [
         'transfer_account_id' => 'الحساب المحوَّل إليه',
         'transfer_amount' => 'المبلغ المستلم',
         'occurred_at' => 'التاريخ',
-        'payee' => 'الجهة',
+        'merchant' => 'الجهة',
         'note' => 'الملاحظة',
         'from' => 'من تاريخ',
         'to' => 'إلى تاريخ',

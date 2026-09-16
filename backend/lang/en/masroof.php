@@ -10,6 +10,8 @@ return [
     'category_parent_type_mismatch' => 'The parent category must be of the same type.',
     'category_type_mismatch' => 'The category type does not match the transaction type.',
     'date_too_far' => 'The date is too far in the future.',
+    'email_already_verified' => 'Your e-mail address is already verified.',
+    'verification_sent' => 'A new verification link has been sent to your e-mail address.',
     'id_conflict' => 'This identifier is already in use.',
     'invalid_amount' => 'Enter a valid amount with at most :decimals decimal places.',
     'password_changed' => 'Your password has been changed. Other devices were signed out.',

@@ -17,7 +17,6 @@ class MoneyTest extends TestCase
             'one decimal' => ['10.5', 'SAR', 1050],
             'two decimals' => ['0.07', 'SAR', 7],
             'KWD three decimals' => ['1.234', 'KWD', 1234],
-            'JPY no decimals' => ['1500', 'JPY', 1500],
             'negative' => ['-25.10', 'SAR', -2510],
             'large' => ['999999999.99', 'SAR', 99999999999],
             'float trap' => ['0.29', 'USD', 29],
@@ -37,7 +36,6 @@ class MoneyTest extends TestCase
         $this->assertSame('-0.05', Money::toDecimal(-5, 'SAR'));
         $this->assertSame('1.234', Money::toDecimal(1234, 'KWD'));
         $this->assertSame('0.001', Money::toDecimal(1, 'BHD'));
-        $this->assertSame('1500', Money::toDecimal(1500, 'JPY'));
     }
 
     public function test_it_rejects_too_many_decimals(): void

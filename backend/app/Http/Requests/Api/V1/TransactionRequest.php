@@ -31,8 +31,14 @@ class TransactionRequest extends FormRequest
             'transfer_account_id' => ['sometimes', 'nullable', 'ulid', $ownedAccount],
             'transfer_amount' => ['sometimes', 'nullable', 'string'],
             'occurred_at' => [$required, 'date'],
-            'payee' => ['sometimes', 'nullable', 'string', 'max:120'],
+            'merchant' => ['sometimes', 'nullable', 'string', 'max:120'],
             'note' => ['sometimes', 'nullable', 'string', 'max:1000'],
+            'payment_method' => ['sometimes', 'nullable', Rule::in(config('masroof.payment_methods'))],
+            'location_name' => ['sometimes', 'nullable', 'string', 'max:120'],
+            'latitude' => ['nullable', 'numeric', 'between:-90,90', 'required_with:longitude'],
+            'longitude' => ['nullable', 'numeric', 'between:-180,180', 'required_with:latitude'],
+            'tags' => ['sometimes', 'array', 'max:10'],
+            'tags.*' => ['string', 'min:1', 'max:40'],
         ];
     }
 

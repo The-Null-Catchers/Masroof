@@ -21,7 +21,7 @@ class TransactionFactory extends Factory
             'amount' => fake()->numberBetween(100, 50_000),
             'currency' => 'SAR',
             'occurred_at' => fake()->dateTimeBetween('-60 days'),
-            'payee' => fake()->company(),
+            'merchant' => fake()->company(),
         ];
     }
 }

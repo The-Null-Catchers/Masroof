@@ -37,7 +37,7 @@ class AuthTest extends TestCase
 
         $user = User::query()->where('email', 'sara@example.com')->firstOrFail();
         $this->assertCount(count(DefaultCategories::DEFINITIONS), $user->categories);
-        $this->assertSame('الطعام والمطاعم', $user->categories()->where('default_key', 'food')->value('name'));
+        $this->assertSame('الطعام', $user->categories()->where('default_key', 'food')->value('name'));
 
         $this->withToken($response->json('token'))->getJson('/api/v1/me')->assertOk()->assertJsonPath('data.id', $user->id);
     }

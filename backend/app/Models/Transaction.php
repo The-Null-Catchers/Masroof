@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -24,7 +25,11 @@ use Illuminate\Support\Carbon;
  * @property string|null $transfer_account_id
  * @property int|null $transfer_amount
  * @property Carbon $occurred_at
- * @property string|null $payee
+ * @property string|null $merchant
+ * @property string|null $payment_method
+ * @property string|null $location_name
+ * @property string|null $latitude
+ * @property string|null $longitude
  * @property string|null $note
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -41,8 +46,12 @@ class Transaction extends Model
         'category_id' => null,
         'transfer_account_id' => null,
         'transfer_amount' => null,
-        'payee' => null,
+        'merchant' => null,
+        'payment_method' => null,
         'note' => null,
+        'location_name' => null,
+        'latitude' => null,
+        'longitude' => null,
     ];
 
     protected function casts(): array
@@ -52,6 +61,8 @@ class Transaction extends Model
             'amount' => 'integer',
             'transfer_amount' => 'integer',
             'occurred_at' => 'datetime',
+            'latitude' => 'decimal:6',
+            'longitude' => 'decimal:6',
         ];
     }
 
@@ -71,6 +82,12 @@ class Transaction extends Model
     public function transferAccount(): BelongsTo
     {
         return $this->belongsTo(Account::class, 'transfer_account_id')->withTrashed();
+    }
+
+    /** @return BelongsToMany<Tag, $this> */
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'transaction_tags');
     }
 
     /** @return BelongsTo<Category, $this> */

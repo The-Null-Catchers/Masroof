@@ -11,11 +11,21 @@ return [
     | Amounts are always persisted as integers in minor units.
     */
     'currencies' => [
-        'SAR' => 2, 'AED' => 2, 'KWD' => 3, 'BHD' => 3, 'OMR' => 3, 'QAR' => 2,
-        'EGP' => 2, 'JOD' => 3, 'USD' => 2, 'EUR' => 2, 'GBP' => 2, 'TRY' => 2,
-        'MAD' => 2, 'TND' => 3, 'DZD' => 2, 'IQD' => 3, 'LBP' => 2, 'PKR' => 2,
-        'INR' => 2, 'IDR' => 2, 'MYR' => 2, 'JPY' => 0,
+        // Primary market currencies first.
+        'ILS' => 2, 'USD' => 2, 'JOD' => 3, 'EUR' => 2,
+        'EGP' => 2, 'SAR' => 2, 'AED' => 2, 'KWD' => 3, 'BHD' => 3, 'OMR' => 3,
+        'QAR' => 2, 'GBP' => 2, 'TRY' => 2, 'MAD' => 2, 'TND' => 3, 'DZD' => 2,
+        'IQD' => 3, 'LBP' => 2,
     ],
+
+    /*
+    | Currencies surfaced first in pickers.
+    */
+    'primary_currencies' => ['ILS', 'USD', 'JOD', 'EUR'],
+
+    'payment_methods' => ['cash', 'card', 'bank_transfer', 'wallet', 'cheque', 'other'],
+
+    'financial_goals' => ['track_spending', 'save_money', 'emergency_fund', 'pay_debt', 'budget_better', 'invest', 'other'],
 
     /*
     | Largest absolute amount (in major units) accepted for a single entry.

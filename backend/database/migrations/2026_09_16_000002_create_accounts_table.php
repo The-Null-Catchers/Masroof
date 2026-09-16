@@ -20,6 +20,7 @@ return new class extends Migration
             $table->bigInteger('balance')->default(0);
             $table->string('color', 7)->nullable();
             $table->string('icon', 40)->nullable();
+            $table->text('notes')->nullable();
             $table->boolean('include_in_total')->default(true);
             $table->timestamp('archived_at')->nullable();
             $table->unsignedInteger('sort_order')->default(0);

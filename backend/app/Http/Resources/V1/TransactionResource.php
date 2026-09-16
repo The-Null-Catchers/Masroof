@@ -32,7 +32,14 @@ class TransactionResource extends JsonResource
             'transfer_amount_minor' => $this->transfer_amount,
             'transfer_currency' => $transferCurrency,
             'occurred_at' => $this->occurred_at->toIso8601String(),
-            'payee' => $this->payee,
+            'merchant' => $this->merchant,
+            'payment_method' => $this->payment_method,
+            'location' => $this->location_name || $this->latitude !== null ? [
+                'name' => $this->location_name,
+                'latitude' => $this->latitude !== null ? (float) $this->latitude : null,
+                'longitude' => $this->longitude !== null ? (float) $this->longitude : null,
+            ] : null,
+            'tags' => $this->whenLoaded('tags', fn () => $this->tags->map(fn ($tag) => ['id' => $tag->id, 'name' => $tag->name, 'color' => $tag->color])->values()),
             'note' => $this->note,
             'account' => $this->whenLoaded('account', fn () => [
                 'id' => $this->account->id,

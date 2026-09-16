@@ -24,6 +24,7 @@ use Illuminate\Support\Carbon;
  * @property int $balance
  * @property string|null $color
  * @property string|null $icon
+ * @property string|null $notes
  * @property bool $include_in_total
  * @property int $sort_order
  * @property Carbon|null $archived_at
@@ -31,7 +32,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
  */
-#[Fillable(['name', 'type', 'currency', 'opening_balance', 'color', 'icon', 'include_in_total', 'sort_order'])]
+#[Fillable(['name', 'type', 'currency', 'opening_balance', 'color', 'icon', 'notes', 'include_in_total', 'sort_order'])]
 class Account extends Model
 {
     /** @use HasFactory<AccountFactory> */
@@ -44,6 +45,7 @@ class Account extends Model
         'sort_order' => 0,
         'color' => null,
         'icon' => null,
+        'notes' => null,
         'archived_at' => null,
     ];
 

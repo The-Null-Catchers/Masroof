@@ -21,7 +21,9 @@ class UserResource extends JsonResource
             'currency' => $this->currency,
             'timezone' => $this->timezone,
             'week_start' => $this->week_start,
+            'email_verified' => $this->email_verified_at !== null,
             'email_verified_at' => $this->email_verified_at?->toIso8601String(),
+            'settings' => new UserSettingsResource($this->settingsOrDefault()),
             'created_at' => $this->created_at?->toIso8601String(),
         ];
     }

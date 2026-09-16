@@ -4,14 +4,17 @@ namespace App\Models;
 
 use App\Enums\UserRole;
 use App\Notifications\ResetPasswordNotification;
+use App\Notifications\VerifyEmailNotification;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Translation\HasLocalePreference;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -36,7 +39,7 @@ use Laravel\Sanctum\HasApiTokens;
  */
 #[Fillable(['name', 'email', 'password', 'locale', 'currency', 'timezone', 'week_start'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable implements CanResetPassword, HasLocalePreference
+class User extends Authenticatable implements CanResetPassword, HasLocalePreference, MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasFactory, HasUlids, Notifiable, SoftDeletes;
@@ -44,8 +47,8 @@ class User extends Authenticatable implements CanResetPassword, HasLocalePrefere
     protected $attributes = [
         'role' => 'user',
         'locale' => 'ar',
-        'currency' => 'SAR',
-        'timezone' => 'Asia/Riyadh',
+        'currency' => 'ILS',
+        'timezone' => 'Asia/Hebron',
         'week_start' => 6,
         'suspended_at' => null,
         'last_login_at' => null,
@@ -76,6 +79,28 @@ class User extends Authenticatable implements CanResetPassword, HasLocalePrefere
         return $this->hasMany(Category::class);
     }
 
+    /** @return HasOne<UserSettings, $this> */
+    public function settings(): HasOne
+    {
+        return $this->hasOne(UserSettings::class);
+    }
+
+    /** Settings row, created with defaults on first access. */
+    public function settingsOrDefault(): UserSettings
+    {
+        $settings = $this->relationLoaded('settings') && $this->settings !== null
+            ? $this->settings
+            : $this->settings()->firstOrCreate([]);
+
+        return $settings->setRelation('user', $this);
+    }
+
+    /** @return HasMany<Tag, $this> */
+    public function tags(): HasMany
+    {
+        return $this->hasMany(Tag::class);
+    }
+
     /** @return HasMany<Transaction, $this> */
     public function transactions(): HasMany
     {
@@ -90,6 +115,11 @@ class User extends Authenticatable implements CanResetPassword, HasLocalePrefere
     public function isSuspended(): bool
     {
         return $this->suspended_at !== null;
+    }
+
+    public function sendEmailVerificationNotification(): void
+    {
+        $this->notify(new VerifyEmailNotification);
     }
 
     /** @param  string  $token */

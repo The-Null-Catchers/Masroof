@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('role', 20)->default('user')->index();
             $table->string('locale', 5)->default('ar');
-            $table->char('currency', 3)->default('SAR');
-            $table->string('timezone', 64)->default('Asia/Riyadh');
+            $table->char('currency', 3)->default('ILS');
+            $table->string('timezone', 64)->default('Asia/Hebron');
             $table->unsignedTinyInteger('week_start')->default(6); // 0 = Sunday … 6 = Saturday
             $table->timestamp('last_login_at')->nullable();
             $table->timestamp('suspended_at')->nullable();

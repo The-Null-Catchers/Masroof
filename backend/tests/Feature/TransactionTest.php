@@ -42,7 +42,7 @@ class TransactionTest extends TestCase
             'category_id' => $this->food->id,
             'amount' => '45.50',
             'occurred_at' => '2026-09-10T12:30:00+03:00',
-            'payee' => 'Al Baik',
+            'merchant' => 'Al Baik',
         ]);
     }
 
@@ -248,13 +248,13 @@ class TransactionTest extends TestCase
     public function test_listing_supports_filters_search_and_pagination(): void
     {
         $cash = $this->account($this->user, ['currency' => 'SAR']);
-        $this->expense(['payee' => 'Starbucks', 'occurred_at' => '2026-08-01T10:00:00Z']);
-        $this->expense(['payee' => 'Panda', 'note' => 'weekly groceries 100%', 'occurred_at' => '2026-08-15T10:00:00Z']);
-        $this->expense(['type' => 'income', 'category_id' => $this->salary->id, 'payee' => 'Employer', 'occurred_at' => '2026-08-27T10:00:00Z']);
+        $this->expense(['merchant' => 'Starbucks', 'occurred_at' => '2026-08-01T10:00:00Z']);
+        $this->expense(['merchant' => 'Panda', 'note' => 'weekly groceries 100%', 'occurred_at' => '2026-08-15T10:00:00Z']);
+        $this->expense(['type' => 'income', 'category_id' => $this->salary->id, 'merchant' => 'Employer', 'occurred_at' => '2026-08-27T10:00:00Z']);
         $this->postJson('/api/v1/transactions', ['type' => 'transfer', 'account_id' => $this->bank->id, 'transfer_account_id' => $cash->id, 'amount' => '5', 'occurred_at' => '2026-08-20T10:00:00Z']);
 
         $this->getJson('/api/v1/transactions')->assertOk()->assertJsonCount(4, 'data')
-            ->assertJsonPath('data.0.payee', 'Employer')
+            ->assertJsonPath('data.0.merchant', 'Employer')
             ->assertJsonStructure(['data', 'links', 'meta' => ['current_page', 'last_page', 'total']]);
         $this->getJson('/api/v1/transactions?type=expense')->assertJsonCount(2, 'data');
         $this->getJson('/api/v1/transactions?search=star')->assertJsonCount(1, 'data');
@@ -262,7 +262,7 @@ class TransactionTest extends TestCase
         $this->getJson('/api/v1/transactions?from=2026-08-10&to=2026-08-20')->assertJsonCount(2, 'data');
         $this->getJson("/api/v1/transactions?account_id={$cash->id}")->assertJsonCount(1, 'data');
         $this->getJson('/api/v1/transactions?per_page=2&sort=occurred_at')->assertJsonCount(2, 'data')
-            ->assertJsonPath('data.0.payee', 'Starbucks')->assertJsonPath('meta.last_page', 2);
+            ->assertJsonPath('data.0.merchant', 'Starbucks')->assertJsonPath('meta.last_page', 2);
         $this->getJson('/api/v1/transactions?per_page=500')->assertUnprocessable();
     }
 

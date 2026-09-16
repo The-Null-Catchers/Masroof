@@ -29,6 +29,7 @@ class TransactionService
 
             $this->applyEffects($transaction->balanceEffects(), 1);
             $transaction->save();
+            $this->syncTags($user, $transaction, $data);
 
             return $transaction;
         });
@@ -55,6 +56,7 @@ class TransactionService
             $after = $transaction->balanceEffects();
             $this->applyEffects($this->diff($before, $after), 1);
             $transaction->save();
+            $this->syncTags($transaction->user, $transaction, $data);
 
             return $transaction;
         });
@@ -67,6 +69,35 @@ class TransactionService
             $this->applyEffects($transaction->balanceEffects(), -1);
             $transaction->delete();
         });
+    }
+
+    /**
+     * Creates a copy (including tags) dated now unless another date is given.
+     */
+    public function duplicate(Transaction $source, ?\DateTimeInterface $occurredAt = null): Transaction
+    {
+        $data = $source->only([
+            'type', 'account_id', 'category_id', 'amount', 'transfer_account_id', 'transfer_amount',
+            'merchant', 'payment_method', 'note', 'location_name', 'latitude', 'longitude',
+        ]);
+        $data['occurred_at'] = $occurredAt ?? now();
+        $data['tags'] = $source->tags()->pluck('name')->all();
+
+        return $this->create($source->user, $data);
+    }
+
+    /**
+     * @param  array<string, mixed>  $data
+     */
+    private function syncTags(User $user, Transaction $transaction, array $data): void
+    {
+        if (array_key_exists('tags', $data) && is_array($data['tags'])) {
+            $changes = $transaction->tags()->sync(app(TagService::class)->resolve($user, $data['tags']));
+            // Tag edits must advance updated_at so offline clients pull them.
+            if (array_filter($changes) !== [] && ! $transaction->wasRecentlyCreated) {
+                $transaction->touch();
+            }
+        }
     }
 
     /**
@@ -110,8 +141,8 @@ class TransactionService
         $account = Account::query()->findOrFail($data['account_id']);
 
         $normalized = array_intersect_key($data, array_flip([
-            'account_id', 'category_id', 'amount', 'occurred_at', 'payee', 'note',
-            'transfer_account_id', 'transfer_amount',
+            'account_id', 'category_id', 'amount', 'occurred_at', 'merchant', 'note',
+            'transfer_account_id', 'transfer_amount', 'payment_method', 'location_name', 'latitude', 'longitude',
         ]));
         $normalized['type'] = $type;
         $normalized['currency'] = $account->currency;

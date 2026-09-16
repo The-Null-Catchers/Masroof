@@ -40,7 +40,7 @@ class SyncController extends Controller
 
         [$accounts, $moreAccounts] = $this->changes($user->accounts(), $since);
         [$categories, $moreCategories] = $this->changes($user->categories(), $since);
-        [$transactions, $moreTransactions] = $this->changes($user->transactions()->with('transferAccount'), $since);
+        [$transactions, $moreTransactions] = $this->changes($user->transactions()->with(['transferAccount', 'tags']), $since);
 
         $hasMore = $moreAccounts || $moreCategories || $moreTransactions;
         $cursor = $hasMore

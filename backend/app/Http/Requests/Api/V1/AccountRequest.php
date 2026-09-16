@@ -26,6 +26,7 @@ class AccountRequest extends FormRequest
             'opening_balance' => ['sometimes', 'nullable', 'string'],
             'color' => ['sometimes', 'nullable', 'string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'icon' => ['sometimes', 'nullable', 'string', 'max:40', 'regex:/^[a-z0-9_]+$/'],
+            'notes' => ['sometimes', 'nullable', 'string', 'max:1000'],
             'include_in_total' => ['sometimes', 'boolean'],
             'sort_order' => ['sometimes', 'integer', 'min:0', 'max:100000'],
             'archived' => ['sometimes', 'boolean'],

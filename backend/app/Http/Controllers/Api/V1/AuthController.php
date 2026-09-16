@@ -62,6 +62,19 @@ class AuthController extends Controller
         return response()->json(null, 204);
     }
 
+    /**
+     * Rotates the current token: issues a fresh one and revokes the old one.
+     */
+    public function refresh(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        $current = $user->currentAccessToken();
+        $response = $this->tokenResponse($user, $current->name ?? 'device');
+        $current->delete();
+
+        return $response;
+    }
+
     public function forgotPassword(Request $request): JsonResponse
     {
         $request->validate(['email' => ['required', 'email']]);
