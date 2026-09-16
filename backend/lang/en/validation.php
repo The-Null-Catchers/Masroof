@@ -198,6 +198,8 @@ return [
     */
 
     'attributes' => [
+        'starts_on' => 'start date',
+        'ends_on' => 'end date',
         'account_id' => 'account',
         'amount' => 'amount',
         'category_id' => 'category',

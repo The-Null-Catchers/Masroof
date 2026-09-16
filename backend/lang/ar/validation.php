@@ -94,6 +94,8 @@ return [
         'icon' => 'الأيقونة',
         'sort_order' => 'الترتيب',
         'parent_id' => 'الفئة الرئيسية',
+        'starts_on' => 'تاريخ البداية',
+        'ends_on' => 'تاريخ النهاية',
         'account_id' => 'الحساب',
         'category_id' => 'الفئة',
         'amount' => 'المبلغ',

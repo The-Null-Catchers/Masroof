@@ -95,6 +95,18 @@ class User extends Authenticatable implements CanResetPassword, HasLocalePrefere
         return $settings->setRelation('user', $this);
     }
 
+    /** @return HasMany<Budget, $this> */
+    public function budgets(): HasMany
+    {
+        return $this->hasMany(Budget::class);
+    }
+
+    /** @return HasMany<Goal, $this> */
+    public function goals(): HasMany
+    {
+        return $this->hasMany(Goal::class);
+    }
+
     /** @return HasMany<Tag, $this> */
     public function tags(): HasMany
     {

@@ -19,6 +19,7 @@ use Illuminate\Support\Carbon;
  * @property string $name
  * @property string|null $default_key
  * @property CategoryType $type
+ * @property bool $is_fixed
  * @property string|null $parent_id
  * @property string|null $color
  * @property string|null $icon
@@ -28,7 +29,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
  */
-#[Fillable(['name', 'type', 'parent_id', 'color', 'icon', 'sort_order'])]
+#[Fillable(['name', 'type', 'is_fixed', 'parent_id', 'color', 'icon', 'sort_order'])]
 class Category extends Model
 {
     /** @use HasFactory<CategoryFactory> */
@@ -36,6 +37,7 @@ class Category extends Model
 
     protected $attributes = [
         'sort_order' => 0,
+        'is_fixed' => false,
         'parent_id' => null,
         'default_key' => null,
         'color' => null,
@@ -47,6 +49,7 @@ class Category extends Model
     {
         return [
             'type' => CategoryType::class,
+            'is_fixed' => 'boolean',
             'archived_at' => 'datetime',
             'sort_order' => 'integer',
         ];

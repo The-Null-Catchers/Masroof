@@ -1,0 +1,30 @@
+<?php
+
+// Localized names of built-in categories (by default_key).
+return [
+    'food' => 'Food',
+    'restaurants' => 'Restaurants',
+    'groceries' => 'Groceries',
+    'transportation' => 'Transportation',
+    'fuel' => 'Fuel',
+    'shopping' => 'Shopping',
+    'entertainment' => 'Entertainment',
+    'bills' => 'Bills',
+    'internet' => 'Internet',
+    'mobile' => 'Mobile',
+    'rent' => 'Rent',
+    'healthcare' => 'Healthcare',
+    'education' => 'Education',
+    'travel' => 'Travel',
+    'gifts' => 'Gifts',
+    'subscriptions' => 'Subscriptions',
+    'family' => 'Family',
+    'other_expense' => 'Other',
+    'salary' => 'Salary',
+    'freelancing' => 'Freelancing',
+    'business' => 'Business',
+    'investments' => 'Investments',
+    'gifts_income' => 'Gifts',
+    'refunds' => 'Refunds',
+    'other_income' => 'Other',
+];

@@ -1,0 +1,30 @@
+<?php
+
+// Localized names of built-in categories (by default_key).
+return [
+    'food' => 'الطعام',
+    'restaurants' => 'المطاعم',
+    'groceries' => 'البقالة',
+    'transportation' => 'المواصلات',
+    'fuel' => 'الوقود',
+    'shopping' => 'التسوق',
+    'entertainment' => 'الترفيه',
+    'bills' => 'الفواتير',
+    'internet' => 'الإنترنت',
+    'mobile' => 'الجوال',
+    'rent' => 'الإيجار',
+    'healthcare' => 'الرعاية الصحية',
+    'education' => 'التعليم',
+    'travel' => 'السفر',
+    'gifts' => 'الهدايا',
+    'subscriptions' => 'الاشتراكات',
+    'family' => 'العائلة',
+    'other_expense' => 'أخرى',
+    'salary' => 'الراتب',
+    'freelancing' => 'العمل الحر',
+    'business' => 'الأعمال',
+    'investments' => 'الاستثمارات',
+    'gifts_income' => 'الهدايا',
+    'refunds' => 'المبالغ المستردة',
+    'other_income' => 'أخرى',
+];

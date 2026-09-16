@@ -12,6 +12,9 @@ use App\Models\User;
 class DefaultCategories
 {
     /** @var array<string, array{type: CategoryType, icon: string, color: string, en: string, ar: string}> */
+    /** Built-in categories treated as fixed (recurring, non-discretionary) costs. */
+    public const FIXED = ['rent', 'bills', 'internet', 'mobile', 'subscriptions'];
+
     public const DEFINITIONS = [
         'food' => ['type' => CategoryType::Expense, 'icon' => 'restaurant', 'color' => '#F97316', 'en' => 'Food', 'ar' => 'الطعام'],
         'restaurants' => ['type' => CategoryType::Expense, 'icon' => 'fastfood', 'color' => '#EA580C', 'en' => 'Restaurants', 'ar' => 'المطاعم'],
@@ -51,6 +54,7 @@ class DefaultCategories
                 'type' => $definition['type'],
                 'icon' => $definition['icon'],
                 'color' => $definition['color'],
+                'is_fixed' => in_array($key, self::FIXED, true),
                 'sort_order' => $order++,
             ]);
             $category->default_key = $key;

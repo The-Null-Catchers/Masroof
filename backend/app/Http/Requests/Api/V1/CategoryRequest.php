@@ -30,6 +30,7 @@ class CategoryRequest extends FormRequest
                     ->whereNull('deleted_at'),
                 Rule::notIn(array_filter([$category?->id])),
             ],
+            'is_fixed' => ['sometimes', 'boolean'],
             'color' => ['sometimes', 'nullable', 'string', 'regex:/^#[0-9A-Fa-f]{6}$/'],
             'icon' => ['sometimes', 'nullable', 'string', 'max:40', 'regex:/^[a-z0-9_]+$/'],
             'sort_order' => ['sometimes', 'integer', 'min:0', 'max:100000'],

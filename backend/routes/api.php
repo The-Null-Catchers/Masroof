@@ -2,9 +2,13 @@
 
 use App\Http\Controllers\Api\HealthController;
 use App\Http\Controllers\Api\V1\AccountController;
+use App\Http\Controllers\Api\V1\AnalyticsController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\BudgetController;
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\DashboardController;
 use App\Http\Controllers\Api\V1\EmailVerificationController;
+use App\Http\Controllers\Api\V1\GoalController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\ReportController;
 use App\Http\Controllers\Api\V1\SettingsController;
@@ -55,7 +59,17 @@ Route::prefix('v1')->name('v1.')->group(function () {
         Route::apiResource('transactions', TransactionController::class);
         Route::apiResource('tags', TagController::class)->except('show');
 
+        Route::apiResource('budgets', BudgetController::class);
+        Route::apiResource('goals', GoalController::class);
+        Route::get('goals/{goal}/entries', [GoalController::class, 'entries'])->name('goals.entries.index');
+        Route::post('goals/{goal}/entries', [GoalController::class, 'addEntry'])->name('goals.entries.store');
+        Route::delete('goals/{goal}/entries/{entry}', [GoalController::class, 'deleteEntry'])->name('goals.entries.destroy');
+
         Route::get('reports/summary', [ReportController::class, 'summary'])->name('reports.summary');
+        Route::get('dashboard', DashboardController::class)->name('dashboard');
+        Route::get('analytics/summary', [AnalyticsController::class, 'summary'])->name('analytics.summary');
+        Route::get('analytics/trends', [AnalyticsController::class, 'trends'])->name('analytics.trends');
+        Route::get('insights', [AnalyticsController::class, 'insights'])->name('insights.index');
         Route::get('sync', [SyncController::class, 'pull'])->name('sync.pull');
     });
 });
