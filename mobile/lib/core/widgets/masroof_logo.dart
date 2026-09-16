@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 
-/// Masroof brand mark (wallet + coin), optionally with the wordmark.
+/// Masroof brand logo, optionally with the wordmark.
+///
+/// By default renders the emerald app tile, which reads on any surface.
+/// [onDark] uses the transparent mark, intended for brand-colored backgrounds.
 class MasroofLogo extends StatelessWidget {
-  const MasroofLogo({super.key, this.size = 56, this.showWordmark = false, this.wordmarkColor});
+  const MasroofLogo({super.key, this.size = 56, this.showWordmark = false, this.wordmarkColor, this.onDark = false});
 
   final double size;
   final bool showWordmark;
   final Color? wordmarkColor;
+  final bool onDark;
 
   @override
   Widget build(BuildContext context) {
     final mark = Image.asset(
-      'assets/branding/mark.png',
+      onDark ? 'assets/branding/mark.png' : 'assets/branding/logo-tile.png',
       width: size,
       height: size,
       filterQuality: FilterQuality.medium,

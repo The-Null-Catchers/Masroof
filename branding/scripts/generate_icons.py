@@ -9,7 +9,8 @@ Single source of truth for the Masroof mark (wallet + coin). It writes:
   branding/icon/png/adaptive-foreground.png   Android adaptive foreground (mask-safe)
   branding/icon/png/adaptive-background.png   Android adaptive background (gradient)
   branding/icon/png/adaptive-monochrome.png   Android 13+ themed icon
-  branding/icon/png/mark-*.png                transparent mark for splash / in-app use
+  branding/icon/png/mark-*.png                transparent mark for dark surfaces (splash)
+  branding/icon/png/logo-tile.png             rounded icon tile for in-app use on any surface
   web/public/*                                favicon.ico, icon.svg, PWA icons
 
 Platform launcher icons for mobile are then produced by
@@ -178,6 +179,15 @@ def main() -> None:
     render(1024, scale=MARK_SCALE, background=False, clasp_color=BG_BOTTOM).save(
         PNG_DIR / "mark-splash.png", optimize=True
     )
+
+    # In-app logo tile: the full icon with rounded corners. The transparent
+    # mark has a white wallet, so it is only suitable on dark surfaces.
+    tile = render(512, scale=FULL_SCALE, background=True)
+    mask = Image.new("L", (512 * 4, 512 * 4), 0)
+    ImageDraw.Draw(mask).rounded_rectangle((0, 0, 512 * 4 - 1, 512 * 4 - 1), radius=512 * 4 * 0.24, fill=255)
+    tile.putalpha(mask.resize((512, 512), Image.LANCZOS))
+    tile.save(PNG_DIR / "logo-tile.png", optimize=True)
+    tile.save(WEB_PUBLIC / "logo-tile.png", optimize=True)
 
     # Android adaptive background keeps the brand gradient.
     _gradient(1024).convert("RGB").save(PNG_DIR / "adaptive-background.png", optimize=True)

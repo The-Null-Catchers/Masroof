@@ -99,6 +99,6 @@ class _SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) => const Scaffold(
     backgroundColor: Color(0xFF07463D),
-    body: Center(child: MasroofLogo(size: 96, showWordmark: true, wordmarkColor: Colors.white)),
+    body: Center(child: MasroofLogo(size: 112, showWordmark: true, wordmarkColor: Colors.white, onDark: true)),
   );
 }
