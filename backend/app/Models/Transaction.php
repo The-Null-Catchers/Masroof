@@ -47,6 +47,8 @@ class Transaction extends Model
         'transfer_account_id' => null,
         'transfer_amount' => null,
         'merchant' => null,
+        'recurring_transaction_id' => null,
+        'recurring_occurrence_on' => null,
         'payment_method' => null,
         'note' => null,
         'location_name' => null,
@@ -61,6 +63,7 @@ class Transaction extends Model
             'amount' => 'integer',
             'transfer_amount' => 'integer',
             'occurred_at' => 'datetime',
+            'recurring_occurrence_on' => 'date',
             'latitude' => 'decimal:6',
             'longitude' => 'decimal:6',
         ];

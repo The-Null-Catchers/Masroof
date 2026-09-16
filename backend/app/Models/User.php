@@ -101,6 +101,12 @@ class User extends Authenticatable implements CanResetPassword, HasLocalePrefere
         return $this->hasMany(Budget::class);
     }
 
+    /** @return HasMany<RecurringTransaction, $this> */
+    public function recurringTransactions(): HasMany
+    {
+        return $this->hasMany(RecurringTransaction::class);
+    }
+
     /** @return HasMany<Goal, $this> */
     public function goals(): HasMany
     {

@@ -41,4 +41,21 @@ return [
     | Lifetime of API tokens in minutes (null = never expire).
     */
     'token_ttl_minutes' => env('MASROOF_TOKEN_TTL_MINUTES', 60 * 24 * 30),
+
+    /*
+    | Notification types with default channels. Users override per type.
+    */
+    'notifications' => [
+        'budget_threshold' => ['in_app' => true, 'email' => false],
+        'bill_reminder' => ['in_app' => true, 'email' => false],
+        'recurring_reminder' => ['in_app' => true, 'email' => false],
+        'goal_reminder' => ['in_app' => true, 'email' => false],
+        'weekly_summary' => ['in_app' => true, 'email' => false],
+        'monthly_summary' => ['in_app' => true, 'email' => true],
+    ],
+
+    /*
+    | Local hour (user timezone) at which reminders and summaries are sent.
+    */
+    'notification_hour' => (int) env('MASROOF_NOTIFICATION_HOUR', 8),
 ];

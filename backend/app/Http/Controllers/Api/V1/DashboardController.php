@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\GoalResource;
+use App\Http\Resources\V1\RecurringTransactionResource;
 use App\Http\Resources\V1\TransactionResource;
 use App\Models\Budget;
 use App\Services\AnalyticsService;
@@ -77,6 +78,11 @@ class DashboardController extends Controller
             ),
             'recent_transactions' => TransactionResource::collection(
                 $user->transactions()->with(['account', 'transferAccount', 'category', 'tags'])->latest('occurred_at')->limit(6)->get(),
+            ),
+            'upcoming_recurring' => RecurringTransactionResource::collection(
+                $user->recurringTransactions()->with('category')->whereNull('paused_at')->whereNotNull('next_occurrence_on')
+                    ->where('next_occurrence_on', '<=', now($user->timezone)->addDays(14)->toDateString())
+                    ->orderBy('next_occurrence_on')->limit(5)->get(),
             ),
             'insights' => array_map(fn (Insight $i) => $i->toArray(), array_slice($insights->generate($user), 0, 3)),
         ]]);

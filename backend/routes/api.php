@@ -9,7 +9,9 @@ use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\DashboardController;
 use App\Http\Controllers\Api\V1\EmailVerificationController;
 use App\Http\Controllers\Api\V1\GoalController;
+use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\ProfileController;
+use App\Http\Controllers\Api\V1\RecurringTransactionController;
 use App\Http\Controllers\Api\V1\ReportController;
 use App\Http\Controllers\Api\V1\SettingsController;
 use App\Http\Controllers\Api\V1\SyncController;
@@ -61,6 +63,16 @@ Route::prefix('v1')->name('v1.')->group(function () {
 
         Route::apiResource('budgets', BudgetController::class);
         Route::apiResource('goals', GoalController::class);
+        Route::get('recurring/upcoming', [RecurringTransactionController::class, 'upcoming'])->name('recurring.upcoming');
+        Route::apiResource('recurring', RecurringTransactionController::class)->parameters(['recurring' => 'recurring']);
+
+        Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+        Route::post('notifications/read-all', [NotificationController::class, 'markAllRead'])->name('notifications.read-all');
+        Route::post('notifications/{id}/read', [NotificationController::class, 'markRead'])->whereUuid('id')->name('notifications.read');
+        Route::delete('notifications/{id}', [NotificationController::class, 'destroy'])->whereUuid('id')->name('notifications.destroy');
+        Route::get('notification-preferences', [NotificationController::class, 'preferences'])->name('notifications.preferences');
+        Route::put('notification-preferences', [NotificationController::class, 'updatePreferences'])->name('notifications.preferences.update');
+
         Route::get('goals/{goal}/entries', [GoalController::class, 'entries'])->name('goals.entries.index');
         Route::post('goals/{goal}/entries', [GoalController::class, 'addEntry'])->name('goals.entries.store');
         Route::delete('goals/{goal}/entries/{entry}', [GoalController::class, 'deleteEntry'])->name('goals.entries.destroy');

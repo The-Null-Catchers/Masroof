@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\TransactionType;
+use App\Jobs\CheckUserAlerts;
 use App\Models\Account;
 use App\Models\Transaction;
 use App\Models\User;
@@ -30,6 +31,7 @@ class TransactionService
             $this->applyEffects($transaction->balanceEffects(), 1);
             $transaction->save();
             $this->syncTags($user, $transaction, $data);
+            $this->queueAlertCheck($user->id);
 
             return $transaction;
         });
@@ -57,6 +59,7 @@ class TransactionService
             $this->applyEffects($this->diff($before, $after), 1);
             $transaction->save();
             $this->syncTags($transaction->user, $transaction, $data);
+            $this->queueAlertCheck($transaction->user_id);
 
             return $transaction;
         });
@@ -84,6 +87,12 @@ class TransactionService
         $data['tags'] = $source->tags()->pluck('name')->all();
 
         return $this->create($source->user, $data);
+    }
+
+    /** Budget thresholds may have been crossed; check once the write commits. */
+    private function queueAlertCheck(string $userId): void
+    {
+        CheckUserAlerts::dispatch($userId)->afterCommit();
     }
 
     /**
@@ -143,6 +152,7 @@ class TransactionService
         $normalized = array_intersect_key($data, array_flip([
             'account_id', 'category_id', 'amount', 'occurred_at', 'merchant', 'note',
             'transfer_account_id', 'transfer_amount', 'payment_method', 'location_name', 'latitude', 'longitude',
+            'recurring_transaction_id', 'recurring_occurrence_on',
         ]));
         $normalized['type'] = $type;
         $normalized['currency'] = $account->currency;
