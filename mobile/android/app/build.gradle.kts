@@ -36,6 +36,8 @@ android {
         // flag during build.
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        // HTTPS only. Local test builds against a LAN API can opt in with -Pmasroof.allowHttp=true.
+        manifestPlaceholders["usesCleartextTraffic"] = (project.findProperty("masroof.allowHttp") == "true").toString()
     }
 
     signingConfigs {
@@ -51,6 +53,10 @@ android {
     }
 
     buildTypes {
+        debug {
+            // The emulator talks to the dev API over http://10.0.2.2.
+            manifestPlaceholders["usesCleartextTraffic"] = "true"
+        }
         release {
             val release = signingConfigs.getByName("release")
             signingConfig = if (release.storeFile != null) release else signingConfigs.getByName("debug")
