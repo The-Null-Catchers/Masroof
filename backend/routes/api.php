@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\HealthController;
 use App\Http\Controllers\Api\V1\AccountController;
+use App\Http\Controllers\Api\V1\Admin;
 use App\Http\Controllers\Api\V1\AnalyticsController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BudgetController;
@@ -95,5 +96,17 @@ Route::prefix('v1')->name('v1.')->group(function () {
         Route::get('analytics/trends', [AnalyticsController::class, 'trends'])->name('analytics.trends');
         Route::get('insights', [AnalyticsController::class, 'insights'])->name('insights.index');
         Route::get('sync', [SyncController::class, 'pull'])->name('sync.pull');
+
+        Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
+            Route::get('stats', Admin\StatsController::class)->name('stats');
+            Route::get('users', [Admin\UserController::class, 'index'])->name('users.index');
+            Route::post('users/{user}/suspend', [Admin\UserController::class, 'suspend'])->name('users.suspend');
+            Route::post('users/{user}/reactivate', [Admin\UserController::class, 'reactivate'])->name('users.reactivate');
+            Route::get('audit-log', [Admin\UserController::class, 'audit'])->name('audit');
+            Route::get('system', [Admin\SystemController::class, 'status'])->name('system');
+            Route::get('failed-jobs', [Admin\SystemController::class, 'failedJobs'])->name('failed-jobs.index');
+            Route::post('failed-jobs/{uuid}/retry', [Admin\SystemController::class, 'retry'])->whereUuid('uuid')->name('failed-jobs.retry');
+            Route::delete('failed-jobs/{uuid}', [Admin\SystemController::class, 'forget'])->whereUuid('uuid')->name('failed-jobs.destroy');
+        });
     });
 });

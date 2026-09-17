@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Seeders\Demo\AdminUserSeeder;
 use Database\Seeders\Demo\DemoUserSeeder;
 use Illuminate\Database\Seeder;
 
@@ -17,6 +18,6 @@ class DatabaseSeeder extends Seeder
             return;
         }
 
-        $this->call(DemoUserSeeder::class);
+        $this->call([DemoUserSeeder::class, AdminUserSeeder::class]);
     }
 }
