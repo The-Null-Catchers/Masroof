@@ -3,3 +3,5 @@ node_modules
 next-env.d.ts
 src/components/ui
 package-lock.json
+# Rewritten by Next.js on build
+tsconfig.json

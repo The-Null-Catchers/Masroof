@@ -84,7 +84,12 @@ jobs:
       - name: OpenAPI spec is up to date
         run: |
           composer docs:openapi
-          git diff --exit-code -- ../docs/openapi.json || (echo "::error::docs/openapi.json is stale. Run 'composer docs:openapi' in backend/." && exit 1)
+          if ! git diff --quiet -- ../docs/openapi.json; then
+            git diff --stat -- ../docs/openapi.json
+            git diff -- ../docs/openapi.json | head -80
+            echo "::error::docs/openapi.json is stale. Run 'composer docs:openapi' in backend/."
+            exit 1
+          fi
 
   web:
     name: Web (Next.js)
