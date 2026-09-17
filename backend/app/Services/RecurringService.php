@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\Category;
 use App\Models\RecurringTransaction;
 use App\Notifications\RecurringPaymentDue;
-use App\Support\Money;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Support\Facades\DB;
@@ -118,7 +117,8 @@ class RecurringService
         $this->notifications->sendOnce($rule->user, new RecurringPaymentDue(
             $rule->id,
             $rule->name,
-            Money::display($rule->amount, $rule->currency, $rule->user->locale),
+            $rule->amount,
+            $rule->currency,
             $due->toDateString(),
             $isBill,
         ), "recurring:{$rule->id}:{$due->toDateString()}");

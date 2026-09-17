@@ -26,6 +26,8 @@ import { describeError } from "@/lib/api/describe";
 import { useI18n } from "@/lib/i18n/provider";
 import { cn } from "@/lib/utils";
 
+import { NotificationBell } from "@/components/notifications/notification-bell";
+
 import { LanguageToggle } from "./language-toggle";
 import { MOBILE_PRIMARY, NAV_ITEMS } from "./nav-items";
 
@@ -90,6 +92,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </Link>
           <div className="ms-auto flex items-center gap-1">
             <LanguageToggle onChange={(locale) => me && updateProfile.mutate({ locale })} />
+            <NotificationBell />
             <Button
               variant="ghost"
               size="icon"

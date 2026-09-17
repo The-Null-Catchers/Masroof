@@ -7,7 +7,8 @@ class GoalBehindSchedule extends MasroofNotification
     public function __construct(
         public readonly string $goalId,
         public readonly string $goalName,
-        public readonly string $monthlyNeeded,
+        public readonly int $monthlyNeeded,
+        public readonly string $currency,
         public readonly int $percent,
     ) {}
 
@@ -18,7 +19,7 @@ class GoalBehindSchedule extends MasroofNotification
 
     public function params(): array
     {
-        return ['goal' => $this->goalName, 'monthly' => $this->monthlyNeeded, 'percent' => $this->percent];
+        return ['goal' => $this->goalName, 'monthly' => ['minor' => $this->monthlyNeeded, 'currency' => $this->currency], 'percent' => $this->percent];
     }
 
     public function action(): ?string

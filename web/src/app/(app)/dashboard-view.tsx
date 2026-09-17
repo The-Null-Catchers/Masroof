@@ -211,6 +211,37 @@ export function DashboardView() {
         </SectionCard>
       </div>
 
+      <div className="grid gap-4 lg:grid-cols-2">
+        <SectionCard title={t.recurring.upcoming} href="/recurring">
+          {!d ? (
+            <Skeleton className="h-32" />
+          ) : d.upcoming_recurring.length ? (
+            <ul className="divide-y text-sm">
+              {d.upcoming_recurring.map((r) => (
+                <li key={r.id} className="flex items-center justify-between gap-3 py-2">
+                  <span className="min-w-0">
+                    <span className="block truncate font-medium">{r.name}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {r.next_occurrence_on &&
+                        formatDate(r.next_occurrence_on, locale, { weekday: "short", day: "numeric", month: "short" })}
+                    </span>
+                  </span>
+                  <Amount
+                    minor={r.type === "expense" ? -r.amount_minor : r.amount_minor}
+                    currency={r.currency}
+                    tone={r.type === "income" ? "income" : r.type === "expense" ? "expense" : "transfer"}
+                    signed={r.type !== "transfer"}
+                    className="font-semibold"
+                  />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-sm text-muted-foreground">{t.recurring.noUpcoming}</p>
+          )}
+        </SectionCard>
+      </div>
+
       <div className="grid gap-4 lg:grid-cols-5">
         <SectionCard title={t.dashboard.goalsProgress} href="/goals" className="lg:col-span-2">
           {!d ? (

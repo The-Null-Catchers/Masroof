@@ -270,6 +270,62 @@ export interface Dashboard {
   spending_by_category: CategoryTotal[];
   monthly_trend: TrendMonth[];
   goals: Goal[];
+  upcoming_recurring: RecurringTransaction[];
   recent_transactions: Transaction[];
   insights: Insight[];
+}
+
+export type Frequency = "daily" | "weekly" | "monthly" | "yearly";
+
+export interface RecurringTransaction {
+  id: string;
+  name: string;
+  type: TransactionType;
+  account_id: string;
+  category_id: string | null;
+  transfer_account_id: string | null;
+  currency: string;
+  amount: string;
+  amount_minor: number;
+  transfer_amount_minor: number | null;
+  merchant: string | null;
+  payment_method: PaymentMethod | null;
+  note: string | null;
+  frequency: Frequency;
+  interval: number;
+  starts_on: string;
+  ends_on: string | null;
+  next_occurrence_on: string | null;
+  upcoming: string[];
+  mode: "auto" | "remind";
+  remind_days_before: number;
+  paused: boolean;
+  category?: { id: string; name: string; default_key: string | null; icon: string | null; color: string | null } | null;
+}
+
+export interface AppNotification {
+  id: string;
+  type: string;
+  title: string;
+  body: string;
+  action: string | null;
+  read: boolean;
+  created_at: string;
+}
+
+export type NotificationPreferences = Record<string, { in_app: boolean; email: boolean }>;
+
+export type ReportType = "monthly" | "transactions" | "budgets" | "income_expense" | "categories";
+
+export interface ReportExport {
+  id: string;
+  type: ReportType;
+  format: "csv" | "xlsx" | "pdf";
+  status: "pending" | "processing" | "completed" | "failed";
+  file_name: string | null;
+  size: number | null;
+  error: string | null;
+  created_at: string;
+  completed_at: string | null;
+  expires_at: string | null;
 }

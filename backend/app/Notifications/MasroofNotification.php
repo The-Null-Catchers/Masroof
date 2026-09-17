@@ -4,6 +4,7 @@ namespace App\Notifications;
 
 use App\Models\User;
 use App\Services\NotificationPreferences;
+use App\Support\Money;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -20,8 +21,27 @@ abstract class MasroofNotification extends Notification implements ShouldQueue
     /** Preference type, e.g. "budget_threshold". */
     abstract public function type(): string;
 
-    /** @return array<string, string|int|float> */
+    /**
+     * Message parameters. Money is passed as ['minor' => int, 'currency' => 'ILS']
+     * and formatted for the reader's language when displayed.
+     *
+     * @return array<string, string|int|float|array{minor: int, currency: string}>
+     */
     abstract public function params(): array;
+
+    /**
+     * @param  array<string, mixed>  $params
+     * @return array<string, string|int|float>
+     */
+    public static function localizeParams(array $params, ?string $locale = null): array
+    {
+        return array_map(
+            fn ($value) => is_array($value) && isset($value['minor'], $value['currency'])
+                ? Money::display((int) $value['minor'], (string) $value['currency'], $locale)
+                : $value,
+            $params,
+        );
+    }
 
     /** Deep link path inside the apps, e.g. "/budgets". */
     abstract public function action(): ?string;
@@ -45,7 +65,7 @@ abstract class MasroofNotification extends Notification implements ShouldQueue
 
     public function toMail(User $notifiable): MailMessage
     {
-        $params = $this->params();
+        $params = self::localizeParams($this->params(), $notifiable->preferredLocale());
         $message = (new MailMessage)
             ->subject(__("notifications.{$this->type()}.title", $params))
             ->greeting(__('notifications.greeting', ['name' => $notifiable->name]))

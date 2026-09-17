@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Notifications\MasroofNotification;
 use App\Services\NotificationPreferences;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -86,7 +87,7 @@ class NotificationController extends Controller
     {
         $data = $notification->data;
         $type = $data['type'] ?? 'unknown';
-        $params = $data['params'] ?? [];
+        $params = MasroofNotification::localizeParams($data['params'] ?? []);
 
         return [
             'id' => $notification->id,

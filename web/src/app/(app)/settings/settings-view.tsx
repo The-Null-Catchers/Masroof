@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { isStrongPassword, PasswordInput } from "@/components/auth/password-input";
 import { Field } from "@/components/common/field";
 import { PageHeader } from "@/components/common/page-header";
+import { NotificationPreferencesCard } from "@/components/notifications/notification-preferences-card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -330,6 +331,8 @@ export function SettingsView() {
           </CardContent>
         </Card>
       </div>
+
+      <NotificationPreferencesCard />
 
       <Card className="border-destructive/40">
         <CardHeader>

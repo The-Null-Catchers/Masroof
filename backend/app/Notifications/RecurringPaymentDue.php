@@ -7,7 +7,8 @@ class RecurringPaymentDue extends MasroofNotification
     public function __construct(
         public readonly string $ruleId,
         public readonly string $name,
-        public readonly string $amount,
+        public readonly int $amount,
+        public readonly string $currency,
         public readonly string $date,
         public readonly bool $isBill,
     ) {}
@@ -19,7 +20,7 @@ class RecurringPaymentDue extends MasroofNotification
 
     public function params(): array
     {
-        return ['name' => $this->name, 'amount' => $this->amount, 'date' => $this->date];
+        return ['name' => $this->name, 'amount' => ['minor' => $this->amount, 'currency' => $this->currency], 'date' => $this->date];
     }
 
     public function action(): ?string

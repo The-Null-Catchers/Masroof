@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Notifications\BudgetThresholdReached;
 use App\Notifications\GoalBehindSchedule;
 use App\Notifications\SpendingSummary;
-use App\Support\Money;
 use App\Support\Period;
 use Carbon\CarbonImmutable;
 
@@ -44,8 +43,9 @@ class AlertChecker
                 $budget->id,
                 $budget->name,
                 $highest,
-                Money::display($progress['spent'], $budget->currency, $user->locale),
-                Money::display($budget->amount, $budget->currency, $user->locale),
+                $progress['spent'],
+                $budget->amount,
+                $budget->currency,
             ), $prefix.$highest);
         }
 
@@ -67,7 +67,8 @@ class AlertChecker
             $sent += (int) $this->notifications->sendOnce($user, new GoalBehindSchedule(
                 $goal->id,
                 $goal->name,
-                Money::display($stats['monthly_needed'], $goal->currency, $user->locale),
+                $stats['monthly_needed'],
+                $goal->currency,
                 (int) floor($stats['percent']),
             ), "goal:{$goal->id}:{$month}");
         }
@@ -107,8 +108,9 @@ class AlertChecker
 
         return $this->notifications->sendOnce($user, new SpendingSummary(
             $kind,
-            Money::display($totals['income'], $user->currency, $user->locale),
-            Money::display($totals['expense'], $user->currency, $user->locale),
+            $totals['income'],
+            $totals['expense'],
+            $user->currency,
             $totals['income'] > 0 ? (int) round(($totals['income'] - $totals['expense']) * 100 / $totals['income']) : 0,
             $category,
         ), $key);

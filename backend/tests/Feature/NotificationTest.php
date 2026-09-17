@@ -71,11 +71,13 @@ class NotificationTest extends TestCase
             ->assertJsonPath('meta.unread_count', 1)
             ->assertJsonPath('data.0.type', 'budget_threshold')
             ->assertJsonPath('data.0.title', 'Food budget at 90%')
+            ->assertJsonPath('data.0.body', "You have spent ₪ \u{2066}95.00\u{2069} of your ₪ \u{2066}100.00\u{2069} Food budget.")
             ->assertJsonPath('data.0.action', '/budgets');
         $id = $inbox->json('data.0.id');
 
         $this->withHeader('Accept-Language', 'ar')->getJson('/api/v1/notifications')
-            ->assertJsonPath('data.0.title', 'ميزانية Food وصلت إلى 90%');
+            ->assertJsonPath('data.0.title', 'ميزانية Food وصلت إلى 90%')
+            ->assertJsonPath('data.0.body', "أنفقت \u{2066}95.00\u{2069} ₪ من ميزانية Food البالغة \u{2066}100.00\u{2069} ₪.");
 
         $this->postJson("/api/v1/notifications/{$id}/read")->assertOk()->assertJsonPath('data.read', true);
         $this->getJson('/api/v1/notifications?unread=1')->assertJsonCount(0, 'data');
@@ -112,7 +114,7 @@ class NotificationTest extends TestCase
         $this->assertSame(1, $checker->goals($this->user));
         $this->assertSame(0, $checker->goals($this->user));
 
-        Notification::assertSentTo($this->user, GoalBehindSchedule::class, fn ($n) => $n->monthlyNeeded === "₪ \u{2066}1,000.00\u{2069}");
+        Notification::assertSentTo($this->user, GoalBehindSchedule::class, fn ($n) => $n->monthlyNeeded === 1_000_00 && $n->currency === 'ILS');
     }
 
     public function test_weekly_and_monthly_summaries(): void
@@ -131,7 +133,7 @@ class NotificationTest extends TestCase
         $this->assertSame(0, app(AlertChecker::class)->summaries($this->user));
 
         Notification::assertSentTo($this->user, SpendingSummary::class, fn ($n) => $n->period === 'weekly');
-        Notification::assertSentTo($this->user, SpendingSummary::class, fn ($n) => $n->period === 'monthly' && $n->expense === "₪ \u{2066}45.00\u{2069}");
+        Notification::assertSentTo($this->user, SpendingSummary::class, fn ($n) => $n->period === 'monthly' && $n->expense === 45_00);
     }
 
     public function test_scheduled_command_runs(): void

@@ -46,13 +46,14 @@ export async function forward(
 
 export async function relay(upstream: Response): Promise<NextResponse> {
   if (upstream.status === 204) return new NextResponse(null, { status: 204 });
-  const text = await upstream.text();
-  return new NextResponse(text, {
-    status: upstream.status,
-    headers: {
-      "Content-Type": upstream.headers.get("content-type") ?? "application/json",
-      "Cache-Control": "no-store",
-      ...(upstream.headers.get("retry-after") ? { "Retry-After": upstream.headers.get("retry-after")! } : {}),
-    },
-  });
+  const headers: Record<string, string> = {
+    "Content-Type": upstream.headers.get("content-type") ?? "application/json",
+    "Cache-Control": "no-store",
+  };
+  for (const name of ["retry-after", "content-disposition", "content-length"]) {
+    const value = upstream.headers.get(name);
+    if (value) headers[name] = value;
+  }
+  // Binary-safe: file downloads (PDF, XLSX) pass through untouched.
+  return new NextResponse(await upstream.arrayBuffer(), { status: upstream.status, headers });
 }

@@ -4,9 +4,11 @@ namespace Database\Seeders\Demo;
 
 use App\Models\Account;
 use App\Models\Budget;
+use App\Models\RecurringTransaction;
 use App\Models\User;
 use App\Services\DefaultCategories;
 use App\Services\GoalService;
+use App\Services\RecurrenceSchedule;
 use App\Services\TransactionService;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Seeder;
@@ -68,6 +70,7 @@ class DemoUserSeeder extends Seeder
 
         $this->seedBudgets($user, $cat);
         $this->seedGoals($user, $now, $savings);
+        $this->seedRecurring($user, $now, $cat, $bank, $card, $savings);
     }
 
     private function account(User $user, string $name, string $type, string $currency, int $opening, string $color, string $icon): Account
@@ -170,5 +173,29 @@ class DemoUserSeeder extends Seeder
         }
         $this->goals->addEntry($emergency, 'withdrawal', 150_00, $now->subMonth()->setDay(20)->utc(), 'Car repair');
         $this->goals->addEntry($laptop, 'contribution', 1_000_00, $now->subDays(3)->utc(), 'Freelance bonus');
+    }
+
+    /**
+     * Future-dated rules so they do not duplicate the seeded history.
+     *
+     * @param  Collection<string, string>  $cat
+     */
+    private function seedRecurring(User $user, CarbonImmutable $now, Collection $cat, Account $bank, Account $card, Account $savings): void
+    {
+        $next = fn (int $day) => ($now->day < $day ? $now->setDay($day) : $now->addMonthNoOverflow()->setDay($day))->toDateString();
+        $rules = [
+            ['name' => 'Salary', 'type' => 'income', 'account_id' => $bank->id, 'category_id' => $cat['salary'], 'amount' => 9_200_00, 'starts_on' => $next(1), 'merchant' => 'Tech company payroll'],
+            ['name' => 'Rent', 'type' => 'expense', 'account_id' => $bank->id, 'category_id' => $cat['rent'], 'amount' => 2_800_00, 'starts_on' => $next(2), 'merchant' => 'Landlord'],
+            ['name' => 'Internet', 'type' => 'expense', 'account_id' => $bank->id, 'category_id' => $cat['internet'], 'amount' => 129_00, 'starts_on' => $next(5), 'merchant' => 'Paltel', 'mode' => 'remind', 'remind_days_before' => 2],
+            ['name' => 'StreamFlix', 'type' => 'expense', 'account_id' => $card->id, 'category_id' => $cat['subscriptions'], 'amount' => 49_90, 'starts_on' => $next(12), 'merchant' => 'StreamFlix'],
+            ['name' => 'Savings transfer', 'type' => 'transfer', 'account_id' => $bank->id, 'transfer_account_id' => $savings->id, 'amount' => 1_100_00, 'transfer_amount' => 300_00, 'starts_on' => $next(5)],
+        ];
+        $schedule = app(RecurrenceSchedule::class);
+        foreach ($rules as $data) {
+            $rule = new RecurringTransaction($data + ['frequency' => 'monthly', 'currency' => 'ILS']);
+            $rule->user_id = $user->id;
+            $rule->next_occurrence_on = $schedule->nextOnOrAfter($rule, CarbonImmutable::parse($data['starts_on']));
+            $rule->save();
+        }
     }
 }

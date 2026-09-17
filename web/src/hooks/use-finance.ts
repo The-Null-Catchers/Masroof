@@ -13,6 +13,10 @@ import type {
   Goal,
   GoalEntry,
   Insight,
+  AppNotification,
+  NotificationPreferences,
+  RecurringTransaction,
+  ReportExport,
   NetWorthRow,
   Paginated,
   ReportSummary,
@@ -344,4 +348,103 @@ export function useTrends(months = 6) {
 
 export function useInsights() {
   return useQuery({ queryKey: ["insights"], queryFn: () => api<{ data: Insight[] }>("/insights").then((r) => r.data) });
+}
+
+// ---------------------------------------------------------------------------
+// Phase 3: recurring payments, notifications, reports
+
+export function useRecurring() {
+  return useQuery({ queryKey: ["recurring"], queryFn: () => api<{ data: RecurringTransaction[] }>("/recurring").then((r) => r.data) });
+}
+
+export type RecurringPayload = {
+  name: string;
+  type: string;
+  account_id: string;
+  category_id: string | null;
+  transfer_account_id: string | null;
+  amount: string;
+  transfer_amount?: string | null;
+  merchant: string | null;
+  note: string | null;
+  frequency: string;
+  interval: number;
+  starts_on: string;
+  ends_on: string | null;
+  mode: string;
+  remind_days_before: number;
+  paused?: boolean;
+};
+
+export function useSaveRecurring() {
+  const client = useQueryClient();
+  const invalidate = useInvalidateFinance();
+  return useMutation({
+    mutationFn: ({ id, payload }: { id?: string; payload: Partial<RecurringPayload> }) =>
+      id
+        ? api<{ data: RecurringTransaction }>(`/recurring/${id}`, { method: "PATCH", body: payload })
+        : api<{ data: RecurringTransaction }>("/recurring", { method: "POST", body: payload }),
+    // Saving can generate past-due transactions, so balances refresh too.
+    onSuccess: () => Promise.all([client.invalidateQueries({ queryKey: ["recurring"] }), invalidate()]),
+  });
+}
+
+export function useDeleteRecurring() {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => api<void>(`/recurring/${id}`, { method: "DELETE" }),
+    onSuccess: () =>
+      Promise.all([client.invalidateQueries({ queryKey: ["recurring"] }), client.invalidateQueries({ queryKey: ["dashboard"] })]),
+  });
+}
+
+export function useNotifications() {
+  return useQuery({
+    queryKey: ["notifications"],
+    queryFn: () => api<{ data: AppNotification[]; meta: { unread_count: number } }>("/notifications", { query: { per_page: 30 } }),
+    refetchInterval: 60_000,
+  });
+}
+
+export function useMarkNotifications() {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (id?: string) =>
+      id ? api(`/notifications/${id}/read`, { method: "POST", body: {} }) : api("/notifications/read-all", { method: "POST", body: {} }),
+    onSuccess: () => client.invalidateQueries({ queryKey: ["notifications"] }),
+  });
+}
+
+export function useNotificationPreferences() {
+  return useQuery({
+    queryKey: ["notification-preferences"],
+    queryFn: () => api<{ data: NotificationPreferences }>("/notification-preferences").then((r) => r.data),
+  });
+}
+
+export function useUpdateNotificationPreferences() {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (preferences: NotificationPreferences) =>
+      api<{ data: NotificationPreferences }>("/notification-preferences", { method: "PUT", body: { preferences } }).then((r) => r.data),
+    onSuccess: (data) => client.setQueryData(["notification-preferences"], data),
+  });
+}
+
+export function useExports() {
+  return useQuery({
+    queryKey: ["exports"],
+    queryFn: () => api<{ data: ReportExport[] }>("/reports/exports").then((r) => r.data),
+    // Poll while any export is still being generated.
+    refetchInterval: (query) => (query.state.data?.some((e) => e.status === "pending" || e.status === "processing") ? 2_000 : false),
+  });
+}
+
+export function useCreateExport() {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (payload: Record<string, string | number>) =>
+      api<{ data: ReportExport }>("/reports/exports", { method: "POST", body: payload }).then((r) => r.data),
+    onSuccess: () => client.invalidateQueries({ queryKey: ["exports"] }),
+  });
 }

@@ -8,8 +8,9 @@ class BudgetThresholdReached extends MasroofNotification
         public readonly string $budgetId,
         public readonly string $budgetName,
         public readonly int $threshold,
-        public readonly string $spent,
-        public readonly string $amount,
+        public readonly int $spent,
+        public readonly int $amount,
+        public readonly string $currency,
     ) {}
 
     public function type(): string
@@ -19,7 +20,12 @@ class BudgetThresholdReached extends MasroofNotification
 
     public function params(): array
     {
-        return ['budget' => $this->budgetName, 'threshold' => $this->threshold, 'spent' => $this->spent, 'amount' => $this->amount];
+        return [
+            'budget' => $this->budgetName,
+            'threshold' => $this->threshold,
+            'spent' => ['minor' => $this->spent, 'currency' => $this->currency],
+            'amount' => ['minor' => $this->amount, 'currency' => $this->currency],
+        ];
     }
 
     public function action(): ?string
