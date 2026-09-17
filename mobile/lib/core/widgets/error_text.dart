@@ -18,3 +18,9 @@ void showErrorSnack(BuildContext context, Object error) {
     ..hideCurrentSnackBar()
     ..showSnackBar(SnackBar(content: Text(describeError(context, error))));
 }
+
+void showMessageSnack(BuildContext context, String message) {
+  ScaffoldMessenger.of(context)
+    ..hideCurrentSnackBar()
+    ..showSnackBar(SnackBar(content: Text(message)));
+}

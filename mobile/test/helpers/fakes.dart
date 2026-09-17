@@ -31,6 +31,10 @@ class FakeApiClient implements ApiClient {
   }
 
   @override
+  Future<Map<String, dynamic>> upload(String path, String filePath, {String field = 'file'}) =>
+      _call('UPLOAD', path, filePath);
+
+  @override
   Future<Map<String, dynamic>> get(String path, {Map<String, dynamic>? query}) => _call('GET', path, null, query);
 
   @override

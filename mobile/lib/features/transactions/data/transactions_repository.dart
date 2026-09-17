@@ -21,6 +21,7 @@ class TransactionDraft {
     this.note,
     this.paymentMethod,
     this.tags = const [],
+    this.receiptId,
   });
 
   final String type;
@@ -34,6 +35,9 @@ class TransactionDraft {
   final String? note;
   final String? paymentMethod;
   final List<String> tags;
+
+  /// Scanned receipt to link; sent with the create so it works offline too.
+  final String? receiptId;
 
   /// Copy of an existing transaction dated [occurredAt].
   factory TransactionDraft.copyOf(TransactionEntity t, {required DateTime occurredAt}) => TransactionDraft(
@@ -237,7 +241,10 @@ class TransactionsRepository {
       );
       await _db.into(_db.transactions).insert(entity);
       await _applyEffects(effectsOf(entity));
-      await _outbox.create(SyncEntity.transactions, id, await _payload(entity));
+      await _outbox.create(SyncEntity.transactions, id, {
+        ...await _payload(entity),
+        if (draft.receiptId != null) 'receipt_id': draft.receiptId,
+      });
     });
     return id;
   }

@@ -43,7 +43,17 @@ class _TransactionsScreenState extends ConsumerState<TransactionsScreen> {
     final transactions = ref.watch(transactionsProvider(filter));
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.transactions)),
+      appBar: AppBar(
+        title: Text(l10n.transactions),
+        actions: [
+          IconButton(
+            key: const Key('scan-receipt'),
+            tooltip: l10n.scanReceipt,
+            onPressed: () => context.push('/transactions/scan'),
+            icon: const Icon(Icons.document_scanner_outlined),
+          ),
+        ],
+      ),
       floatingActionButton: FloatingActionButton(
         tooltip: l10n.addTransaction,
         onPressed: () => context.push('/transactions/new'),

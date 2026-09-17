@@ -2125,6 +2125,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Next: {date}'**
   String nextOn(String date);
+
+  /// No description provided for @scanReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan receipt'**
+  String get scanReceipt;
+
+  /// No description provided for @receiptScanIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Take a photo of a receipt or pick one from your gallery. We read the merchant, total and date, and you confirm before saving.'**
+  String get receiptScanIntro;
+
+  /// No description provided for @takePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Take photo'**
+  String get takePhoto;
+
+  /// No description provided for @chooseFromGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose from gallery'**
+  String get chooseFromGallery;
+
+  /// No description provided for @readingReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Reading receipt…'**
+  String get readingReceipt;
+
+  /// No description provided for @receiptFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not read this receipt.'**
+  String get receiptFailed;
+
+  /// No description provided for @receiptPartial.
+  ///
+  /// In en, this message translates to:
+  /// **'Some details were not found. You can fill them in on the next step.'**
+  String get receiptPartial;
+
+  /// No description provided for @receiptNeedsInternet.
+  ///
+  /// In en, this message translates to:
+  /// **'Scanning a receipt needs an internet connection. You can still add the transaction manually.'**
+  String get receiptNeedsInternet;
+
+  /// No description provided for @receiptPickFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the camera or gallery.'**
+  String get receiptPickFailed;
+
+  /// No description provided for @notFound.
+  ///
+  /// In en, this message translates to:
+  /// **'Not found'**
+  String get notFound;
+
+  /// No description provided for @reviewAndSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Review & save'**
+  String get reviewAndSave;
+
+  /// No description provided for @enterManually.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter manually'**
+  String get enterManually;
+
+  /// No description provided for @reviewReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Review receipt'**
+  String get reviewReceipt;
+
+  /// No description provided for @receiptVerifyHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the details read from the receipt before saving.'**
+  String get receiptVerifyHint;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

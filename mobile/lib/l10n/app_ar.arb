@@ -338,5 +338,19 @@
   "reportCategories": "الإنفاق حسب الفئة",
   "preparingReport": "جارٍ تحضير التقرير…",
   "reportFailed": "تعذر إنشاء التقرير.",
-  "nextOn": "القادمة: {date}"
+  "nextOn": "القادمة: {date}",
+  "scanReceipt": "مسح إيصال",
+  "receiptScanIntro": "التقط صورة للإيصال أو اختر صورة من المعرض. نقرأ اسم المتجر والمجموع والتاريخ، وتؤكدها أنت قبل الحفظ.",
+  "takePhoto": "التقاط صورة",
+  "chooseFromGallery": "اختيار من المعرض",
+  "readingReceipt": "جارٍ قراءة الإيصال…",
+  "receiptFailed": "تعذرت قراءة هذا الإيصال.",
+  "receiptPartial": "لم نعثر على بعض التفاصيل. يمكنك إكمالها في الخطوة التالية.",
+  "receiptNeedsInternet": "يتطلب مسح الإيصال اتصالًا بالإنترنت. ما زال بإمكانك إضافة المعاملة يدويًا.",
+  "receiptPickFailed": "تعذر فتح الكاميرا أو المعرض.",
+  "notFound": "غير موجود",
+  "reviewAndSave": "مراجعة وحفظ",
+  "enterManually": "إدخال يدوي",
+  "reviewReceipt": "مراجعة الإيصال",
+  "receiptVerifyHint": "راجع التفاصيل المقروءة من الإيصال قبل الحفظ."
 }

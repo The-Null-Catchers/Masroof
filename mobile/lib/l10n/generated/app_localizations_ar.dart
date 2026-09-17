@@ -1085,4 +1085,47 @@ class AppLocalizationsAr extends AppLocalizations {
   String nextOn(String date) {
     return 'القادمة: $date';
   }
+
+  @override
+  String get scanReceipt => 'مسح إيصال';
+
+  @override
+  String get receiptScanIntro =>
+      'التقط صورة للإيصال أو اختر صورة من المعرض. نقرأ اسم المتجر والمجموع والتاريخ، وتؤكدها أنت قبل الحفظ.';
+
+  @override
+  String get takePhoto => 'التقاط صورة';
+
+  @override
+  String get chooseFromGallery => 'اختيار من المعرض';
+
+  @override
+  String get readingReceipt => 'جارٍ قراءة الإيصال…';
+
+  @override
+  String get receiptFailed => 'تعذرت قراءة هذا الإيصال.';
+
+  @override
+  String get receiptPartial => 'لم نعثر على بعض التفاصيل. يمكنك إكمالها في الخطوة التالية.';
+
+  @override
+  String get receiptNeedsInternet => 'يتطلب مسح الإيصال اتصالًا بالإنترنت. ما زال بإمكانك إضافة المعاملة يدويًا.';
+
+  @override
+  String get receiptPickFailed => 'تعذر فتح الكاميرا أو المعرض.';
+
+  @override
+  String get notFound => 'غير موجود';
+
+  @override
+  String get reviewAndSave => 'مراجعة وحفظ';
+
+  @override
+  String get enterManually => 'إدخال يدوي';
+
+  @override
+  String get reviewReceipt => 'مراجعة الإيصال';
+
+  @override
+  String get receiptVerifyHint => 'راجع التفاصيل المقروءة من الإيصال قبل الحفظ.';
 }

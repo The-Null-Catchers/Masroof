@@ -17,17 +17,27 @@ import '../../../core/widgets/empty_state.dart';
 import '../../../core/widgets/icon_catalog.dart';
 import '../../accounts/application/account_providers.dart';
 import '../../categories/application/category_providers.dart';
+import '../../receipts/data/receipts_repository.dart';
 import '../data/transactions_repository.dart';
 import 'widgets/tags_field.dart';
 
 const paymentMethods = ['cash', 'card', 'bank_transfer', 'wallet', 'cheque', 'other'];
 
 class TransactionFormScreen extends ConsumerStatefulWidget {
-  const TransactionFormScreen({super.key, this.transactionId, this.initialType = 'expense', this.initialAccountId});
+  const TransactionFormScreen({
+    super.key,
+    this.transactionId,
+    this.initialType = 'expense',
+    this.initialAccountId,
+    this.receipt,
+  });
 
   final String? transactionId;
   final String initialType;
   final String? initialAccountId;
+
+  /// OCR result to prefill from; saving links the receipt.
+  final ReceiptScan? receipt;
 
   @override
   ConsumerState<TransactionFormScreen> createState() => _TransactionFormScreenState();
@@ -56,11 +66,30 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
   void initState() {
     super.initState();
     _accountId = widget.initialAccountId;
+    final receipt = widget.receipt;
+    if (receipt != null && !receipt.failed) {
+      _amount.text = receipt.total ?? '';
+      _merchant.text = receipt.merchant ?? '';
+      _categoryId = receipt.suggestedCategoryId;
+      if (receipt.date != null) {
+        final d = receipt.date!;
+        _occurredAt = DateTime(d.year, d.month, d.day, 12);
+      }
+      unawaited(_pickAccountFor(receipt.currency));
+    }
     if (_editing) {
       unawaited(_load());
     } else {
       _loaded = true;
     }
+  }
+
+  /// Prefers an active account in the receipt's currency.
+  Future<void> _pickAccountFor(String? currency) async {
+    if (currency == null || _accountId != null) return;
+    final accounts = await ref.read(accountsProvider(false).future);
+    final match = accounts.firstWhereOrNull((a) => a.currency == currency);
+    if (match != null && mounted && _accountId == null) setState(() => _accountId = match.id);
   }
 
   Future<void> _load() async {
@@ -125,6 +154,7 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
       note: _note.text,
       paymentMethod: _type == 'transfer' ? null : _paymentMethod,
       tags: _tags,
+      receiptId: widget.receipt?.id,
     );
 
     setState(() => _saving = true);
@@ -175,7 +205,13 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(_editing ? l10n.editTransaction : l10n.newTransaction),
+        title: Text(
+          _editing
+              ? l10n.editTransaction
+              : widget.receipt != null
+              ? l10n.reviewReceipt
+              : l10n.newTransaction,
+        ),
         actions: [
           if (_editing)
             IconButton(tooltip: l10n.delete, onPressed: _delete, icon: const Icon(Icons.delete_outline_rounded)),
@@ -218,6 +254,15 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
               children: [
+                if (widget.receipt != null) ...[
+                  Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.receipt_long_outlined),
+                      title: Text(l10n.receiptVerifyHint),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                ],
                 SegmentedButton<String>(
                   segments: [
                     ButtonSegment(
@@ -247,7 +292,7 @@ class _TransactionFormScreenState extends ConsumerState<TransactionFormScreen> {
                 TextFormField(
                   key: const Key('amount-field'),
                   controller: _amount,
-                  autofocus: !_editing,
+                  autofocus: !_editing && widget.receipt == null,
                   textAlign: TextAlign.center,
                   textDirection: TextDirection.ltr,
                   keyboardType: const TextInputType.numberWithOptions(decimal: true),

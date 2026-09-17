@@ -54,6 +54,15 @@ class ApiClient {
   Future<Map<String, dynamic>> delete(String path, [Object? body]) =>
       _send(() => _dio.delete<Map<String, dynamic>>(path, data: body));
 
+  /// Multipart upload of a local file (receipt photos).
+  Future<Map<String, dynamic>> upload(String path, String filePath, {String field = 'file'}) => _send(
+    () => _dio.post<Map<String, dynamic>>(
+      path,
+      data: FormData.fromMap({field: MultipartFile.fromFileSync(filePath)}),
+      options: Options(sendTimeout: const Duration(seconds: 60)),
+    ),
+  );
+
   /// Raw bytes for file downloads (reports).
   Future<List<int>> download(String path) async {
     try {

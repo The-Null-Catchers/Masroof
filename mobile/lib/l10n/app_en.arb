@@ -457,5 +457,19 @@
         "type": "String"
       }
     }
-  }
+  },
+  "scanReceipt": "Scan receipt",
+  "receiptScanIntro": "Take a photo of a receipt or pick one from your gallery. We read the merchant, total and date, and you confirm before saving.",
+  "takePhoto": "Take photo",
+  "chooseFromGallery": "Choose from gallery",
+  "readingReceipt": "Reading receipt…",
+  "receiptFailed": "We could not read this receipt.",
+  "receiptPartial": "Some details were not found. You can fill them in on the next step.",
+  "receiptNeedsInternet": "Scanning a receipt needs an internet connection. You can still add the transaction manually.",
+  "receiptPickFailed": "Could not open the camera or gallery.",
+  "notFound": "Not found",
+  "reviewAndSave": "Review & save",
+  "enterManually": "Enter manually",
+  "reviewReceipt": "Review receipt",
+  "receiptVerifyHint": "Check the details read from the receipt before saving."
 }

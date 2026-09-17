@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 	<dict>
+	<key>NSCameraUsageDescription</key>
+	<string>Masroof uses the camera to scan receipts.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Masroof reads receipt photos you choose from your library.</string>
 		<key>CFBundleLocalizations</key>
 		<array>
 			<string>ar</string>

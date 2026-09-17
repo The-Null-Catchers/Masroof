@@ -266,7 +266,9 @@ class _MonthSummary extends ConsumerWidget {
             const SizedBox(height: 12),
             if (totals.isEmpty)
               Text(l10n.emptyTransactionsBody, style: theme.textTheme.bodySmall?.copyWith(color: theme.hintColor)),
-            for (final t in totals) ...[
+            for (final (i, t) in totals.indexed) ...[
+              // Separate currencies so each row reads as its own group.
+              if (i > 0) const Divider(height: 28),
               Row(
                 children: [
                   stat(l10n.income, t.income, t.currency, AmountTone.income, Icons.south_west_rounded),

@@ -26,6 +26,8 @@ import '../features/categories/presentation/category_form_screen.dart';
 import '../features/dashboard/presentation/dashboard_screen.dart';
 import '../features/onboarding/presentation/onboarding_screen.dart';
 import '../features/settings/presentation/settings_screen.dart';
+import '../features/receipts/data/receipts_repository.dart';
+import '../features/receipts/presentation/receipt_scan_screen.dart';
 import '../features/transactions/presentation/transaction_form_screen.dart';
 import '../features/transactions/presentation/transactions_screen.dart';
 import 'app_shell.dart';
@@ -62,8 +64,10 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, state) => TransactionFormScreen(
           initialType: state.uri.queryParameters['type'] ?? 'expense',
           initialAccountId: state.uri.queryParameters['account'],
+          receipt: state.extra is ReceiptScan ? state.extra! as ReceiptScan : null,
         ),
       ),
+      GoRoute(path: '/transactions/scan', builder: (_, _) => const ReceiptScanScreen()),
       GoRoute(
         path: '/transactions/:id/edit',
         builder: (_, state) => TransactionFormScreen(transactionId: state.pathParameters['id']),

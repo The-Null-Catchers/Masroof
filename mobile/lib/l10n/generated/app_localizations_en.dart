@@ -1069,4 +1069,48 @@ class AppLocalizationsEn extends AppLocalizations {
   String nextOn(String date) {
     return 'Next: $date';
   }
+
+  @override
+  String get scanReceipt => 'Scan receipt';
+
+  @override
+  String get receiptScanIntro =>
+      'Take a photo of a receipt or pick one from your gallery. We read the merchant, total and date, and you confirm before saving.';
+
+  @override
+  String get takePhoto => 'Take photo';
+
+  @override
+  String get chooseFromGallery => 'Choose from gallery';
+
+  @override
+  String get readingReceipt => 'Reading receipt…';
+
+  @override
+  String get receiptFailed => 'We could not read this receipt.';
+
+  @override
+  String get receiptPartial => 'Some details were not found. You can fill them in on the next step.';
+
+  @override
+  String get receiptNeedsInternet =>
+      'Scanning a receipt needs an internet connection. You can still add the transaction manually.';
+
+  @override
+  String get receiptPickFailed => 'Could not open the camera or gallery.';
+
+  @override
+  String get notFound => 'Not found';
+
+  @override
+  String get reviewAndSave => 'Review & save';
+
+  @override
+  String get enterManually => 'Enter manually';
+
+  @override
+  String get reviewReceipt => 'Review receipt';
+
+  @override
+  String get receiptVerifyHint => 'Check the details read from the receipt before saving.';
 }
