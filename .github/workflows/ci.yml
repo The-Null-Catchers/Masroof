@@ -82,13 +82,18 @@ jobs:
       - name: Tests
         run: php artisan test
       - name: OpenAPI spec is up to date
+        shell: bash
         run: |
-          composer docs:openapi
+          set +e +o pipefail
+          encode() { sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}'; }
+          composer docs:openapi > "$RUNNER_TEMP/openapi.log" 2>&1
+          code=$?
+          if [ $code -ne 0 ]; then
+            echo "::error::OpenAPI export failed (exit $code)%0A$(tail -n 25 "$RUNNER_TEMP/openapi.log" | encode)"
+            exit 1
+          fi
           if ! git diff --quiet -- ../docs/openapi.json; then
-            git diff --stat -- ../docs/openapi.json
-            git diff -- ../docs/openapi.json | head -80
-            DIFF=$(git diff -U0 -- ../docs/openapi.json | grep '^[-+][^-+]' | head -30 | sed 's/%/%25/g' | awk '{printf "%s%%0A", $0}')
-            echo "::error::docs/openapi.json is stale. Run 'composer docs:openapi' in backend/.%0A$DIFF"
+            echo "::error::docs/openapi.json is stale. Run 'composer docs:openapi' in backend/.%0A$(git diff -U0 -- ../docs/openapi.json | grep '^[-+][^-+]' | head -n 30 | encode)"
             exit 1
           fi
 
