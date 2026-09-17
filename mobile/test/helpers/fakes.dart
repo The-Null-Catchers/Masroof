@@ -21,6 +21,15 @@ class FakeApiClient implements ApiClient {
     return handler(method, path, body, query);
   }
 
+  /// Bytes returned by [download], keyed by path.
+  final downloads = <String, List<int>>{};
+
+  @override
+  Future<List<int>> download(String path) async {
+    requests.add(('DOWNLOAD', path, null));
+    return downloads[path] ?? const [];
+  }
+
   @override
   Future<Map<String, dynamic>> get(String path, {Map<String, dynamic>? query}) => _call('GET', path, null, query);
 

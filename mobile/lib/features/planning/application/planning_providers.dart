@@ -5,6 +5,9 @@ import '../../../core/providers.dart';
 import '../../analytics/data/analytics.dart';
 import '../../budgets/data/budget.dart';
 import '../../goals/data/goal.dart';
+import '../../notifications/data/notifications_repository.dart';
+import '../../recurring/data/recurring.dart';
+import '../../reports/data/reports_repository.dart';
 import '../data/planning_repository.dart';
 
 final cachedResourceProvider = Provider<CachedResource>(
@@ -30,3 +33,21 @@ final analyticsSummaryProvider = StreamProvider.family<({AnalyticsSummary summar
 final trendsProvider = StreamProvider<List<TrendMonth>>((ref) => ref.watch(planningRepositoryProvider).watchTrends());
 
 final insightsProvider = StreamProvider<List<Insight>>((ref) => ref.watch(planningRepositoryProvider).watchInsights());
+
+final recurringProvider = StreamProvider<({List<RecurringRule> rules, bool stale})>(
+  (ref) => ref.watch(planningRepositoryProvider).watchRecurring(),
+);
+
+final notificationsRepositoryProvider = Provider<NotificationsRepository>(
+  (ref) => NotificationsRepository(ref.watch(apiClientProvider)),
+);
+
+final notificationsProvider = FutureProvider<({List<AppNotification> items, int unread})>(
+  (ref) => ref.watch(notificationsRepositoryProvider).inbox(),
+);
+
+final notificationPreferencesProvider = FutureProvider<ChannelPreferences>(
+  (ref) => ref.watch(notificationsRepositoryProvider).preferences(),
+);
+
+final reportsRepositoryProvider = Provider<ReportsRepository>((ref) => ReportsRepository(ref.watch(apiClientProvider)));

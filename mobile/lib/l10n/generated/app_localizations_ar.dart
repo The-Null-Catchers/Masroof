@@ -951,4 +951,138 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get navActivity => 'المعاملات';
+
+  @override
+  String get recurring => 'الدفعات المتكررة';
+
+  @override
+  String get addRecurring => 'دفعة متكررة جديدة';
+
+  @override
+  String get editRecurring => 'تعديل الدفعة المتكررة';
+
+  @override
+  String get recurringName => 'الاسم';
+
+  @override
+  String get frequency => 'التكرار';
+
+  @override
+  String get freqDaily => 'يومي';
+
+  @override
+  String get freqWeekly => 'أسبوعي';
+
+  @override
+  String get freqMonthly => 'شهري';
+
+  @override
+  String get freqYearly => 'سنوي';
+
+  @override
+  String get everyInterval => 'كل (الفاصل)';
+
+  @override
+  String get whenDue => 'عند الاستحقاق';
+
+  @override
+  String get modeAuto => 'إضافة تلقائية';
+
+  @override
+  String get modeRemind => 'ذكّرني فقط';
+
+  @override
+  String get remindDaysBefore => 'أيام التذكير المسبق';
+
+  @override
+  String get paused => 'متوقفة';
+
+  @override
+  String get pause => 'إيقاف مؤقت';
+
+  @override
+  String get resume => 'استئناف';
+
+  @override
+  String get ended => 'انتهت';
+
+  @override
+  String get emptyRecurringTitle => 'لا توجد دفعات متكررة بعد';
+
+  @override
+  String get emptyRecurringBody => 'أتمت الرواتب والإيجار والاشتراكات والفواتير.';
+
+  @override
+  String get upcomingPayments => 'الدفعات القادمة';
+
+  @override
+  String get noNotifications => 'لا جديد لديك.';
+
+  @override
+  String get markAllRead => 'تحديد الكل كمقروء';
+
+  @override
+  String get notificationPreferences => 'تفضيلات الإشعارات';
+
+  @override
+  String get inApp => 'داخل التطبيق';
+
+  @override
+  String get emailChannel => 'البريد الإلكتروني';
+
+  @override
+  String get notifBudgetThreshold => 'تنبيهات الميزانية';
+
+  @override
+  String get notifBillReminder => 'تذكير الفواتير';
+
+  @override
+  String get notifRecurringReminder => 'تذكير الدفعات المتكررة';
+
+  @override
+  String get notifGoalReminder => 'تذكير أهداف الادخار';
+
+  @override
+  String get notifWeeklySummary => 'ملخص الإنفاق الأسبوعي';
+
+  @override
+  String get notifMonthlySummary => 'الملخص المالي الشهري';
+
+  @override
+  String get reports => 'التقارير والتصدير';
+
+  @override
+  String get reportType => 'التقرير';
+
+  @override
+  String get reportFormat => 'الصيغة';
+
+  @override
+  String get generateReport => 'إنشاء ومشاركة';
+
+  @override
+  String get reportMonthly => 'التقرير المالي الشهري';
+
+  @override
+  String get reportTransactions => 'المعاملات';
+
+  @override
+  String get reportBudgets => 'تقرير الميزانيات';
+
+  @override
+  String get reportIncomeExpense => 'ملخص الدخل والمصروفات';
+
+  @override
+  String get reportCategories => 'الإنفاق حسب الفئة';
+
+  @override
+  String get preparingReport => 'جارٍ تحضير التقرير…';
+
+  @override
+  String get reportFailed => 'تعذر إنشاء التقرير.';
+
+  @override
+  String nextOn(String date) {
+    return 'القادمة: $date';
+  }
 }

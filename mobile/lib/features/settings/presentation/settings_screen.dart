@@ -62,6 +62,54 @@ class SettingsScreen extends ConsumerWidget {
           _Section(
             children: [
               ListTile(
+                leading: const Icon(Icons.account_balance_wallet_outlined),
+                title: Text(l10n.accounts),
+                trailing: const Icon(Icons.chevron_right_rounded),
+                onTap: () => context.push('/accounts'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.event_repeat_outlined),
+                title: Text(l10n.recurring),
+                trailing: const Icon(Icons.chevron_right_rounded),
+                onTap: () => context.push('/recurring'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.description_outlined),
+                title: Text(l10n.reports),
+                trailing: const Icon(Icons.chevron_right_rounded),
+                onTap: () => context.push('/reports'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.notifications_outlined),
+                title: Text(l10n.notificationPreferences),
+                trailing: const Icon(Icons.chevron_right_rounded),
+                onTap: () => context.push('/settings/notifications'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.category_outlined),
+                title: Text(l10n.categories),
+                trailing: const Icon(Icons.chevron_right_rounded),
+                onTap: () => context.push('/settings/categories'),
+              ),
+              ListTile(
+                leading: sync?.phase == SyncPhase.syncing
+                    ? const SizedBox.square(
+                        dimension: 24,
+                        child: Padding(padding: EdgeInsets.all(3), child: CircularProgressIndicator(strokeWidth: 2)),
+                      )
+                    : const Icon(Icons.sync_rounded),
+                title: Text(l10n.syncNow),
+                subtitle: sync?.lastSyncedAt == null
+                    ? null
+                    : Text(l10n.lastSynced(DateFormat.jm(context.localeCode).format(sync!.lastSyncedAt!))),
+                onTap: () => ref.read(syncEngineProvider).sync(),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          _Section(
+            children: [
+              ListTile(
                 leading: const Icon(Icons.translate_rounded),
                 title: Text(l10n.language),
                 trailing: SegmentedButton<String>(
@@ -145,36 +193,6 @@ class SettingsScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 16),
           ],
-          _Section(
-            children: [
-              ListTile(
-                leading: const Icon(Icons.account_balance_wallet_outlined),
-                title: Text(l10n.accounts),
-                trailing: const Icon(Icons.chevron_right_rounded),
-                onTap: () => context.push('/accounts'),
-              ),
-              ListTile(
-                leading: const Icon(Icons.category_outlined),
-                title: Text(l10n.categories),
-                trailing: const Icon(Icons.chevron_right_rounded),
-                onTap: () => context.push('/settings/categories'),
-              ),
-              ListTile(
-                leading: sync?.phase == SyncPhase.syncing
-                    ? const SizedBox.square(
-                        dimension: 24,
-                        child: Padding(padding: EdgeInsets.all(3), child: CircularProgressIndicator(strokeWidth: 2)),
-                      )
-                    : const Icon(Icons.sync_rounded),
-                title: Text(l10n.syncNow),
-                subtitle: sync?.lastSyncedAt == null
-                    ? null
-                    : Text(l10n.lastSynced(DateFormat.jm(context.localeCode).format(sync!.lastSyncedAt!))),
-                onTap: () => ref.read(syncEngineProvider).sync(),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
           _Section(
             children: [
               ListTile(

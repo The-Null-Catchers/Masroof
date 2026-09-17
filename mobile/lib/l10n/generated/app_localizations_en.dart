@@ -935,4 +935,138 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get navActivity => 'Activity';
+
+  @override
+  String get recurring => 'Recurring payments';
+
+  @override
+  String get addRecurring => 'New recurring';
+
+  @override
+  String get editRecurring => 'Edit recurring';
+
+  @override
+  String get recurringName => 'Name';
+
+  @override
+  String get frequency => 'Repeats';
+
+  @override
+  String get freqDaily => 'Daily';
+
+  @override
+  String get freqWeekly => 'Weekly';
+
+  @override
+  String get freqMonthly => 'Monthly';
+
+  @override
+  String get freqYearly => 'Yearly';
+
+  @override
+  String get everyInterval => 'Every (interval)';
+
+  @override
+  String get whenDue => 'When due';
+
+  @override
+  String get modeAuto => 'Add automatically';
+
+  @override
+  String get modeRemind => 'Only remind me';
+
+  @override
+  String get remindDaysBefore => 'Remind days before';
+
+  @override
+  String get paused => 'Paused';
+
+  @override
+  String get pause => 'Pause';
+
+  @override
+  String get resume => 'Resume';
+
+  @override
+  String get ended => 'Ended';
+
+  @override
+  String get emptyRecurringTitle => 'No recurring payments yet';
+
+  @override
+  String get emptyRecurringBody => 'Automate salaries, rent, subscriptions and bills.';
+
+  @override
+  String get upcomingPayments => 'Upcoming payments';
+
+  @override
+  String get noNotifications => 'You\'re all caught up.';
+
+  @override
+  String get markAllRead => 'Mark all as read';
+
+  @override
+  String get notificationPreferences => 'Notification preferences';
+
+  @override
+  String get inApp => 'In app';
+
+  @override
+  String get emailChannel => 'Email';
+
+  @override
+  String get notifBudgetThreshold => 'Budget alerts';
+
+  @override
+  String get notifBillReminder => 'Bill reminders';
+
+  @override
+  String get notifRecurringReminder => 'Recurring payment reminders';
+
+  @override
+  String get notifGoalReminder => 'Savings goal reminders';
+
+  @override
+  String get notifWeeklySummary => 'Weekly spending summary';
+
+  @override
+  String get notifMonthlySummary => 'Monthly financial summary';
+
+  @override
+  String get reports => 'Reports & exports';
+
+  @override
+  String get reportType => 'Report';
+
+  @override
+  String get reportFormat => 'Format';
+
+  @override
+  String get generateReport => 'Generate & share';
+
+  @override
+  String get reportMonthly => 'Monthly financial report';
+
+  @override
+  String get reportTransactions => 'Transactions';
+
+  @override
+  String get reportBudgets => 'Budget report';
+
+  @override
+  String get reportIncomeExpense => 'Income & expense summary';
+
+  @override
+  String get reportCategories => 'Category spending';
+
+  @override
+  String get preparingReport => 'Preparing your report…';
+
+  @override
+  String get reportFailed => 'The report could not be generated.';
+
+  @override
+  String nextOn(String date) {
+    return 'Next: $date';
+  }
 }

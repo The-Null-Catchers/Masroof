@@ -11,7 +11,12 @@ import '../features/budgets/data/budget.dart';
 import '../features/budgets/presentation/budget_form_screen.dart';
 import '../features/goals/data/goal.dart';
 import '../features/goals/presentation/goal_form_screen.dart';
+import '../features/notifications/presentation/notifications_screen.dart';
 import '../features/planning/presentation/planning_screen.dart';
+import '../features/recurring/data/recurring.dart';
+import '../features/recurring/presentation/recurring_form_screen.dart';
+import '../features/recurring/presentation/recurring_screen.dart';
+import '../features/reports/presentation/reports_screen.dart';
 import '../features/auth/application/auth_controller.dart';
 import '../features/auth/presentation/forgot_password_screen.dart';
 import '../features/auth/presentation/login_screen.dart';
@@ -63,6 +68,15 @@ final routerProvider = Provider<GoRouter>((ref) {
         path: '/transactions/:id/edit',
         builder: (_, state) => TransactionFormScreen(transactionId: state.pathParameters['id']),
       ),
+      GoRoute(path: '/recurring', builder: (_, _) => const RecurringScreen()),
+      GoRoute(path: '/recurring/new', builder: (_, _) => const RecurringFormScreen()),
+      GoRoute(
+        path: '/recurring/:id/edit',
+        builder: (_, state) => RecurringFormScreen(rule: state.extra as RecurringRule?),
+      ),
+      GoRoute(path: '/notifications', builder: (_, _) => const NotificationsScreen()),
+      GoRoute(path: '/settings/notifications', builder: (_, _) => const NotificationPreferencesScreen()),
+      GoRoute(path: '/reports', builder: (_, _) => const ReportsScreen()),
       GoRoute(path: '/accounts', builder: (_, _) => const AccountsScreen()),
       GoRoute(path: '/budgets/new', builder: (_, _) => const BudgetFormScreen()),
       GoRoute(

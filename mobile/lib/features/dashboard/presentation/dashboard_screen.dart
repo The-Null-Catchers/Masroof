@@ -13,6 +13,7 @@ import '../../../core/widgets/icon_catalog.dart';
 import '../../../core/widgets/insight_tile.dart';
 import '../../../core/widgets/progress_bar.dart';
 import '../../goals/presentation/goal_card.dart';
+import '../../notifications/presentation/notifications_screen.dart';
 import '../../planning/application/planning_providers.dart';
 import '../../accounts/application/account_providers.dart';
 import '../../auth/application/auth_controller.dart';
@@ -65,6 +66,7 @@ class DashboardScreen extends ConsumerWidget {
                         ],
                       ),
                     ),
+                    const NotificationBell(),
                   ],
                 ),
                 const SizedBox(height: 20),

@@ -3,6 +3,7 @@ import '../../../core/network/cached_resource.dart';
 import '../../analytics/data/analytics.dart';
 import '../../budgets/data/budget.dart';
 import '../../goals/data/goal.dart';
+import '../../recurring/data/recurring.dart';
 
 /// Budgets, goals, analytics and insights are computed by the API (they need
 /// the full history and server rules). Reads are cached for offline use;
@@ -80,8 +81,27 @@ class PlanningRepository {
     await _invalidate();
   }
 
+  Stream<({List<RecurringRule> rules, bool stale})> watchRecurring() => _cache
+      .watch('/recurring')
+      .map(
+        (v) => (
+          rules: [for (final r in v.json['data'] as List) RecurringRule.fromJson(r as Map<String, dynamic>)],
+          stale: v.stale,
+        ),
+      );
+
+  Future<void> saveRecurring(String? id, Map<String, Object?> payload) async {
+    id == null ? await _api.post('/recurring', payload) : await _api.patch('/recurring/$id', payload);
+    await _invalidate();
+  }
+
+  Future<void> deleteRecurring(String id) async {
+    await _api.delete('/recurring/$id');
+    await _invalidate();
+  }
+
   Future<void> _invalidate() async {
-    for (final prefix in ['/budgets', '/goals', '/dashboard', '/insights']) {
+    for (final prefix in ['/budgets', '/goals', '/dashboard', '/insights', '/recurring']) {
       await _cache.invalidate(prefix);
     }
   }

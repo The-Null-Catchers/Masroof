@@ -97,4 +97,28 @@ extension DomainLabels on AppLocalizations {
     'warning' => statusWarning,
     _ => statusOnTrack,
   };
+
+  String frequencyLabel(String f) => switch (f) {
+    'daily' => freqDaily,
+    'weekly' => freqWeekly,
+    'yearly' => freqYearly,
+    _ => freqMonthly,
+  };
+
+  String notificationTypeLabel(String type) => switch (type) {
+    'budget_threshold' => notifBudgetThreshold,
+    'bill_reminder' => notifBillReminder,
+    'recurring_reminder' => notifRecurringReminder,
+    'goal_reminder' => notifGoalReminder,
+    'weekly_summary' => notifWeeklySummary,
+    _ => notifMonthlySummary,
+  };
+
+  String reportTypeLabel(String type) => switch (type) {
+    'transactions' => reportTransactions,
+    'budgets' => reportBudgets,
+    'income_expense' => reportIncomeExpense,
+    'categories' => reportCategories,
+    _ => reportMonthly,
+  };
 }

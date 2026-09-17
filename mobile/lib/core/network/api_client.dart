@@ -54,6 +54,16 @@ class ApiClient {
   Future<Map<String, dynamic>> delete(String path, [Object? body]) =>
       _send(() => _dio.delete<Map<String, dynamic>>(path, data: body));
 
+  /// Raw bytes for file downloads (reports).
+  Future<List<int>> download(String path) async {
+    try {
+      final response = await _dio.get<List<int>>(path, options: Options(responseType: ResponseType.bytes));
+      return response.data ?? const [];
+    } on DioException catch (error) {
+      throw ApiException.fromDio(error);
+    }
+  }
+
   Future<Map<String, dynamic>> _send(Future<Response<Map<String, dynamic>>> Function() request) async {
     try {
       final response = await request();

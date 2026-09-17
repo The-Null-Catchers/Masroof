@@ -406,5 +406,56 @@
       }
     }
   },
-  "navActivity": "Activity"
+  "navActivity": "Activity",
+  "recurring": "Recurring payments",
+  "addRecurring": "New recurring",
+  "editRecurring": "Edit recurring",
+  "recurringName": "Name",
+  "frequency": "Repeats",
+  "freqDaily": "Daily",
+  "freqWeekly": "Weekly",
+  "freqMonthly": "Monthly",
+  "freqYearly": "Yearly",
+  "everyInterval": "Every (interval)",
+  "whenDue": "When due",
+  "modeAuto": "Add automatically",
+  "modeRemind": "Only remind me",
+  "remindDaysBefore": "Remind days before",
+  "paused": "Paused",
+  "pause": "Pause",
+  "resume": "Resume",
+  "ended": "Ended",
+  "emptyRecurringTitle": "No recurring payments yet",
+  "emptyRecurringBody": "Automate salaries, rent, subscriptions and bills.",
+  "upcomingPayments": "Upcoming payments",
+  "noNotifications": "You're all caught up.",
+  "markAllRead": "Mark all as read",
+  "notificationPreferences": "Notification preferences",
+  "inApp": "In app",
+  "emailChannel": "Email",
+  "notifBudgetThreshold": "Budget alerts",
+  "notifBillReminder": "Bill reminders",
+  "notifRecurringReminder": "Recurring payment reminders",
+  "notifGoalReminder": "Savings goal reminders",
+  "notifWeeklySummary": "Weekly spending summary",
+  "notifMonthlySummary": "Monthly financial summary",
+  "reports": "Reports & exports",
+  "reportType": "Report",
+  "reportFormat": "Format",
+  "generateReport": "Generate & share",
+  "reportMonthly": "Monthly financial report",
+  "reportTransactions": "Transactions",
+  "reportBudgets": "Budget report",
+  "reportIncomeExpense": "Income & expense summary",
+  "reportCategories": "Category spending",
+  "preparingReport": "Preparing your report…",
+  "reportFailed": "The report could not be generated.",
+  "nextOn": "Next: {date}",
+  "@nextOn": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  }
 }

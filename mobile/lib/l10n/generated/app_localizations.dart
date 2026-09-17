@@ -1861,6 +1861,270 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Activity'**
   String get navActivity;
+
+  /// No description provided for @recurring.
+  ///
+  /// In en, this message translates to:
+  /// **'Recurring payments'**
+  String get recurring;
+
+  /// No description provided for @addRecurring.
+  ///
+  /// In en, this message translates to:
+  /// **'New recurring'**
+  String get addRecurring;
+
+  /// No description provided for @editRecurring.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit recurring'**
+  String get editRecurring;
+
+  /// No description provided for @recurringName.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get recurringName;
+
+  /// No description provided for @frequency.
+  ///
+  /// In en, this message translates to:
+  /// **'Repeats'**
+  String get frequency;
+
+  /// No description provided for @freqDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get freqDaily;
+
+  /// No description provided for @freqWeekly.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly'**
+  String get freqWeekly;
+
+  /// No description provided for @freqMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly'**
+  String get freqMonthly;
+
+  /// No description provided for @freqYearly.
+  ///
+  /// In en, this message translates to:
+  /// **'Yearly'**
+  String get freqYearly;
+
+  /// No description provided for @everyInterval.
+  ///
+  /// In en, this message translates to:
+  /// **'Every (interval)'**
+  String get everyInterval;
+
+  /// No description provided for @whenDue.
+  ///
+  /// In en, this message translates to:
+  /// **'When due'**
+  String get whenDue;
+
+  /// No description provided for @modeAuto.
+  ///
+  /// In en, this message translates to:
+  /// **'Add automatically'**
+  String get modeAuto;
+
+  /// No description provided for @modeRemind.
+  ///
+  /// In en, this message translates to:
+  /// **'Only remind me'**
+  String get modeRemind;
+
+  /// No description provided for @remindDaysBefore.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind days before'**
+  String get remindDaysBefore;
+
+  /// No description provided for @paused.
+  ///
+  /// In en, this message translates to:
+  /// **'Paused'**
+  String get paused;
+
+  /// No description provided for @pause.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get pause;
+
+  /// No description provided for @resume.
+  ///
+  /// In en, this message translates to:
+  /// **'Resume'**
+  String get resume;
+
+  /// No description provided for @ended.
+  ///
+  /// In en, this message translates to:
+  /// **'Ended'**
+  String get ended;
+
+  /// No description provided for @emptyRecurringTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No recurring payments yet'**
+  String get emptyRecurringTitle;
+
+  /// No description provided for @emptyRecurringBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Automate salaries, rent, subscriptions and bills.'**
+  String get emptyRecurringBody;
+
+  /// No description provided for @upcomingPayments.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming payments'**
+  String get upcomingPayments;
+
+  /// No description provided for @noNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re all caught up.'**
+  String get noNotifications;
+
+  /// No description provided for @markAllRead.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark all as read'**
+  String get markAllRead;
+
+  /// No description provided for @notificationPreferences.
+  ///
+  /// In en, this message translates to:
+  /// **'Notification preferences'**
+  String get notificationPreferences;
+
+  /// No description provided for @inApp.
+  ///
+  /// In en, this message translates to:
+  /// **'In app'**
+  String get inApp;
+
+  /// No description provided for @emailChannel.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get emailChannel;
+
+  /// No description provided for @notifBudgetThreshold.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget alerts'**
+  String get notifBudgetThreshold;
+
+  /// No description provided for @notifBillReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Bill reminders'**
+  String get notifBillReminder;
+
+  /// No description provided for @notifRecurringReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Recurring payment reminders'**
+  String get notifRecurringReminder;
+
+  /// No description provided for @notifGoalReminder.
+  ///
+  /// In en, this message translates to:
+  /// **'Savings goal reminders'**
+  String get notifGoalReminder;
+
+  /// No description provided for @notifWeeklySummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly spending summary'**
+  String get notifWeeklySummary;
+
+  /// No description provided for @notifMonthlySummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly financial summary'**
+  String get notifMonthlySummary;
+
+  /// No description provided for @reports.
+  ///
+  /// In en, this message translates to:
+  /// **'Reports & exports'**
+  String get reports;
+
+  /// No description provided for @reportType.
+  ///
+  /// In en, this message translates to:
+  /// **'Report'**
+  String get reportType;
+
+  /// No description provided for @reportFormat.
+  ///
+  /// In en, this message translates to:
+  /// **'Format'**
+  String get reportFormat;
+
+  /// No description provided for @generateReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Generate & share'**
+  String get generateReport;
+
+  /// No description provided for @reportMonthly.
+  ///
+  /// In en, this message translates to:
+  /// **'Monthly financial report'**
+  String get reportMonthly;
+
+  /// No description provided for @reportTransactions.
+  ///
+  /// In en, this message translates to:
+  /// **'Transactions'**
+  String get reportTransactions;
+
+  /// No description provided for @reportBudgets.
+  ///
+  /// In en, this message translates to:
+  /// **'Budget report'**
+  String get reportBudgets;
+
+  /// No description provided for @reportIncomeExpense.
+  ///
+  /// In en, this message translates to:
+  /// **'Income & expense summary'**
+  String get reportIncomeExpense;
+
+  /// No description provided for @reportCategories.
+  ///
+  /// In en, this message translates to:
+  /// **'Category spending'**
+  String get reportCategories;
+
+  /// No description provided for @preparingReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Preparing your report…'**
+  String get preparingReport;
+
+  /// No description provided for @reportFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'The report could not be generated.'**
+  String get reportFailed;
+
+  /// No description provided for @nextOn.
+  ///
+  /// In en, this message translates to:
+  /// **'Next: {date}'**
+  String nextOn(String date);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
