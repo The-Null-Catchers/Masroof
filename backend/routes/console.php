@@ -9,3 +9,4 @@ Schedule::command('sanctum:prune-expired --hours=24')->daily();
 Schedule::command('auth:clear-resets')->everyFifteenMinutes();
 Schedule::command('queue:prune-failed --hours=168')->daily();
 Schedule::command('masroof:prune-exports')->daily();
+Schedule::command('masroof:prune-receipts')->daily();

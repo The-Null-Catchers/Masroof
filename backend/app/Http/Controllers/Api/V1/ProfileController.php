@@ -8,6 +8,7 @@ use App\Http\Requests\Api\V1\UpdateProfileRequest;
 use App\Http\Resources\V1\UserResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\TransientToken;
 
@@ -71,6 +72,9 @@ class ProfileController extends Controller
         $user->tokens()->delete();
         // Permanently remove the account and all owned financial data (cascades).
         $user->forceDelete();
+        // Uploaded receipt photos and generated exports are files, not rows.
+        Storage::disk('local')->deleteDirectory("receipts/{$user->id}");
+        Storage::disk('local')->deleteDirectory("exports/{$user->id}");
 
         return response()->json(null, 204);
     }

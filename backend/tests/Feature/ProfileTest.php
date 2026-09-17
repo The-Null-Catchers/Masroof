@@ -6,6 +6,7 @@ use App\Models\Account;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class ProfileTest extends TestCase
@@ -82,8 +83,12 @@ class ProfileTest extends TestCase
 
     public function test_user_can_permanently_delete_their_account_and_data(): void
     {
+        Storage::fake('local');
         $user = User::factory()->create(['password' => 'secret123']);
         Account::factory()->for($user)->create();
+        Storage::disk('local')->put("receipts/{$user->id}/photo.jpg", 'jpeg');
+        Storage::disk('local')->put("exports/{$user->id}/report.pdf", 'pdf');
+        Storage::disk('local')->put('receipts/someone-else/photo.jpg', 'jpeg');
         $token = $user->createToken('phone')->plainTextToken;
 
         $this->withToken($token)->deleteJson('/api/v1/me', ['password' => 'bad'])->assertUnprocessable();
@@ -91,5 +96,8 @@ class ProfileTest extends TestCase
 
         $this->assertDatabaseMissing('users', ['id' => $user->id]);
         $this->assertDatabaseMissing('accounts', ['user_id' => $user->id]);
+        Storage::disk('local')->assertMissing("receipts/{$user->id}/photo.jpg");
+        Storage::disk('local')->assertMissing("exports/{$user->id}/report.pdf");
+        Storage::disk('local')->assertExists('receipts/someone-else/photo.jpg');
     }
 }

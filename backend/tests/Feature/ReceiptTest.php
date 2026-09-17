@@ -128,6 +128,25 @@ class ReceiptTest extends TestCase
         Storage::disk('local')->assertMissing($path);
     }
 
+    public function test_abandoned_scans_are_pruned_but_saved_receipts_are_kept(): void
+    {
+        $account = $this->account($this->user, ['currency' => 'ILS']);
+        $groceries = $this->user->categories()->where('default_key', 'groceries')->value('id');
+        $abandoned = $this->upload();
+        $saved = $this->upload();
+        $this->postJson("/api/v1/receipts/{$saved}/transaction", [
+            'type' => 'expense', 'account_id' => $account->id, 'category_id' => $groceries, 'amount' => '1', 'occurred_at' => '2026-09-15T10:00:00Z',
+        ])->assertCreated();
+        $path = Receipt::findOrFail($abandoned)->file_path;
+
+        $this->travel(8)->days();
+        $this->artisan('masroof:prune-receipts')->assertSuccessful();
+
+        $this->assertNull(Receipt::find($abandoned));
+        Storage::disk('local')->assertMissing($path);
+        $this->assertNotNull(Receipt::find($saved));
+    }
+
     public function test_rejects_non_images(): void
     {
         $this->post('/api/v1/receipts', ['file' => UploadedFile::fake()->create('notes.txt', 5, 'text/plain')], ['Accept' => 'application/json'])
