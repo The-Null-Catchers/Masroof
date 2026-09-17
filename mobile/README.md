@@ -54,7 +54,7 @@ targets `http://127.0.0.1:8000` (see `lib/core/config/app_config.dart`).
 ## Quality
 
 ```bash
-dart format -l 120 lib test
+find lib test -name "*.dart" ! -name "*.g.dart" ! -path "lib/l10n/generated/*" | xargs dart format -l 120
 flutter analyze
 flutter test
 ```
