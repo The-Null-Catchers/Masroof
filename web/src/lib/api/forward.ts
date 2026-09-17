@@ -34,11 +34,21 @@ export async function forward(
   const forwardedFor = request.headers.get("x-forwarded-for");
   if (forwardedFor) headers["X-Forwarded-For"] = forwardedFor;
 
-  const payload = body ?? (["GET", "HEAD"].includes(request.method) ? undefined : await request.text());
-  if (payload) headers["Content-Type"] = "application/json";
+  let payload: string | ArrayBuffer | undefined = body;
+  const contentType = request.headers.get("content-type") ?? "";
+  if (payload === undefined && !["GET", "HEAD"].includes(request.method)) {
+    if (contentType.startsWith("multipart/form-data")) {
+      // File uploads (receipts) keep their boundary and bytes intact.
+      payload = await request.arrayBuffer();
+      headers["Content-Type"] = contentType;
+    } else {
+      payload = await request.text();
+    }
+  }
+  if (typeof payload === "string" && payload) headers["Content-Type"] = "application/json";
 
   try {
-    return await fetch(url, { method: request.method, headers, body: payload || undefined, cache: "no-store" });
+    return await fetch(url, { method: request.method, headers, body: payload ? payload : undefined, cache: "no-store" });
   } catch {
     return NextResponse.json({ message: "API unavailable" }, { status: 502 });
   }

@@ -25,7 +25,11 @@ interface Props {
   onOpenChange: (open: boolean) => void;
   transaction?: Transaction | null;
   defaultAccountId?: string;
+  /** Values extracted from a scanned receipt; saving links the receipt. */
+  draft?: TransactionDraft | null;
 }
+
+export type TransactionDraft = Partial<Omit<typeof empty, "tags">> & { receiptId?: string };
 
 const NONE = "none";
 
@@ -43,8 +47,12 @@ const empty = {
   tags: [] as string[],
 };
 
-function initialForm(transaction: Transaction | null | undefined, defaultAccountId?: string) {
-  if (!transaction) return { ...empty, account_id: defaultAccountId ?? "", date: format(new Date(), "yyyy-MM-dd'T'HH:mm") };
+function initialForm(transaction: Transaction | null | undefined, defaultAccountId?: string, draft?: TransactionDraft | null) {
+  if (!transaction) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { receiptId, ...values } = draft ?? {};
+    return { ...empty, account_id: defaultAccountId ?? "", date: format(new Date(), "yyyy-MM-dd'T'HH:mm"), ...values };
+  }
   return {
     type: transaction.type,
     account_id: transaction.account_id,
@@ -60,12 +68,12 @@ function initialForm(transaction: Transaction | null | undefined, defaultAccount
   };
 }
 
-export function TransactionDialog({ open, onOpenChange, transaction, defaultAccountId }: Props) {
+export function TransactionDialog({ open, onOpenChange, transaction, defaultAccountId, draft }: Props) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[92dvh] overflow-y-auto sm:max-w-lg">
         {/* Mounted per opening, so form state starts from the selected transaction. */}
-        <TransactionForm transaction={transaction} defaultAccountId={defaultAccountId} onDone={() => onOpenChange(false)} />
+        <TransactionForm transaction={transaction} defaultAccountId={defaultAccountId} draft={draft} onDone={() => onOpenChange(false)} />
       </DialogContent>
     </Dialog>
   );
@@ -74,10 +82,12 @@ export function TransactionDialog({ open, onOpenChange, transaction, defaultAcco
 function TransactionForm({
   transaction,
   defaultAccountId,
+  draft,
   onDone,
 }: {
   transaction?: Transaction | null;
   defaultAccountId?: string;
+  draft?: TransactionDraft | null;
   onDone: () => void;
 }) {
   const { t, locale, categoryLabel } = useI18n();
@@ -85,7 +95,7 @@ function TransactionForm({
   const { data: categories = [] } = useCategories();
   const save = useSaveTransaction();
   const { data: knownTags = [] } = useTags();
-  const [form, setForm] = useState(() => initialForm(transaction, defaultAccountId));
+  const [form, setForm] = useState(() => initialForm(transaction, defaultAccountId, draft));
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const activeAccounts = accounts.filter((a) => !a.archived || a.id === form.account_id || a.id === form.transfer_account_id);
@@ -137,7 +147,7 @@ function TransactionForm({
     };
 
     try {
-      await save.mutateAsync({ id: transaction?.id, payload });
+      await save.mutateAsync({ id: transaction?.id, payload, receiptId: transaction ? undefined : draft?.receiptId });
       toast.success(t.common.saved);
       onDone();
     } catch (e) {
@@ -152,8 +162,19 @@ function TransactionForm({
   return (
     <>
       <DialogHeader>
-        <DialogTitle>{transaction ? t.transactions.edit : t.transactions.add}</DialogTitle>
+        <DialogTitle>{transaction ? t.transactions.edit : draft?.receiptId ? t.receipts.review : t.transactions.add}</DialogTitle>
       </DialogHeader>
+      {draft?.receiptId && (
+        <div className="flex items-center gap-3 rounded-lg border bg-muted/40 p-2">
+          {/* eslint-disable-next-line @next/next/no-img-element -- authenticated BFF image, not optimizable */}
+          <img
+            src={`/api/backend/receipts/${draft.receiptId}/image`}
+            alt={t.receipts.imageAlt}
+            className="h-16 w-12 rounded object-cover"
+          />
+          <p className="text-xs text-muted-foreground">{t.receipts.verifyHint}</p>
+        </div>
+      )}
       {accounts.length === 0 ? (
         <p className="py-6 text-center text-sm text-muted-foreground">{t.transactions.needAccount}</p>
       ) : (

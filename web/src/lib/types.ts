@@ -87,6 +87,7 @@ export interface Transaction {
   note: string | null;
   location: { name: string | null; latitude: number | null; longitude: number | null } | null;
   tags?: Tag[];
+  receipt_id?: string | null;
   account?: { id: string; name: string; type: AccountType; color: string | null };
   transfer_account?: { id: string; name: string; type: AccountType; color: string | null } | null;
   category?: { id: string; name: string; default_key: string | null; icon: string | null; color: string | null } | null;
@@ -328,4 +329,23 @@ export interface ReportExport {
   created_at: string;
   completed_at: string | null;
   expires_at: string | null;
+}
+
+export interface Receipt {
+  id: string;
+  status: "uploaded" | "processing" | "processed" | "failed";
+  error: string | null;
+  transaction_id: string | null;
+  provider: string | null;
+  extracted: {
+    merchant: string | null;
+    total: string | null;
+    total_minor: number | null;
+    currency: string | null;
+    date: string | null;
+    suggested_category_id: string | null;
+    confidence: number;
+    display_total: string | null;
+  } | null;
+  created_at: string;
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeftRight, MoreHorizontal, Plus, ReceiptText, Search } from "lucide-react";
+import { ArrowLeftRight, MoreHorizontal, Plus, ReceiptText, ScanLine, Search } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -9,7 +9,8 @@ import { EmptyState } from "@/components/common/empty-state";
 import { CATEGORY_ICONS, IconBadge } from "@/components/common/finance-icons";
 import { PageHeader } from "@/components/common/page-header";
 import { Amount } from "@/components/money/amount";
-import { TransactionDialog } from "@/components/transactions/transaction-dialog";
+import { ReceiptScanDialog } from "@/components/transactions/receipt-scan-dialog";
+import { TransactionDialog, type TransactionDraft } from "@/components/transactions/transaction-dialog";
 import { transactionTitle } from "@/components/transactions/transaction-row";
 import {
   AlertDialog,
@@ -50,7 +51,8 @@ export function TransactionsView() {
   const params = useSearchParams();
   const [filters, setFilters] = useState<TransactionFilters>({ page: 1, per_page: 20, account_id: params.get("account") ?? undefined });
   const [search, setSearch] = useState("");
-  const [dialog, setDialog] = useState<{ open: boolean; tx?: Transaction | null }>({ open: false });
+  const [dialog, setDialog] = useState<{ open: boolean; tx?: Transaction | null; draft?: TransactionDraft }>({ open: false });
+  const [scanOpen, setScanOpen] = useState(false);
   const [pendingDelete, setPendingDelete] = useState<Transaction | null>(null);
 
   const { data: accounts = [] } = useAccounts(true);
@@ -103,10 +105,16 @@ export function TransactionsView() {
       <PageHeader
         title={t.transactions.title}
         actions={
-          <Button onClick={() => setDialog({ open: true, tx: null })}>
-            <Plus />
-            {t.transactions.add}
-          </Button>
+          <div className="flex gap-2">
+            <Button variant="outline" onClick={() => setScanOpen(true)}>
+              <ScanLine />
+              <span className="max-sm:sr-only">{t.receipts.scan}</span>
+            </Button>
+            <Button onClick={() => setDialog({ open: true, tx: null })}>
+              <Plus />
+              {t.transactions.add}
+            </Button>
+          </div>
         }
       />
 
@@ -312,7 +320,13 @@ export function TransactionsView() {
         )}
       </Card>
 
-      <TransactionDialog open={dialog.open} transaction={dialog.tx} onOpenChange={(open) => setDialog((d) => ({ ...d, open }))} />
+      <TransactionDialog
+        open={dialog.open}
+        transaction={dialog.tx}
+        draft={dialog.draft}
+        onOpenChange={(open) => setDialog((d) => ({ ...d, open }))}
+      />
+      <ReceiptScanDialog open={scanOpen} onOpenChange={setScanOpen} onExtracted={(draft) => setDialog({ open: true, tx: null, draft })} />
 
       <AlertDialog open={!!pendingDelete} onOpenChange={(open) => !open && setPendingDelete(null)}>
         <AlertDialogContent>

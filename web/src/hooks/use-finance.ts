@@ -4,6 +4,7 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tansta
 
 import { api } from "@/lib/api/client";
 import type {
+  Receipt,
   Account,
   AnalyticsSummary,
   Budget,
@@ -129,10 +130,12 @@ export type TransactionPayload = {
 export function useSaveTransaction() {
   const invalidate = useInvalidateFinance();
   return useMutation({
-    mutationFn: ({ id, payload }: { id?: string; payload: TransactionPayload }) =>
+    mutationFn: ({ id, payload, receiptId }: { id?: string; payload: TransactionPayload; receiptId?: string }) =>
       id
         ? api<{ data: Transaction }>(`/transactions/${id}`, { method: "PATCH", body: payload })
-        : api<{ data: Transaction }>("/transactions", { method: "POST", body: payload }),
+        : receiptId
+          ? api<{ data: Transaction }>(`/receipts/${receiptId}/transaction`, { method: "POST", body: payload })
+          : api<{ data: Transaction }>("/transactions", { method: "POST", body: payload }),
     onSuccess: invalidate,
   });
 }
@@ -447,4 +450,31 @@ export function useCreateExport() {
       api<{ data: ReportExport }>("/reports/exports", { method: "POST", body: payload }).then((r) => r.data),
     onSuccess: () => client.invalidateQueries({ queryKey: ["exports"] }),
   });
+}
+
+export function useUploadReceipt() {
+  return useMutation({
+    mutationFn: (file: File) => {
+      const body = new FormData();
+      body.append("file", file);
+      return api<{ data: Receipt }>("/receipts", { method: "POST", body }).then((r) => r.data);
+    },
+  });
+}
+
+/** Polls while OCR runs on the queue. */
+export function useReceipt(id: string | null) {
+  return useQuery({
+    queryKey: ["receipts", id],
+    queryFn: () => api<{ data: Receipt }>(`/receipts/${id}`).then((r) => r.data),
+    enabled: !!id,
+    refetchInterval: (query) => {
+      const status = query.state.data?.status;
+      return status === "processed" || status === "failed" ? false : 1_500;
+    },
+  });
+}
+
+export function useDeleteReceipt() {
+  return useMutation({ mutationFn: (id: string) => api(`/receipts/${id}`, { method: "DELETE" }) });
 }

@@ -57,13 +57,13 @@
 
 /* Masroof design tokens — mirrored in mobile/lib/core/theme/app_colors.dart */
 :root {
-  --background: oklch(0.980 0.002 165.1);
-  --foreground: oklch(0.208 0.040 265.8);
+  --background: oklch(0.98 0.002 165.1);
+  --foreground: oklch(0.208 0.04 265.8);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.208 0.040 265.8);
+  --card-foreground: oklch(0.208 0.04 265.8);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.208 0.040 265.8);
-  --primary: oklch(0.520 0.093 177.2);
+  --popover-foreground: oklch(0.208 0.04 265.8);
+  --primary: oklch(0.52 0.093 177.2);
   --primary-foreground: oklch(0.99 0 0);
   --secondary: oklch(0.956 0.015 181.8);
   --secondary-foreground: oklch(0.355 0.061 180.1);
@@ -74,28 +74,28 @@
   --destructive: oklch(0.577 0.215 27.3);
   --border: oklch(0.929 0.013 255.5);
   --input: oklch(0.929 0.013 255.5);
-  --ring: oklch(0.520 0.093 177.2);
-  --chart-1: oklch(0.520 0.093 177.2);
-  --chart-2: oklch(0.819 0.150 80.8);
+  --ring: oklch(0.52 0.093 177.2);
+  --chart-1: oklch(0.52 0.093 177.2);
+  --chart-2: oklch(0.819 0.15 80.8);
   --chart-3: oklch(0.546 0.215 262.9);
   --chart-4: oklch(0.65 0.2 350);
   --chart-5: oklch(0.845 0.107 169.6);
   --income: oklch(0.527 0.137 150.1);
   --expense: oklch(0.577 0.215 27.3);
   --transfer: oklch(0.546 0.215 262.9);
-  --brand: oklch(0.520 0.093 177.2);
+  --brand: oklch(0.52 0.093 177.2);
   --brand-deep: oklch(0.355 0.061 180.1);
   --brand-mint: oklch(0.845 0.107 169.6);
-  --brand-gold: oklch(0.819 0.150 80.8);
+  --brand-gold: oklch(0.819 0.15 80.8);
   --radius: 0.875rem;
   --sidebar: oklch(1 0 0);
-  --sidebar-foreground: oklch(0.208 0.040 265.8);
-  --sidebar-primary: oklch(0.520 0.093 177.2);
+  --sidebar-foreground: oklch(0.208 0.04 265.8);
+  --sidebar-primary: oklch(0.52 0.093 177.2);
   --sidebar-primary-foreground: oklch(0.99 0 0);
   --sidebar-accent: oklch(0.956 0.015 181.8);
   --sidebar-accent-foreground: oklch(0.355 0.061 180.1);
   --sidebar-border: oklch(0.929 0.013 255.5);
-  --sidebar-ring: oklch(0.520 0.093 177.2);
+  --sidebar-ring: oklch(0.52 0.093 177.2);
 }
 
 .dark {
@@ -118,17 +118,17 @@
   --input: oklch(0.308 0.019 174.2);
   --ring: oklch(0.845 0.107 169.6);
   --chart-1: oklch(0.845 0.107 169.6);
-  --chart-2: oklch(0.819 0.150 80.8);
+  --chart-2: oklch(0.819 0.15 80.8);
   --chart-3: oklch(0.714 0.143 254.6);
   --chart-4: oklch(0.75 0.15 350);
   --chart-5: oklch(0.6 0.09 177);
-  --income: oklch(0.800 0.182 151.7);
+  --income: oklch(0.8 0.182 151.7);
   --expense: oklch(0.711 0.166 22.2);
   --transfer: oklch(0.714 0.143 254.6);
-  --brand: oklch(0.520 0.093 177.2);
+  --brand: oklch(0.52 0.093 177.2);
   --brand-deep: oklch(0.355 0.061 180.1);
   --brand-mint: oklch(0.845 0.107 169.6);
-  --brand-gold: oklch(0.819 0.150 80.8);
+  --brand-gold: oklch(0.819 0.15 80.8);
   --sidebar: oklch(0.2 0.013 182);
   --sidebar-foreground: oklch(0.97 0.005 180);
   --sidebar-primary: oklch(0.845 0.107 169.6);

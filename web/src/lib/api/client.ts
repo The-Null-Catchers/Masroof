@@ -19,8 +19,12 @@ export async function api<T>(
   try {
     response = await fetch(url, {
       method,
-      headers: { Accept: "application/json", ...(body !== undefined ? { "Content-Type": "application/json" } : {}) },
-      body: body !== undefined ? JSON.stringify(body) : undefined,
+      headers: {
+        Accept: "application/json",
+        // FormData sets its own multipart boundary.
+        ...(body !== undefined && !(body instanceof FormData) ? { "Content-Type": "application/json" } : {}),
+      },
+      body: body instanceof FormData ? body : body !== undefined ? JSON.stringify(body) : undefined,
       credentials: "same-origin",
     });
   } catch {
