@@ -349,3 +349,57 @@ export interface Receipt {
   } | null;
   created_at: string;
 }
+
+export interface AdminStats {
+  users: {
+    total: number;
+    new_7d: number;
+    new_30d: number;
+    active_30d: number;
+    verified: number;
+    suspended: number;
+    signups_by_day: { date: string; count: number }[];
+  };
+  activity: { transactions_total: number; transactions_7d: number; exports_30d: number };
+  ocr: { receipts_30d: number; by_status: Record<string, number>; by_provider: Record<string, number> };
+}
+
+export interface AdminUser {
+  id: string;
+  name: string;
+  email: string;
+  role: "user" | "admin";
+  locale: string;
+  currency: string;
+  email_verified: boolean;
+  suspended: boolean;
+  suspended_at: string | null;
+  last_active_at: string | null;
+  created_at: string;
+}
+
+export interface AdminSystem {
+  database: boolean;
+  cache: boolean;
+  queue: { connection: string; pending: number | null; failed: number };
+  ocr_driver: string;
+  app: { environment: string; php: string; laravel: string; time: string };
+}
+
+export interface FailedJob {
+  uuid: string;
+  queue: string;
+  job: string;
+  attempts: number | null;
+  error: string;
+  failed_at: string;
+}
+
+export interface AuditEntry {
+  id: number;
+  action: string;
+  admin: { id: string; name: string; email: string } | null;
+  target: { id: string; name: string; email: string } | null;
+  meta: Record<string, unknown> | null;
+  created_at: string;
+}

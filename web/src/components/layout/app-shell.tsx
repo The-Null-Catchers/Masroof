@@ -29,7 +29,7 @@ import { cn } from "@/lib/utils";
 import { NotificationBell } from "@/components/notifications/notification-bell";
 
 import { LanguageToggle } from "./language-toggle";
-import { MOBILE_PRIMARY, NAV_ITEMS } from "./nav-items";
+import { MOBILE_PRIMARY, visibleNavItems } from "./nav-items";
 
 function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -41,6 +41,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const router = useRouter();
   const { resolvedTheme, setTheme } = useTheme();
   const { data: me } = useMe();
+  const navItems = visibleNavItems(me?.role);
 
   // New users answer the onboarding questions before using the app.
   useEffect(() => {
@@ -68,7 +69,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           <Logo size={34} withWordmark wordmark={t.app.name} />
         </Link>
         <nav className="mt-8 flex flex-col gap-1" aria-label="Main">
-          {NAV_ITEMS.map(({ href, key, icon: Icon }) => (
+          {navItems.map(({ href, key, icon: Icon }) => (
             <Link
               key={href}
               href={href}
@@ -133,25 +134,27 @@ export function AppShell({ children }: { children: ReactNode }) {
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 pt-6 pb-24 sm:px-6 lg:pb-10">{children}</main>
 
         <nav aria-label="Main" className="fixed inset-x-0 bottom-0 z-20 grid grid-cols-5 border-t bg-background/95 backdrop-blur lg:hidden">
-          {NAV_ITEMS.filter((item) => (MOBILE_PRIMARY as readonly string[]).includes(item.href)).map(({ href, key, icon: Icon }) => (
-            <Link
-              key={href}
-              href={href}
-              aria-current={isActive(pathname, href) ? "page" : undefined}
-              className={cn(
-                "flex flex-col items-center gap-1 py-2 text-[0.7rem] font-medium text-muted-foreground",
-                isActive(pathname, href) && "text-primary",
-              )}
-            >
-              <Icon className="size-5" />
-              {t.nav[key]}
-            </Link>
-          ))}
+          {navItems
+            .filter((item) => (MOBILE_PRIMARY as readonly string[]).includes(item.href))
+            .map(({ href, key, icon: Icon }) => (
+              <Link
+                key={href}
+                href={href}
+                aria-current={isActive(pathname, href) ? "page" : undefined}
+                className={cn(
+                  "flex flex-col items-center gap-1 py-2 text-[0.7rem] font-medium text-muted-foreground",
+                  isActive(pathname, href) && "text-primary",
+                )}
+              >
+                <Icon className="size-5" />
+                {t.nav[key]}
+              </Link>
+            ))}
           <Sheet>
             <SheetTrigger
               className={cn(
                 "flex flex-col items-center gap-1 py-2 text-[0.7rem] font-medium text-muted-foreground",
-                NAV_ITEMS.some((item) => !(MOBILE_PRIMARY as readonly string[]).includes(item.href) && isActive(pathname, item.href)) &&
+                navItems.some((item) => !(MOBILE_PRIMARY as readonly string[]).includes(item.href) && isActive(pathname, item.href)) &&
                   "text-primary",
               )}
             >
@@ -163,20 +166,22 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <SheetTitle>{t.nav.more}</SheetTitle>
               </SheetHeader>
               <div className="grid grid-cols-4 gap-2 px-4">
-                {NAV_ITEMS.filter((item) => !(MOBILE_PRIMARY as readonly string[]).includes(item.href)).map(({ href, key, icon: Icon }) => (
-                  <SheetClose asChild key={href}>
-                    <Link
-                      href={href}
-                      className={cn(
-                        "flex flex-col items-center gap-2 rounded-xl p-3 text-xs hover:bg-muted",
-                        isActive(pathname, href) && "bg-muted text-primary",
-                      )}
-                    >
-                      <Icon className="size-5" />
-                      {t.nav[key]}
-                    </Link>
-                  </SheetClose>
-                ))}
+                {navItems
+                  .filter((item) => !(MOBILE_PRIMARY as readonly string[]).includes(item.href))
+                  .map(({ href, key, icon: Icon }) => (
+                    <SheetClose asChild key={href}>
+                      <Link
+                        href={href}
+                        className={cn(
+                          "flex flex-col items-center gap-2 rounded-xl p-3 text-xs hover:bg-muted",
+                          isActive(pathname, href) && "bg-muted text-primary",
+                        )}
+                      >
+                        <Icon className="size-5" />
+                        {t.nav[key]}
+                      </Link>
+                    </SheetClose>
+                  ))}
               </div>
             </SheetContent>
           </Sheet>
