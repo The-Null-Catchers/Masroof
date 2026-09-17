@@ -9,6 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class ReceiptTest extends TestCase
@@ -79,6 +80,25 @@ class ReceiptTest extends TestCase
         $this->assertSame(7560, $account->refresh()->balance);
         $this->postJson("/api/v1/receipts/{$id}/transaction", $payload)->assertStatus(409);
         $this->getJson("/api/v1/transactions/{$transactionId}")->assertJsonPath('data.receipt_id', $id);
+    }
+
+    public function test_offline_clients_link_the_receipt_when_creating_the_transaction(): void
+    {
+        $account = $this->account($this->user, ['currency' => 'ILS']);
+        $groceries = $this->user->categories()->where('default_key', 'groceries')->value('id');
+        $id = $this->upload();
+        $payload = [
+            'id' => (string) Str::ulid(), 'type' => 'expense', 'account_id' => $account->id, 'category_id' => $groceries,
+            'amount' => '24.40', 'occurred_at' => '2026-09-15T18:42:00Z', 'receipt_id' => $id,
+        ];
+
+        $this->postJson('/api/v1/transactions', $payload)->assertCreated()->assertJsonPath('data.receipt_id', $id);
+        // Replaying the same client create stays idempotent.
+        $this->postJson('/api/v1/transactions', $payload)->assertOk();
+
+        $otherReceipt = $this->upload();
+        $this->patchJson("/api/v1/transactions/{$payload['id']}", ['receipt_id' => $otherReceipt])->assertUnprocessable();
+        $this->postJson('/api/v1/transactions', ['id' => (string) Str::ulid()] + $payload)->assertJsonValidationErrors('receipt_id');
     }
 
     public function test_confirm_validates_like_a_transaction(): void

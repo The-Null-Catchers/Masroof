@@ -37,6 +37,12 @@ class TransactionRequest extends FormRequest
             'location_name' => ['sometimes', 'nullable', 'string', 'max:120'],
             'latitude' => ['nullable', 'numeric', 'between:-90,90', 'required_with:longitude'],
             'longitude' => ['nullable', 'numeric', 'between:-180,180', 'required_with:latitude'],
+            // Links a scanned receipt on create (offline clients push this with the transaction).
+            'receipt_id' => $creating
+                ? ['sometimes', 'nullable', 'ulid', Rule::exists('receipts', 'id')->where('user_id', $userId)
+                    // A retried push of the same client create may find it already linked.
+                    ->where(fn ($q) => $q->whereNull('transaction_id')->orWhere('transaction_id', (string) $this->input('id')))]
+                : ['prohibited'],
             'tags' => ['sometimes', 'array', 'max:10'],
             'tags.*' => ['string', 'min:1', 'max:40'],
         ];

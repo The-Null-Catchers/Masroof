@@ -7,6 +7,7 @@ use App\Http\Controllers\Concerns\ResolvesClientIds;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\TransactionRequest;
 use App\Http\Resources\V1\TransactionResource;
+use App\Models\Receipt;
 use App\Models\Transaction;
 use App\Services\TransactionService;
 use Illuminate\Database\Eloquent\Builder;
@@ -78,7 +79,15 @@ class TransactionController extends Controller
             return (new TransactionResource($existing->load(['account', 'transferAccount', 'category', 'tags', 'receipt:id,transaction_id'])))->response();
         }
 
-        $transaction = $this->service->create($request->user(), $request->toAttributes());
+        $transaction = DB::transaction(function () use ($request) {
+            $transaction = $this->service->create($request->user(), $request->toAttributes());
+            if ($request->filled('receipt_id')) {
+                Receipt::query()->whereKey($request->input('receipt_id'))->whereNull('transaction_id')
+                    ->update(['transaction_id' => $transaction->id]);
+            }
+
+            return $transaction;
+        });
 
         return (new TransactionResource($transaction->load(['account', 'transferAccount', 'category', 'tags', 'receipt:id,transaction_id'])))
             ->response()
