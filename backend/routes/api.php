@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\RecurringTransactionController;
 use App\Http\Controllers\Api\V1\ReportController;
+use App\Http\Controllers\Api\V1\ReportExportController;
 use App\Http\Controllers\Api\V1\SettingsController;
 use App\Http\Controllers\Api\V1\SyncController;
 use App\Http\Controllers\Api\V1\TagController;
@@ -78,6 +79,10 @@ Route::prefix('v1')->name('v1.')->group(function () {
         Route::delete('goals/{goal}/entries/{entry}', [GoalController::class, 'deleteEntry'])->name('goals.entries.destroy');
 
         Route::get('reports/summary', [ReportController::class, 'summary'])->name('reports.summary');
+        Route::get('reports/exports', [ReportExportController::class, 'index'])->name('reports.exports.index');
+        Route::post('reports/exports', [ReportExportController::class, 'store'])->middleware('throttle:10,1')->name('reports.exports.store');
+        Route::get('reports/exports/{export}', [ReportExportController::class, 'show'])->name('reports.exports.show');
+        Route::get('reports/exports/{export}/download', [ReportExportController::class, 'download'])->name('reports.exports.download');
         Route::get('dashboard', DashboardController::class)->name('dashboard');
         Route::get('analytics/summary', [AnalyticsController::class, 'summary'])->name('analytics.summary');
         Route::get('analytics/trends', [AnalyticsController::class, 'trends'])->name('analytics.trends');

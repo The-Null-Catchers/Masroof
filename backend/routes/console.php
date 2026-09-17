@@ -8,3 +8,4 @@ Schedule::command('masroof:verify-balances')->dailyAt('03:00')->withoutOverlappi
 Schedule::command('sanctum:prune-expired --hours=24')->daily();
 Schedule::command('auth:clear-resets')->everyFifteenMinutes();
 Schedule::command('queue:prune-failed --hours=168')->daily();
+Schedule::command('masroof:prune-exports')->daily();

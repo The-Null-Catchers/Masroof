@@ -1,0 +1,35 @@
+<?php
+
+return [
+    'summary' => 'الملخص',
+    'income' => 'الدخل',
+    'expenses' => 'المصروفات',
+    'savings' => 'الادخار',
+    'savings_rate' => 'نسبة الادخار',
+    'avg_daily' => 'متوسط الإنفاق اليومي',
+    'count' => 'عدد المعاملات',
+    'empty' => 'لا توجد بيانات لهذه الفترة.',
+    'uncategorized' => 'بدون فئة',
+    'transfer_to' => 'تحويل إلى :account',
+    'generated' => 'أُنشئ بواسطة مصروف بتاريخ :date',
+    'types' => ['income' => 'دخل', 'expense' => 'مصروف', 'transfer' => 'تحويل'],
+    'status' => ['on_track' => 'ضمن الخطة', 'warning' => 'انتبه', 'exceeded' => 'تجاوزت الميزانية'],
+    'transactions' => ['title' => 'المعاملات'],
+    'monthly' => [
+        'title' => 'التقرير المالي الشهري',
+        'categories' => 'المصروفات حسب الفئة',
+        'goals' => 'أهداف الادخار',
+        'largest' => 'أكبر المصروفات',
+        'merchants' => 'الجهات الأكثر تكرارًا',
+    ],
+    'budgets' => ['title' => 'تقرير الميزانيات'],
+    'income_expense' => ['title' => 'ملخص الدخل والمصروفات'],
+    'categories' => ['title' => 'الإنفاق حسب الفئة'],
+    'columns' => [
+        'date' => 'التاريخ', 'type' => 'النوع', 'description' => 'الوصف', 'category' => 'الفئة', 'account' => 'الحساب',
+        'amount' => 'المبلغ', 'currency' => 'العملة', 'tags' => 'الوسوم', 'note' => 'ملاحظة', 'share' => 'النسبة', 'change' => 'التغير',
+        'goal' => 'الهدف', 'saved' => 'المدّخر', 'target' => 'المستهدف', 'progress' => 'التقدم', 'merchant' => 'الجهة', 'count' => 'العدد',
+        'budget' => 'الميزانية', 'period' => 'الفترة', 'budgeted' => 'المخصص', 'spent' => 'المُنفق', 'remaining' => 'المتبقي', 'status' => 'الحالة',
+        'month' => 'الشهر', 'closing_balance' => 'الرصيد الختامي',
+    ],
+];
