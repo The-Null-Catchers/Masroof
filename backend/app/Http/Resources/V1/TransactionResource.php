@@ -34,6 +34,7 @@ class TransactionResource extends JsonResource
             'occurred_at' => $this->occurred_at->toIso8601String(),
             'merchant' => $this->merchant,
             'recurring_transaction_id' => $this->recurring_transaction_id,
+            'receipt_id' => $this->relationLoaded('receipt') ? $this->receipt?->id : null,
             'payment_method' => $this->payment_method,
             'location' => $this->location_name || $this->latitude !== null ? [
                 'name' => $this->location_name,

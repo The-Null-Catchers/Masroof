@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\EmailVerificationController;
 use App\Http\Controllers\Api\V1\GoalController;
 use App\Http\Controllers\Api\V1\NotificationController;
 use App\Http\Controllers\Api\V1\ProfileController;
+use App\Http\Controllers\Api\V1\ReceiptController;
 use App\Http\Controllers\Api\V1\RecurringTransactionController;
 use App\Http\Controllers\Api\V1\ReportController;
 use App\Http\Controllers\Api\V1\ReportExportController;
@@ -58,6 +59,12 @@ Route::prefix('v1')->name('v1.')->group(function () {
         Route::get('accounts/summary', [AccountController::class, 'summary'])->name('accounts.summary');
         Route::apiResource('accounts', AccountController::class);
         Route::apiResource('categories', CategoryController::class);
+        Route::post('receipts', [ReceiptController::class, 'store'])->middleware('throttle:20,1')->name('receipts.store');
+        Route::get('receipts/{receipt}', [ReceiptController::class, 'show'])->name('receipts.show');
+        Route::get('receipts/{receipt}/image', [ReceiptController::class, 'image'])->name('receipts.image');
+        Route::post('receipts/{receipt}/transaction', [ReceiptController::class, 'confirm'])->name('receipts.confirm');
+        Route::delete('receipts/{receipt}', [ReceiptController::class, 'destroy'])->name('receipts.destroy');
+
         Route::post('transactions/{transaction}/duplicate', [TransactionController::class, 'duplicate'])->name('transactions.duplicate');
         Route::apiResource('transactions', TransactionController::class);
         Route::apiResource('tags', TagController::class)->except('show');

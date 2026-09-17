@@ -16,6 +16,8 @@ return [
     'email_already_verified' => 'Your e-mail address is already verified.',
     'verification_sent' => 'A new verification link has been sent to your e-mail address.',
     'export_failed' => 'The report could not be generated. Please try again.',
+    'receipt_already_used' => 'This receipt has already been saved as a transaction.',
+    'receipt_ocr_failed' => 'We could not read this receipt. Enter the details manually.',
     'id_conflict' => 'This identifier is already in use.',
     'invalid_amount' => 'Enter a valid amount with at most :decimals decimal places.',
     'password_changed' => 'Your password has been changed. Other devices were signed out.',

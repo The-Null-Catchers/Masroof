@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
@@ -85,6 +86,12 @@ class Transaction extends Model
     public function transferAccount(): BelongsTo
     {
         return $this->belongsTo(Account::class, 'transfer_account_id')->withTrashed();
+    }
+
+    /** @return HasOne<Receipt, $this> */
+    public function receipt(): HasOne
+    {
+        return $this->hasOne(Receipt::class);
     }
 
     /** @return BelongsToMany<Tag, $this> */

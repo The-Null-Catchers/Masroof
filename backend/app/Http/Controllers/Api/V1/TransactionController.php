@@ -47,7 +47,7 @@ class TransactionController extends Controller
         $direction = str_starts_with($sort, '-') ? 'desc' : 'asc';
 
         $transactions = $request->user()->transactions()
-            ->with(['account', 'transferAccount', 'category', 'tags'])
+            ->with(['account', 'transferAccount', 'category', 'tags', 'receipt:id,transaction_id'])
             ->when($filters['type'] ?? null, fn (Builder $q, string $type) => $q->where('type', $type))
             ->when($filters['account_id'] ?? null, fn (Builder $q, string $id) => $q->where(
                 fn (Builder $q) => $q->where('account_id', $id)->orWhere('transfer_account_id', $id)
@@ -75,12 +75,12 @@ class TransactionController extends Controller
     public function store(TransactionRequest $request): JsonResponse
     {
         if ($existing = $this->existingClientRecord($request, Transaction::class)) {
-            return (new TransactionResource($existing->load(['account', 'transferAccount', 'category', 'tags'])))->response();
+            return (new TransactionResource($existing->load(['account', 'transferAccount', 'category', 'tags', 'receipt:id,transaction_id'])))->response();
         }
 
         $transaction = $this->service->create($request->user(), $request->toAttributes());
 
-        return (new TransactionResource($transaction->load(['account', 'transferAccount', 'category', 'tags'])))
+        return (new TransactionResource($transaction->load(['account', 'transferAccount', 'category', 'tags', 'receipt:id,transaction_id'])))
             ->response()
             ->setStatusCode(201);
     }
@@ -89,7 +89,7 @@ class TransactionController extends Controller
     {
         Gate::authorize('view', $transaction);
 
-        return new TransactionResource($transaction->load(['account', 'transferAccount', 'category', 'tags']));
+        return new TransactionResource($transaction->load(['account', 'transferAccount', 'category', 'tags', 'receipt:id,transaction_id']));
     }
 
     public function update(TransactionRequest $request, Transaction $transaction): TransactionResource
@@ -100,7 +100,7 @@ class TransactionController extends Controller
         unset($data['id']);
         $transaction = $this->service->update($transaction, $data);
 
-        return new TransactionResource($transaction->load(['account', 'transferAccount', 'category', 'tags']));
+        return new TransactionResource($transaction->load(['account', 'transferAccount', 'category', 'tags', 'receipt:id,transaction_id']));
     }
 
     public function destroy(Transaction $transaction): JsonResponse
@@ -124,7 +124,7 @@ class TransactionController extends Controller
             $request->filled('occurred_at') ? Carbon::parse($request->input('occurred_at'))->utc() : null,
         );
 
-        return (new TransactionResource($copy->load(['account', 'transferAccount', 'category', 'tags'])))
+        return (new TransactionResource($copy->load(['account', 'transferAccount', 'category', 'tags', 'receipt:id,transaction_id'])))
             ->response()
             ->setStatusCode(201);
     }

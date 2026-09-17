@@ -58,4 +58,14 @@ return [
     | Local hour (user timezone) at which reminders and summaries are sent.
     */
     'notification_hour' => (int) env('MASROOF_NOTIFICATION_HOUR', 8),
+
+    /*
+    | Receipt OCR. "tesseract" runs locally (free); "mock" needs no engine and
+    | is used in tests. Add providers by implementing App\Services\Ocr\OcrProvider.
+    */
+    'ocr' => [
+        'driver' => env('MASROOF_OCR_DRIVER', 'tesseract'),
+        'tesseract_binary' => env('MASROOF_TESSERACT_BINARY', 'tesseract'),
+        'tesseract_languages' => env('MASROOF_TESSERACT_LANGUAGES', 'ara+eng'),
+    ],
 ];

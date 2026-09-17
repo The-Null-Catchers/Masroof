@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use App\Models\User;
+use App\Services\Ocr\MockOcrProvider;
+use App\Services\Ocr\OcrProvider;
+use App\Services\Ocr\TesseractOcrProvider;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Cache\RateLimiting\Limit;
@@ -17,7 +20,10 @@ class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        //
+        $this->app->bind(OcrProvider::class, fn () => match (config('masroof.ocr.driver')) {
+            'mock' => new MockOcrProvider,
+            default => new TesseractOcrProvider(config('masroof.ocr.tesseract_binary'), config('masroof.ocr.tesseract_languages')),
+        });
     }
 
     public function boot(): void
