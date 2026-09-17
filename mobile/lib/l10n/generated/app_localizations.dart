@@ -185,7 +185,7 @@ abstract class AppLocalizations {
   /// No description provided for @networkError.
   ///
   /// In en, this message translates to:
-  /// **'You\'re offline. Check your connection and try again.'**
+  /// **'Can\'t reach the Masroof server. Check that you\'re connected and try again.'**
   String get networkError;
 
   /// No description provided for @confirmDeleteTitle.

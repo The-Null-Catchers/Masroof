@@ -15,7 +15,7 @@
   "invalidAmount": "أدخل مبلغًا صحيحًا",
   "amountMustBePositive": "يجب أن يكون المبلغ أكبر من صفر",
   "genericError": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
-  "networkError": "أنت غير متصل. تحقق من الاتصال وحاول مجددًا.",
+  "networkError": "تعذر الوصول إلى خادم مصروف. تأكد من اتصالك وحاول مرة أخرى.",
   "confirmDeleteTitle": "حذف نهائي؟",
   "confirmDeleteBody": "لا يمكن التراجع عن هذا الإجراء.",
   "loginTitle": "مرحبًا بعودتك",

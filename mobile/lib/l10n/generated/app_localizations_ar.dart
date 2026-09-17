@@ -55,7 +55,7 @@ class AppLocalizationsAr extends AppLocalizations {
   String get genericError => 'حدث خطأ ما. يرجى المحاولة مرة أخرى.';
 
   @override
-  String get networkError => 'أنت غير متصل. تحقق من الاتصال وحاول مجددًا.';
+  String get networkError => 'تعذر الوصول إلى خادم مصروف. تأكد من اتصالك وحاول مرة أخرى.';
 
   @override
   String get confirmDeleteTitle => 'حذف نهائي؟';

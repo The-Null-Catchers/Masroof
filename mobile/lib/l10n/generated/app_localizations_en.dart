@@ -55,7 +55,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get genericError => 'Something went wrong. Please try again.';
 
   @override
-  String get networkError => 'You\'re offline. Check your connection and try again.';
+  String get networkError => 'Can\'t reach the Masroof server. Check that you\'re connected and try again.';
 
   @override
   String get confirmDeleteTitle => 'Delete permanently?';

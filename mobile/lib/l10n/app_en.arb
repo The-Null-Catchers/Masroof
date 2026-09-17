@@ -15,7 +15,7 @@
   "invalidAmount": "Enter a valid amount",
   "amountMustBePositive": "Amount must be greater than zero",
   "genericError": "Something went wrong. Please try again.",
-  "networkError": "You're offline. Check your connection and try again.",
+  "networkError": "Can't reach the Masroof server. Check that you're connected and try again.",
   "confirmDeleteTitle": "Delete permanently?",
   "confirmDeleteBody": "This can't be undone.",
   "loginTitle": "Welcome back",
