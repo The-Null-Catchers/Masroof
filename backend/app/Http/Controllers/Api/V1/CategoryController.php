@@ -85,7 +85,7 @@ class CategoryController extends Controller
             'replacement_id' => [
                 'sometimes', 'nullable', 'ulid',
                 Rule::exists('categories', 'id')
-                    ->where('user_id', $request->user()->id)
+                    ->where('user_id', $request->user()?->id)
                     ->where('type', $category->type->value)
                     ->whereNull('deleted_at'),
                 Rule::notIn([$category->id]),

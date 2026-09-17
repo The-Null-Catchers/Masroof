@@ -17,7 +17,7 @@ class ReportExportController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $exports = ReportExport::query()->where('user_id', $request->user()->id)->latest()->limit(20)->get();
+        $exports = ReportExport::query()->where('user_id', $request->user()?->id)->latest()->limit(20)->get();
 
         return response()->json(['data' => $exports->map(fn (ReportExport $e) => $this->present($e))]);
     }
@@ -31,8 +31,8 @@ class ReportExportController extends Controller
             'to' => ['sometimes', 'date_format:Y-m-d', 'after_or_equal:from', 'required_with:from'],
             'offset' => ['sometimes', 'integer', 'between:-120,0'],
             'months' => ['sometimes', 'integer', 'between:2,24'],
-            'account_id' => ['sometimes', 'ulid', Rule::exists('accounts', 'id')->where('user_id', $request->user()->id)],
-            'category_id' => ['sometimes', 'ulid', Rule::exists('categories', 'id')->where('user_id', $request->user()->id)],
+            'account_id' => ['sometimes', 'ulid', Rule::exists('accounts', 'id')->where('user_id', $request->user()?->id)],
+            'category_id' => ['sometimes', 'ulid', Rule::exists('categories', 'id')->where('user_id', $request->user()?->id)],
             'transaction_type' => ['sometimes', Rule::in(['income', 'expense', 'transfer'])],
         ]);
 
