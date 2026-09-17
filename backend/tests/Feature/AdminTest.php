@@ -103,7 +103,7 @@ class AdminTest extends TestCase
         ]);
         $this->signIn($this->admin);
 
-        $this->getJson('/api/v1/admin/system')->assertOk()->assertJsonPath('data.queue.failed', 1)->assertJsonPath('data.database', true);
+        $this->getJson('/api/v1/admin/system')->assertOk()->assertJsonPath('data.queue.failed', 1)->assertJsonPath('data.database', true)->assertJsonPath('data.cache', true);
         $response = $this->getJson('/api/v1/admin/failed-jobs')
             ->assertOk()
             ->assertJsonPath('data.0.job', 'ProcessReceipt')

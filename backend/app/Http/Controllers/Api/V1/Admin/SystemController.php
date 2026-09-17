@@ -25,9 +25,11 @@ class SystemController extends Controller
         return response()->json(['data' => [
             'database' => $this->check(fn () => DB::select('SELECT 1')),
             'cache' => $this->check(function () {
-                Cache::put('admin:health', 1, 5);
+                // A string round-trip: Redis returns numbers as strings.
+                $probe = Str::random(16);
+                Cache::put('admin:health', $probe, 5);
 
-                return Cache::get('admin:health') === 1;
+                return Cache::get('admin:health') === $probe;
             }),
             'queue' => [
                 'connection' => config('queue.default'),
