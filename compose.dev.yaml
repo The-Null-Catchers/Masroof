@@ -1,0 +1,32 @@
+# Local development services only: the API, web and mobile apps run on the host.
+#
+#   docker compose -f compose.dev.yaml up -d
+#
+# Matches backend/.env.example (127.0.0.1, user/password "masroof").
+services:
+  postgres:
+    image: docker.io/library/postgres:17-alpine
+    environment:
+      POSTGRES_DB: masroof
+      POSTGRES_USER: masroof
+      POSTGRES_PASSWORD: masroof
+    ports: ["127.0.0.1:5432:5432"]
+    volumes:
+      - postgres-dev:/var/lib/postgresql/data
+      - ./docker/postgres/init-test-db.sql:/docker-entrypoint-initdb.d/10-test-db.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U masroof"]
+      interval: 5s
+      retries: 20
+
+  redis:
+    image: docker.io/library/redis:7-alpine
+    ports: ["127.0.0.1:6379:6379"]
+
+  # Catches outgoing mail (verification, password reset): http://localhost:8025
+  mailpit:
+    image: docker.io/axllent/mailpit:latest
+    ports: ["127.0.0.1:1025:1025", "127.0.0.1:8025:8025"]
+
+volumes:
+  postgres-dev:

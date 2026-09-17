@@ -39,7 +39,8 @@ export async function POST(request: NextRequest, ctx: RouteContext<"/api/auth/[a
   const response = NextResponse.json({ user: data.user }, { status: upstream.status });
   response.cookies.set(SESSION_COOKIE, data.token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    // Secure by default in production; MASROOF_COOKIE_SECURE=false allows plain-HTTP self-hosting.
+    secure: process.env.MASROOF_COOKIE_SECURE ? process.env.MASROOF_COOKIE_SECURE === "true" : process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
     ...(data.expires_at ? { expires: new Date(data.expires_at) } : {}),

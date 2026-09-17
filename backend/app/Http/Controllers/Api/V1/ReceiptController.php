@@ -108,7 +108,7 @@ class ReceiptController extends Controller
                 'confidence' => $extracted['confidence'] ?? 0,
                 'display_total' => isset($extracted['total'], $extracted['currency']) ? Money::display((int) $extracted['total'], (string) $extracted['currency']) : null,
             ],
-            'image_url' => url("/api/v1/receipts/{$receipt->id}/image"),
+            'image_url' => rtrim((string) config('app.url'), '/')."/api/v1/receipts/{$receipt->id}/image",
             'created_at' => $receipt->created_at?->toIso8601String(),
         ];
     }

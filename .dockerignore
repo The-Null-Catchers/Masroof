@@ -1,0 +1,22 @@
+# Keep build contexts small and free of secrets.
+**/.git
+**/.env
+**/.env.*
+!**/.env.example
+**/node_modules
+**/.next
+**/vendor
+backend/storage/logs/*
+backend/storage/framework/cache/*
+backend/storage/framework/sessions/*
+backend/storage/framework/views/*
+backend/storage/app/receipts
+backend/storage/app/exports
+backend/bootstrap/cache/*.php
+mobile
+branding/icon/png
+**/.dart_tool
+**/build
+**/coverage
+**/.phpunit.cache
+**/.composer
