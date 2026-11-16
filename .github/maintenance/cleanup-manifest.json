@@ -1,0 +1,23 @@
+{
+  "repository": "The-Null-Catchers/Masroof",
+  "defaultBranch": "main",
+  "baseSHA": "969e099037c7b492e76a5b72ac779f3aa9d1c736",
+  "backupTag": "cleanup-backup-2026-11-16",
+  "delete": [
+    {
+      "name": "fix/ci-pr-permissions-20261116",
+      "sha": "4e5c902a183f5ff94aedfaf0135ca60f2621299f",
+      "reason": "equivalent"
+    },
+    {
+      "name": "maintenance/repo-hygiene-20261116",
+      "sha": "5f05970ad8d026d3ec68519f8f29532ce873fc94",
+      "reason": "merged-cleanup-pr"
+    }
+  ],
+  "status": "Explicitly approved by user: archive these audited refs before deletion",
+  "archiveParents": [
+    "4e5c902a183f5ff94aedfaf0135ca60f2621299f",
+    "5f05970ad8d026d3ec68519f8f29532ce873fc94"
+  ]
+}
