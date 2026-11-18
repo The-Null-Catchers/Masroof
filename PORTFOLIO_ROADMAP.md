@@ -1,54 +1,52 @@
-# Masroof — خطة البورتفيليو
+# Masroof portfolio roadmap
 
-مرجع التقييم الأساسي: 17 نوفمبر 2026. تحديث نشر الخطة داخل المستودع: 18 نوفمبر 2026.
+Baseline reviewed on November 17, 2026. Repository roadmap published on November 18, 2026.
 
-الخطة خاصة بهذا المستودع، ومستخلصة من خطة Null Catchers المشتركة. وصف «الموجود الموثق» يعكس المراجعة بتاريخها؛ تحقّق من الكود ووثائق الحالة الحالية قبل إنشاء مهمة جديدة. لا تعِد تنفيذ ميزة موجودة، ولا تعتبر وجود تعريف CI دليلًا على نجاح تشغيله.
+This roadmap applies to this repository and follows the shared Null Catchers portfolio plan. Verify the documented state against the current code and runs before starting work.
 
-**تقدير شريحة العرض الأولى:** 20–35 ساعة. التقدير تخطيطي لمطور يعرف المشروع، ويستثني انتظار حسابات المتاجر والمراجعات الخارجية وتجهيز بيئة الهدف. لا يغطي جميع بنود P2.
+**Estimated initial demo effort** 20–35 hours for a developer familiar with the project. The estimate excludes external reviews, store accounts, target environment setup, and later milestones.
 
-## الأولويات الخاصة بالمشروع
+## Project priorities
 
-**الموجود الموثق:** حسابات وعملات وتحويلات وميزانيات وتقارير عربية وOCR وإشعارات وoffline mobile. لذلك لا تبدأ بإعادة تنفيذ الميزانيات أو وصف المشروع كمجرد CRUD.
+**Documented state** The app supports accounts, currencies, transfers, budgets, Arabic reports, receipt OCR, notifications, and mobile offline use.
 
-**P0 — نسخة العرض** انقل الشهر الاصطناعي المثبت في الاختبار إلى رحلة عربية قابلة للتصوير على الويب والهاتف، مع قياس OCR على إيصال عربي.
+**P0 — Demo** Turn the tested synthetic month into a recordable Arabic web and mobile walkthrough and measure OCR on an Arabic receipt.
 
-**P1 — إثبات صحة المال والتزامن:** وسّع اختبارات invariants الموجودة للأرصدة والدقة العشرية والعملات؛ أضف سيناريو انقطاع أثناء sync وإعادة إرسال العملية نفسها؛ تحقق من أن المصروف الدوري لا يتكرر بعد restart وأن جمع العملات لا يظهر كمجموع واحد مضلل.
+**P1 — Validation and depth** Expand balance and decimal precision invariants across currencies. Test resending a transfer after connection loss, recurring transactions after restart, and clear currency totals.
 
-**P2 — لاحقًا:** استيراد CSV بمعاينة وتعيين أعمدة واكتشاف تكرار، إن لم يكن موجودًا. تكاملات البنوك مؤجلة إلى أن توجد حاجة ووسيلة وصول حقيقية.
+**P2 — Later** Consider previewable CSV imports with column mappings and duplicate detection. Defer bank integrations until a supported connection and user need exist.
 
-**معيار الإنجاز:** الأرصدة قبل/بعد التحويل صحيحة، إعادة sync لا تضاعف العملية، PDF مقروء RTL، ورفض OCR الخاطئ لا ينشئ مصروفًا تلقائيًا.
+**Acceptance criteria** Balances reconcile, retries create one transfer, the Arabic PDF reads right-to-left, and bad OCR requires review before an expense is saved.
 
-**الديمو:** راتب → ميزانية → إيصال عربي → تنبيه تجاوز → تقرير شهري. **الأدلة:** [README](https://github.com/The-Null-Catchers/Masroof/blob/main/README.md)، [Offline Sync](https://github.com/The-Null-Catchers/Masroof/blob/main/docs/offline-sync.md).
+**Demo scenario** Salary → budget → Arabic receipt → budget alert → monthly report. [README](https://github.com/The-Null-Catchers/Masroof/blob/main/README.md), [Offline Sync](https://github.com/The-Null-Catchers/Masroof/blob/main/docs/offline-sync.md).
 
-## الدفعة التالية
+## Next milestones
 
-**ما ثبت حتى الآن**
+[PR #5](https://github.com/The-Null-Catchers/Masroof/pull/5) verified a salary, a retried transfer, receipt review, and a budget breach, then generated an Arabic PDF. The test used simulated OCR. [Reproduction steps](docs/portfolio-demo.md).
 
-[PR #5](https://github.com/The-Null-Catchers/Masroof/pull/5) تحقق من الراتب والتحويل وإعادة إرساله ومراجعة الإيصال وتجاوز الميزانية، وأنتج PDF عربيًا. استخدم الاختبار استجابة OCR محاكاة. [إعادة تشغيل العرض](docs/portfolio-demo.md).
+1. [ ] Prepare two images of a synthetic Arabic receipt with known date, currency, and amount. Record the actual OCR output per field and verify the UI requests review of missing or mismatched values.
+2. [ ] Repeat the monthly journey on web and mobile with the same test account. Reconcile both balances, the category budget, and the PDF total. Verify a retried transfer appears once.
+3. [ ] Save an Arabic recording and report tied to the SHA. Identify where OCR was real or simulated and document the report’s direction and number-format checks.
 
-1. [ ] جهّز إيصالًا عربيًا اصطناعيًا بصورتين واضحتين وبحقيقة مرجعية للتاريخ والعملة والمبلغ. يُقبل البند عندما يسجل الاختبار قيم المحرك لكل حقل، وتطلب الواجهة مراجعة الحقول الناقصة أو غير المطابقة قبل الحفظ.
-2. [ ] كرّر رحلة الشهر على الويب والهاتف بالحساب الاصطناعي نفسه. يُقبل البند عندما يتطابق الأثر على الحسابين وميزانية الفئة والمبلغ النهائي في PDF، ويظل التحويل المكرر مسجلًا مرة واحدة.
-3. [ ] احفظ تسجيلًا عربيًا وتقريرًا مرتبطين بـSHA. يُقبل البند عندما يوضح الدليل أين استُخدم OCR الفعلي، وأين استُخدمت الاستجابة المحاكاة، ويعرض نتيجة مراجعة اتجاه التقرير والأرقام.
+## Portfolio acceptance checklist
 
-## بوابة قبول نسخة البورتفيليو
+- [ ] Another person can reproduce the primary workflow from a clean checkout using the README and test credentials or fixtures.
+- [ ] The demo tells one complete story with a defined user, problem, and saved result.
+- [ ] Tests cover the main flow, an important failure, and access boundaries when multiple accounts are involved.
+- [ ] Demo data is labeled synthetic and reproducible. Review screenshots and recordings for secrets and customer data.
+- [ ] Include four to six real screenshots where appropriate, a 60–120 second recording, and working links. Identify the revision used for capture.
+- [ ] The README describes implemented capabilities, setup, architecture, limits, tests, and the demo.
+- [ ] A short case study explains two engineering decisions, a considered alternative, and how the system handles an actual failure.
+- [ ] Release evidence records the commit SHA, CI, prerequisites, and limits. Performance data includes workload, hardware, and method.
+- [ ] Licensing and contributor attribution are settled before distribution. Choose the license for each repository individually.
 
-- [ ] يستطيع شخص آخر تشغيل المسار الرئيسي من checkout نظيف، باتباع README، دون أسرار شخصية.
-- [ ] توجد قصة واحدة مكتملة: مستخدم محدد، مشكلة محددة، ومسار بداية إلى نتيجة محفوظة.
-- [ ] ينجح اختبار للمسار الرئيسي وحالة فشل مهمة، وتُختبر حدود الصلاحيات حيث توجد حسابات متعددة.
-- [ ] توجد بيانات عرض اصطناعية معلنة، قابلة لإعادة الإنشاء؛ ولا توجد بيانات عملاء أو أسرار في اللقطات.
-- [ ] توجد 4–6 لقطات حقيقية أو العدد الملائم للأداة، وفيديو 60–120 ثانية، وروابط تعمل. تُلتقط الأدلة من إصدار معروف.
-- [ ] README يوضح المزايا الفعلية، طريقة التشغيل، الرسم المعماري، القيود، وروابط الاختبارات والديمو.
-- [ ] Case study قصيرة تشرح قرارين هندسيين، بديلًا جرى استبعاده ولماذا، وفشلًا حقيقيًا وكيف يعالجه النظام.
-- [ ] صفحة Release تسجل SHA وCI والمتطلبات والقيود. لا تُنشر أرقام أداء دون workload وعتاد وطريقة قياس.
-- [ ] حُسمت سياسة الترخيص ونسب المساهمات قبل التوزيع؛ لا نختار ترخيصًا تلقائيًا لجميع المستودعات.
+A hosted demo is optional. Code execution, server administration, and secret management can be demonstrated through a recording and a reproducible isolated environment. Keep public demo access scoped to the activities it needs.
 
-الديمو المستضاف مفيد وليس شرطًا لكل أداة. أدوات تنفيذ الكود وإدارة الخوادم والأسرار يمكن عرضها بفيديو وبيئة معزولة وتجربة محلية قابلة للإعادة. لا تفتح تنفيذًا عامًا غير محدود لمجرد وجود رابط بورتفيليو.
+## Implementation and follow-up
 
-## التنفيذ والمتابعة
-
-- حوّل P0 إلى مهام صغيرة، لكل منها سلوك متوقع ومعيار قبول واختبار مناسب.
-- ابدأ بتأكيد الموجود؛ عدّل هذه الخطة عندما يغلق بند بدليل مرتبط بcommit أو PR.
-- سجّل مصدر بيانات الديمو، والـSHA الذي التُقطت منه الأدلة، وحدود التجربة الفعلية.
-- راجع الفرق النهائي وانتظر نجاح الفحوص المطلوبة لنفس SHA قبل الدمج، مع احترام حماية الفرع.
-- إذا كان التعديل وثائق فقط ولا يوجد فحص ينطبق عليه، سجّل التحقق من محتواها وروابطها؛ لا تسجل اختبارات تشغيل لم تُنفّذ.
-- لا تُنشر أرقام أداء أو ادعاءات أمان أو جاهزية إنتاج بلا دليل مناسب.
+- Break P0 into tasks with expected behavior, acceptance criteria, and a suitable test.
+- Verify existing functionality first. Update this plan when evidence tied to a commit or PR closes a milestone.
+- Record the fixture source, the revision used for evidence, and the tested limits.
+- Review the final diff and verify required checks for its exact SHA before merging. Follow branch protection.
+- For documentation-only changes with no applicable workflow, verify content and links and record the checks actually performed.
+- Tie performance, security, and readiness claims to supporting evidence.
