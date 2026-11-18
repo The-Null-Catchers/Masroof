@@ -82,6 +82,17 @@ jobs:
         run: vendor/bin/phpstan analyse --memory-limit=1G --no-progress
       - name: Tests
         run: php artisan test
+      - name: Generate the Arabic portfolio report
+        run: |
+          mkdir -p "$RUNNER_TEMP/masroof-portfolio"
+          MASROOF_PORTFOLIO_PDF="$RUNNER_TEMP/masroof-portfolio/masroof-demo-month-ar.pdf" php artisan test --filter PortfolioMonthTest
+      - name: Upload the synthetic portfolio report
+        uses: actions/upload-artifact@v4
+        with:
+          name: masroof-portfolio-demo
+          path: ${{ runner.temp }}/masroof-portfolio/masroof-demo-month-ar.pdf
+          if-no-files-found: error
+          retention-days: 30
       - name: OpenAPI spec is up to date
         shell: bash
         run: |
