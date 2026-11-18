@@ -116,3 +116,7 @@ Docker images.
   uploads and exports.
 * Deleting an account permanently removes all data, receipt photos and exports.
 * Administrators see aggregates and account state only, and every admin action is audited.
+
+## Portfolio roadmap
+
+See the [repository-specific portfolio roadmap](PORTFOLIO_ROADMAP.md) for priorities, acceptance criteria, demo scope, and release evidence. This complements the existing implementation and status documentation.
