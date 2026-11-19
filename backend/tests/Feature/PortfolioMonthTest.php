@@ -55,9 +55,10 @@ class PortfolioMonthTest extends TestCase
         $this->assertSame(50_000, $wallet->refresh()->balance);
         // Mock OCR reports 24.40, but the user explicitly corrects it to 84.75.
         // A scan must never silently post an expense before review.
-        $this->assertDatabaseMissing('transactions', [
+        $this->assertDatabaseHas('receipts', [
+            'id' => $receipt,
             'user_id' => $user->id,
-            'receipt_id' => $receipt,
+            'transaction_id' => null,
         ]);
 
         $expense = [
