@@ -53,6 +53,13 @@ class PortfolioMonthTest extends TestCase
             ->assertJsonPath('data.extracted.total', '24.40')
             ->assertJsonPath('data.transaction_id', null);
         $this->assertSame(50_000, $wallet->refresh()->balance);
+        // Mock OCR reports 24.40, but the user explicitly corrects it to 84.75.
+        // A scan must never silently post an expense before review.
+        $this->assertDatabaseHas('receipts', [
+            'id' => $receipt,
+            'user_id' => $user->id,
+            'transaction_id' => null,
+        ]);
 
         $expense = [
             'type' => 'expense', 'account_id' => $wallet->id, 'category_id' => $food->id,
