@@ -79,6 +79,8 @@ class ReceiptTest extends TestCase
         $this->assertSame($transactionId, Receipt::find($id)?->transaction_id);
         $this->assertSame(7560, $account->refresh()->balance);
         $this->postJson("/api/v1/receipts/{$id}/transaction", $payload)->assertStatus(409);
+        $this->assertSame(7560, $account->refresh()->balance);
+        $this->assertSame(1, $this->user->transactions()->count());
         $this->getJson("/api/v1/transactions/{$transactionId}")->assertJsonPath('data.receipt_id', $id);
     }
 
